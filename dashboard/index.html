@@ -127,6 +127,28 @@
       font-size: 0.82rem;
       color: #b45309;
     }
+    .login-card h2#login-title {
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+    .site-footer {
+      text-align: center;
+      padding: 1rem 1.25rem 1.75rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.45);
+    }
+    .site-footer a {
+      color: #5b21b6;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .site-footer a:hover { text-decoration: underline; }
+    .exec-highlight {
+      font-weight: 600;
+      color: #5b21b6;
+    }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 1rem 1.25rem 2rem; }
     .tabs {
       display: flex;
@@ -541,7 +563,7 @@
 <body>
   <div id="login-gate" class="login-gate" role="dialog" aria-labelledby="login-title">
     <form class="login-card" id="login-form" autocomplete="on">
-      <h2 id="login-title">Acceso al dashboard</h2>
+      <h2 id="login-title">MOS Marketing Intelligence — Benchmark de sitios web para Vitralogic 2026</h2>
       <p class="sub">Introduce usuario y contraseña para continuar.</p>
       <p class="login-error" id="login-error" aria-live="polite"></p>
       <label for="login-user">Usuario</label>
@@ -594,9 +616,9 @@
         <p>El análisis del ecosistema competitivo revela un patrón claro: el mercado de ventanas y cerramientos en México no está compitiendo realmente a nivel de marca, sino a nivel funcional.</p>
         <p>Se observan tres dinámicas dominantes:</p>
         <ul class="notes">
-          <li>Jugadores de volumen que capturan tráfico pero no construyen experiencia.</li>
-          <li>Jugadores medios con presencia digital básica y poco diferenciada.</li>
-          <li>Especialistas con mejor engagement pero sin escala ni posicionamiento aspiracional.</li>
+          <li><span class="exec-highlight">Jugadores de volumen que capturan tráfico pero no construyen experiencia.</span></li>
+          <li><span class="exec-highlight">Jugadores medios con presencia digital básica y poco diferenciada.</span></li>
+          <li><span class="exec-highlight">Especialistas con mejor engagement pero sin escala ni posicionamiento aspiracional.</span></li>
         </ul>
         <p>Esto configura un mercado donde nadie está construyendo una narrativa de valor integral (producto + experiencia + marca).</p>
         <div class="table-wrap">
@@ -914,6 +936,10 @@
     </section>
 
   </div>
+
+  <footer class="site-footer">
+    <p style="margin:0;">Created by <a href="https://mosmkt.com/" target="_blank" rel="noopener noreferrer">MOS Marketing</a> — April 2026.</p>
+  </footer>
 
   <div id="profile-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
     <div class="modal-box">
