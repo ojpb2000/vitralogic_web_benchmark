@@ -700,20 +700,21 @@
         <p>Jugadores como Vetrogalo, Canceles Finos o Aviglass muestran mayor profundidad, mejor tiempo en sitio y menor rebote, pero no escalan tráfico ni posicionamiento aspiracional.</p>
         <p class="insight">Insight clave: sí existe interés cuando el contenido es relevante, pero nadie lo escala.</p>
         <div class="table-wrap">
-          <table class="data">
+          <table class="data" id="tabla-ejecutivo-especialistas">
             <thead>
               <tr>
                 <th>Competidor</th><th>Visitas mensuales aprox</th><th>Tiempo en sitio</th><th>Páginas por sesión</th><th>Rebote</th><th>Dispositivo dominante</th><th>Tipo de contenido</th><th>Diagnóstico</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Canceles Finos</td><td>~870</td><td>01:34</td><td>2.63</td><td>43.4%</td><td>Desktop</td><td>Portafolio + inspiración</td><td>Buen balance entre contenido y navegación</td></tr>
-              <tr><td>Vetrogalo</td><td>~485</td><td>01:19</td><td>2.83</td><td>38.8%</td><td>Desktop</td><td>Portafolio + visual</td><td>Mejor engagement del mercado</td></tr>
-              <tr><td>Aviglass</td><td>~568</td><td>01:23</td><td>2.60</td><td>47.1%</td><td>Desktop</td><td>Catálogo + inspiración</td><td>Tráfico cualificado, buena retención</td></tr>
-              <tr><td>Alvagsa</td><td>~246</td><td>00:58</td><td>2.04</td><td>45.5%</td><td>Desktop</td><td>Técnico + catálogo</td><td>Alta recurrencia, menor profundidad</td></tr>
+              <tr><td>Canceles Finos</td><td class="num" data-exec-traffic-domain="cancelesfinos.com">—</td><td>01:34</td><td>2.63</td><td>43.4%</td><td>Desktop</td><td>Portafolio + inspiración</td><td>Buen balance entre contenido y navegación</td></tr>
+              <tr><td>Vetrogalo</td><td class="num" data-exec-traffic-domain="vetrogalo.com">—</td><td>01:19</td><td>2.83</td><td>38.8%</td><td>Desktop</td><td>Portafolio + visual</td><td>Mejor engagement del mercado</td></tr>
+              <tr><td>Aviglass</td><td class="num" data-exec-traffic-domain="aviglass.com.mx">—</td><td>01:23</td><td>2.60</td><td>47.1%</td><td>Desktop</td><td>Catálogo + inspiración</td><td>Tráfico cualificado, buena retención</td></tr>
+              <tr><td>Alvagsa</td><td class="num" data-exec-traffic-domain="alvagsa.com">—</td><td>00:58</td><td>2.04</td><td>45.5%</td><td>Desktop</td><td>Técnico + catálogo</td><td>Alta recurrencia, menor profundidad</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="citation" style="margin-top:0.5rem;">La columna <strong>Visitas mensuales aprox</strong> usa el mismo <em>promedio mensual</em> que la tabla de Mercado general: tráfico total del periodo (Desde/Hasta) entre número de meses, con los mismos filtros de subconjunto, Castel y perfil.</p>
       </div>
 
       <div class="panel">
@@ -721,17 +722,18 @@
         <p>Veka representa un jugador de alta credibilidad técnica: engagement alto, tráfico reducido pero cualificado y enfoque especializado.</p>
         <p class="insight">Insight clave: el contenido técnico genera valor, pero no conecta con el usuario final premium.</p>
         <div class="table-wrap">
-          <table class="data">
+          <table class="data" id="tabla-ejecutivo-veka">
             <thead>
               <tr>
                 <th>Competidor</th><th>Visitas mensuales aprox</th><th>Tiempo en sitio</th><th>Páginas por sesión</th><th>Rebote</th><th>Dispositivo dominante</th><th>Canales</th><th>Tipo de contenido</th><th>Diagnóstico</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Veka LATAM</td><td>~763</td><td>02:44</td><td>3.10</td><td>37.5%</td><td>Desktop</td><td>Directo + orgánico</td><td>Técnico / especializado</td><td>Tráfico altamente cualificado</td></tr>
+              <tr><td>Veka LATAM</td><td class="num" data-exec-traffic-domain="vekalatinamerica.com">—</td><td>02:44</td><td>3.10</td><td>37.5%</td><td>Desktop</td><td>Directo + orgánico</td><td>Técnico / especializado</td><td>Tráfico altamente cualificado</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="citation" style="margin-top:0.5rem;">La columna <strong>Visitas mensuales aprox</strong> usa el mismo <em>promedio mensual</em> que la tabla de Mercado general: tráfico total del periodo (Desde/Hasta) entre número de meses, con los mismos filtros de subconjunto, Castel y perfil.</p>
       </div>
 
       <div class="panel">
@@ -1493,7 +1495,7 @@ window.__BENCHMARK_DATA__ = {"meta": {"title": "Benchmark tráfico web (SimilarW
     });
   }
 
-  /** Promedio mensual = misma fórmula y filtros que #tabla-mercado (columna Promedio mensual). */
+  /** Promedio mensual = misma fórmula y filtros que #tabla-mercado (columna Promedio mensual). Rellena celdas [data-exec-traffic-domain] en resumen ejecutivo (secciones 2.2–2.4). */
   function updateExecutiveMiddleMarketTraffic() {
     var from = mFrom.value;
     var to = mTo.value;
