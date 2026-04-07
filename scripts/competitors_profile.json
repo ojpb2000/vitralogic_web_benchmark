@@ -1,0 +1,190 @@
+{
+  "meta": {
+    "lastUpdated": "2026-04-06",
+    "marketContext": "La industria de la ventanería y el vidrio arquitectónico es muy competida: en una vivienda, el cerramiento puede representar entre un 5% y un 7% del valor total de la obra. Varias empresas del sector cuentan con más de dos décadas de operación; muchas tienen base en la Ciudad de México y presencia a nivel nacional. En la zona del showroom Castel (Isla), compiten varias marcas de cancelería en PVC con perfiles Kömmerling, Aluplast y Deceuninck; la mayoría se enfoca en PVC y no ofrecen el mismo alcance de especialidades en cerramiento que un integrador más amplio.",
+    "citation": {
+      "label": "Grupo QVICK, 2024",
+      "detail": "Participación estimada del cerramiento en el valor total de la vivienda (5%–7%)."
+    },
+    "castelLensTitle": "Competidores con contexto Isla Showroom Castel",
+    "castelLensNote": "Distancias y perfiles indicativos respecto al punto de referencia Castel; validar en campo. No forman parte de los datos SimilarWeb."
+  },
+  "profiles": {
+    "aviglass.com.mx": {
+      "positioning": "Empresa mexicana especializada en diseño, fabricación y comercialización de cancelería de aluminio y vidrio.",
+      "founded": "2008",
+      "hqNote": "Oficinas en CDMX; presencia en todo el país.",
+      "materialTags": ["aluminio", "vidrio", "canceleria"],
+      "materialsLabel": "Aluminio, vidrio, cancelería",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": [],
+      "website": "https://aviglass.com.mx/",
+      "castel": null,
+      "qualitativeNote": null
+    },
+    "alvagsa.com": {
+      "positioning": "Especialista en fabricación y montaje de obras de aluminio y cristal.",
+      "founded": null,
+      "hqNote": "CDMX y cobertura nacional (según posicionamiento público).",
+      "materialTags": ["aluminio", "cristal"],
+      "materialsLabel": "Aluminio, cristal",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": [],
+      "website": "https://www.alvagsa.com/",
+      "castel": null,
+      "qualitativeNote": null
+    },
+    "vetrogalo.com": {
+      "positioning": "Empresa mexicana dedicada al diseño, ingeniería e instalación de fachadas envolventes.",
+      "founded": "2012",
+      "hqNote": "CDMX y operación nacional.",
+      "materialTags": ["fachada", "vidrio"],
+      "materialsLabel": "Fachadas envolventes",
+      "role": "fabricante",
+      "roleLabel": "Fabricante / instalador",
+      "profileBrands": [],
+      "website": "https://vetrogalo.com/",
+      "castel": null,
+      "qualitativeNote": null
+    },
+    "cristel.com.mx": {
+      "positioning": "Suministro y colocación de cristal templado para la construcción.",
+      "founded": "1997",
+      "hqNote": "CDMX; presencia nacional.",
+      "materialTags": ["cristal", "vidrio"],
+      "materialsLabel": "Cristal templado",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": [],
+      "website": "https://www.cristel.com.mx/",
+      "castel": null,
+      "qualitativeNote": null
+    },
+    "cancelesfinos.com": {
+      "positioning": "Más de 30 años en soluciones de aluminio y cristal templado para residencial, comercial e institucional.",
+      "founded": null,
+      "hqNote": "CDMX y cobertura nacional.",
+      "materialTags": ["aluminio", "cristal"],
+      "materialsLabel": "Aluminio, cristal templado",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": [],
+      "website": "https://www.cancelesfinos.com/",
+      "castel": null,
+      "qualitativeNote": null
+    },
+    "ventanashermex.com.mx": {
+      "positioning": "Fabricación de cancelería en PVC; showroom cercano al contexto Castel.",
+      "founded": null,
+      "hqNote": "Showroom a ~650 m del punto de referencia Castel (Isla).",
+      "materialTags": ["pvc"],
+      "materialsLabel": "PVC",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": ["Deceuninck"],
+      "website": "https://ventanashermex.com.mx/",
+      "castel": {
+        "inLens": true,
+        "distanceKm": 0.65,
+        "note": "Showroom ~650 m de Castel. Marca de perfil Deceuninck."
+      },
+      "qualitativeNote": "Nota comercial: reputación de clientes a contrastar en campo (referencias heterogéneas reportadas internamente)."
+    },
+    "abatikventanas.com": {
+      "positioning": "Fabricación de cancelería en PVC.",
+      "founded": null,
+      "hqNote": "Showroom ~5,6 km del punto de referencia Castel.",
+      "materialTags": ["pvc"],
+      "materialsLabel": "PVC",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": ["Aluplast"],
+      "website": "https://www.abatikventanas.com/",
+      "castel": {
+        "inLens": true,
+        "distanceKm": 5.6,
+        "note": "Showroom ~5,6 km de Castel. Perfil Aluplast."
+      },
+      "qualitativeNote": null
+    },
+    "idealventanas.com": {
+      "positioning": "Fabricación de cancelería; planta en la zona.",
+      "founded": null,
+      "hqNote": "Planta ~8 km del punto de referencia Castel.",
+      "materialTags": ["pvc"],
+      "materialsLabel": "PVC",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": ["Kömmerling"],
+      "website": "https://idealventanas.com/",
+      "castel": {
+        "inLens": true,
+        "distanceKm": 8,
+        "note": "Planta ~8 km de Castel. Perfil Kömmerling."
+      },
+      "qualitativeNote": null
+    },
+    "ventanastermoacusticasdepvc.com.mx": {
+      "positioning": "Distribución de cancelería en PVC (no fabricante).",
+      "founded": null,
+      "hqNote": "~15 km del punto de referencia Castel.",
+      "materialTags": ["pvc"],
+      "materialsLabel": "PVC",
+      "role": "distribuidor",
+      "roleLabel": "Distribuidor",
+      "profileBrands": ["Kömmerling"],
+      "website": "https://ventanastermoacusticasdepvc.com.mx/",
+      "castel": {
+        "inLens": true,
+        "distanceKm": 15,
+        "note": "~15 km de Castel. Distribuidor Kömmerling."
+      },
+      "qualitativeNote": null
+    },
+    "sisvent.mx": {
+      "positioning": "Fabricante de cancelería en PVC.",
+      "founded": null,
+      "hqNote": "Local ~15,5 km del punto de referencia Castel.",
+      "materialTags": ["pvc"],
+      "materialsLabel": "PVC",
+      "role": "fabricante",
+      "roleLabel": "Fabricante",
+      "profileBrands": ["Kömmerling"],
+      "website": "https://www.sisvent.mx/",
+      "castel": {
+        "inLens": true,
+        "distanceKm": 15.5,
+        "note": "~15,5 km de Castel. Fabricante Kömmerling."
+      },
+      "qualitativeNote": null
+    },
+    "vitralogic.com": {
+      "positioning": "Marca de referencia Vitralogic® en sistemas y soluciones de cerramiento (contexto corporativo).",
+      "founded": null,
+      "hqNote": null,
+      "materialTags": ["sistemas", "pvc", "aluminio"],
+      "materialsLabel": "Sistemas / integración",
+      "role": "fabricante",
+      "roleLabel": "Fabricante / marca",
+      "profileBrands": [],
+      "website": "https://vitralogic.com/",
+      "castel": null,
+      "qualitativeNote": "Tráfico web no disponible en el export SimilarWeb analizado."
+    },
+    "vekalatinamerica.com": {
+      "positioning": "Presencia regional Veka para Latinoamérica.",
+      "founded": null,
+      "hqNote": null,
+      "materialTags": ["pvc", "sistemas"],
+      "materialsLabel": "Sistemas / perfilería",
+      "role": "fabricante",
+      "roleLabel": "Marca / corporativo",
+      "profileBrands": ["Veka"],
+      "website": "https://vekalatinamerica.com/",
+      "castel": null,
+      "qualitativeNote": null
+    }
+  }
+}

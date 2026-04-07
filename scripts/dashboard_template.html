@@ -1,0 +1,2393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Benchmark Vitralogic — Tráfico &amp; competencia</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f4f7fd;
+      --bg-gradient: linear-gradient(145deg, #eef2ff 0%, #f8fafc 42%, #f3e8ff 100%);
+      --panel: rgba(255, 255, 255, 0.78);
+      --panel-solid: #ffffff;
+      --border: rgba(99, 102, 241, 0.18);
+      --text: #1e293b;
+      --muted: #64748b;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.12);
+      --violet: #7c3aed;
+      --accent2: #6366f1;
+      --warn: #d97706;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 4px 24px rgba(79, 70, 229, 0.07);
+    }
+    header .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    header h1 { margin: 0 0 0.35rem; font-size: 1.35rem; font-weight: 600; color: #312e81; }
+    header p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .logout-btn {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel-solid);
+      color: var(--muted);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .logout-btn:hover { border-color: rgba(99, 102, 241, 0.45); color: #4338ca; }
+    .login-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: var(--bg-gradient);
+      backdrop-filter: blur(8px);
+    }
+    .login-gate.hidden { display: none !important; }
+    .login-card {
+      width: 100%;
+      max-width: 360px;
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.35rem;
+      box-shadow: 0 8px 40px rgba(79, 70, 229, 0.12);
+    }
+    .login-card h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #312e81;
+    }
+    .login-card .sub {
+      margin: 0 0 1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .login-card label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .login-card input {
+      width: 100%;
+      margin-bottom: 0.75rem;
+      padding: 0.5rem 0.65rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel-solid);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .login-card button[type="submit"] {
+      width: 100%;
+      margin-top: 0.25rem;
+      padding: 0.55rem 1rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .login-card button[type="submit"]:hover { filter: brightness(1.05); }
+    .login-error {
+      min-height: 1.25rem;
+      margin: 0 0 0.5rem;
+      font-size: 0.82rem;
+      color: #b45309;
+    }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 1rem 1.25rem 2rem; }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1.25rem;
+    }
+    .tabs button {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      color: #4338ca;
+      padding: 0.5rem 0.9rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .tabs button:hover {
+      border-color: rgba(99, 102, 241, 0.45);
+      box-shadow: 0 2px 12px rgba(79, 70, 229, 0.12);
+    }
+    .tabs button.active {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.18) 0%, rgba(124, 58, 237, 0.14) 100%);
+      border-color: rgba(79, 70, 229, 0.45);
+      color: #312e81;
+      font-weight: 600;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 28px rgba(79, 70, 229, 0.08);
+    }
+    .panel h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .hidden { display: none !important; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+      margin-bottom: 1rem;
+    }
+    .controls label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .controls select {
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.6rem;
+      border-radius: 10px;
+      min-width: 160px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.1);
+      color: #5b21b6;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+    }
+    table.data {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    table.data th, table.data td {
+      text-align: left;
+      padding: 0.5rem 0.65rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data th { color: var(--muted); font-weight: 500; }
+    table.data tr:hover td { background: rgba(99, 102, 241, 0.06); }
+    #tabla-mercado tbody tr[data-domain] { cursor: pointer; }
+    #tabla-mercado tbody tr[data-domain].row-focused td {
+      background: rgba(79, 70, 229, 0.09);
+    }
+    #tabla-mercado tbody tr[data-domain].row-focused {
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
+    .mercado-focus-banner {
+      width: 100%;
+      flex-basis: 100%;
+      font-size: 0.82rem;
+      padding: 0.45rem 0.85rem;
+      margin-bottom: 0.25rem;
+      border-radius: 12px;
+      background: rgba(79, 70, 229, 0.1);
+      border: 1px solid rgba(79, 70, 229, 0.22);
+      color: #312e81;
+    }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    th.sortable {
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    th.sortable:hover { color: var(--accent); }
+    th.sortable.active { color: var(--text); font-weight: 600; }
+    th.sortable .sort-ind {
+      font-size: 0.72em;
+      opacity: 0.85;
+      margin-left: 0.2rem;
+    }
+    .insight {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(90deg, rgba(79, 70, 229, 0.1) 0%, rgba(124, 58, 237, 0.06) 100%);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      font-size: 0.88rem;
+      color: #334155;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 900px) {
+      .grid2 { grid-template-columns: 1fr; }
+    }
+    .chart-box {
+      position: relative;
+      height: 320px;
+      max-height: 40vh;
+    }
+    .chart-box.tall { height: 380px; }
+    ul.notes { margin: 0.5rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: 0.85rem; }
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .kpi {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      border-radius: 14px;
+      min-width: 140px;
+      box-shadow: 0 2px 12px rgba(79, 70, 229, 0.06);
+    }
+    .kpi .v { font-size: 1.25rem; font-weight: 600; }
+    .kpi .l { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .context-quote {
+      margin: 0.75rem 0 0;
+      padding: 1rem 1.1rem;
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 12px 12px 0;
+      font-size: 0.92rem;
+      color: #334155;
+    }
+    .citation {
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .meta-updated { font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem; }
+    .castel-box {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      color: #92400e;
+    }
+    .info-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel-solid);
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+    .info-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(99, 102, 241, 0.15);
+      padding: 3px;
+      vertical-align: middle;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
+    }
+    .brand-logo--sm { width: 24px; height: 24px; border-radius: 8px; padding: 2px; }
+    .brand-logo--xs {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      padding: 2px;
+      box-shadow: 0 1px 4px rgba(79, 70, 229, 0.06);
+    }
+    .brand-logo-ph {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #5b21b6;
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.2), rgba(124, 58, 237, 0.15));
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      vertical-align: middle;
+    }
+    .brand-logo-ph--sm { width: 24px; height: 24px; font-size: 0.65rem; border-radius: 8px; }
+    .brand-logo-ph--xs {
+      width: 20px;
+      height: 20px;
+      font-size: 0.55rem;
+      border-radius: 6px;
+    }
+    .brand-cell { display: flex; align-items: center; gap: 0.5rem; }
+    .pie-chart-cell {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .pie-chart-cell .chart-box--pie {
+      width: 100%;
+      max-width: 560px;
+      height: 340px;
+      margin: 0 auto;
+    }
+    .chart-box--mercado-year {
+      height: 280px;
+      max-height: 40vh;
+    }
+    .chart-box--mercado-stack {
+      height: 300px;
+      max-height: 42vh;
+    }
+    .table-wrap { overflow-x: auto; }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal-box {
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 85vh;
+      overflow: auto;
+      padding: 1.25rem 1.5rem;
+      position: relative;
+    }
+    .modal-box h3 { margin: 0 0 0.75rem; font-size: 1.1rem; }
+    .modal-box .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .modal-box .modal-close:hover { color: var(--text); }
+    .modal-box dl { margin: 0; font-size: 0.88rem; }
+    .modal-box dt { color: var(--muted); margin-top: 0.65rem; }
+    .modal-box dt:first-child { margin-top: 0; }
+    .modal-box dd { margin: 0.15rem 0 0; }
+    .modal-box a { color: var(--accent); }
+    .chip { display: inline-block; font-size: 0.72rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: rgba(99, 102, 241, 0.12); color: #5b21b6; margin-right: 0.25rem; }
+    .chart-legend-row { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+    .swatch {
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      border: 1px solid rgba(15, 23, 42, 0.15);
+      margin-right: 0.25rem;
+      vertical-align: middle;
+    }
+    .quote-box {
+      margin-top: 0.35rem;
+      padding: 0.45rem 0.55rem;
+      background: rgba(99, 102, 241, 0.08);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #334155;
+    }
+    .card360-head {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 0.9rem;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+    .home-shot {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 14px rgba(79, 70, 229, 0.1);
+      background: #fff;
+    }
+    .ficha-hero {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 0.9rem;
+      align-items: start;
+    }
+    #card360-wrap { font-size: 0.84rem; }
+    #card360-wrap .citation { font-size: 0.74rem; }
+    #card360-wrap .kpi .v { font-size: 1rem; }
+    #card360-wrap .kpi .l { font-size: 0.68rem; }
+    #card360-wrap p { margin-top: 0.2rem; margin-bottom: 0.28rem; }
+    @media (max-width: 1100px) {
+      .ficha-hero { grid-template-columns: 1fr; }
+      .home-shot { height: 380px; }
+    }
+    .mini-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+    }
+    .slider-controls {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .nav-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: #4338ca;
+      border-radius: 999px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .nav-btn:hover { background: rgba(79, 70, 229, 0.08); }
+    .shot-wrap { position: relative; }
+    .shot-nav {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 999px;
+      padding: 0.2rem;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      border: 1px solid var(--border);
+    }
+    .section-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.45rem;
+    }
+    .section-tab {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      color: #4338ca;
+      padding: 0.18rem 0.55rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .section-tab.active {
+      background: rgba(79, 70, 229, 0.14);
+      border-color: rgba(79, 70, 229, 0.45);
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .mini-grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 700px) {
+      .chart-legend-row.split { grid-template-columns: 1fr 1fr; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="login-gate" class="login-gate" role="dialog" aria-labelledby="login-title">
+    <form class="login-card" id="login-form" autocomplete="on">
+      <h2 id="login-title">Acceso al dashboard</h2>
+      <p class="sub">Introduce usuario y contraseña para continuar.</p>
+      <p class="login-error" id="login-error" aria-live="polite"></p>
+      <label for="login-user">Usuario</label>
+      <input id="login-user" name="username" type="text" autocomplete="username" required />
+      <label for="login-pass">Contraseña</label>
+      <input id="login-pass" name="password" type="password" autocomplete="current-password" required />
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+  <header>
+    <div class="header-inner">
+      <div>
+        <h1>Benchmark Vitralogic — Tráfico web &amp; competencia</h1>
+        <p>SimilarWeb (feb 2024 – feb 2026) · Vidrio / cancelería · Ventanas</p>
+      </div>
+      <button type="button" class="logout-btn" id="logout-btn" title="Cerrar sesión en este navegador">Salir</button>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="tabs" id="tabs"></div>
+
+    <section id="tab-resumen" class="tab-content hidden">
+      <div class="panel">
+        <h2>Resumen del estudio</h2>
+        <p id="resumen-meta"></p>
+        <div id="resumen-context-wrap"></div>
+        <p style="color:var(--muted);font-size:0.9rem;">Este tablero consolida exportaciones <strong>Total Traffic Sources Overview</strong> (canales de marketing). Los valores son <strong>estimaciones</strong> de SimilarWeb, no métricas de tu propio analytics.</p>
+        <ul class="notes" id="resumen-notes"></ul>
+      </div>
+      <div class="panel">
+        <h2>Sitios incluidos</h2>
+        <p style="color:var(--muted);font-size:0.85rem;margin:0 0 0.75rem;">Clic en <strong>ℹ</strong> para ver ficha cualitativa (posicionamiento, Castel, perfiles).</p>
+        <div class="table-wrap">
+        <table class="data" id="tabla-sitios">
+          <thead><tr><th></th><th>Marca</th><th></th><th>Dominio</th><th>Grupo</th><th>Rol</th><th>Enfoque</th><th>Castel (ref.)</th><th>Datos SW</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-ejecutivo" class="tab-content">
+      <div class="panel">
+        <h2>Benchmark competitivo Vitralogic</h2>
+        <p style="color:var(--muted);margin-top:0;">Análisis de tráfico y contenido en websites.</p>
+      </div>
+
+      <div class="panel">
+        <h2>1. La realidad del mercado digital</h2>
+        <p>El análisis del ecosistema competitivo revela un patrón claro: el mercado de ventanas y cerramientos en México no está compitiendo realmente a nivel de marca, sino a nivel funcional.</p>
+        <p>Se observan tres dinámicas dominantes:</p>
+        <ul class="notes">
+          <li>Jugadores de volumen que capturan tráfico pero no construyen experiencia.</li>
+          <li>Jugadores medios con presencia digital básica y poco diferenciada.</li>
+          <li>Especialistas con mejor engagement pero sin escala ni posicionamiento aspiracional.</li>
+        </ul>
+        <p>Esto configura un mercado donde nadie está construyendo una narrativa de valor integral (producto + experiencia + marca).</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Tipo de jugador</th>
+                <th>Competidores representativos</th>
+                <th>Nivel de tráfico</th>
+                <th>Engagement (tiempo / páginas)</th>
+                <th>Estrategia digital dominante</th>
+                <th>Tipo de contenido</th>
+                <th>Rol en el mercado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Generadores de volumen</td><td>Cristel, Alvagsa, Ideal Ventanas</td><td>Alto</td><td>Bajo</td><td>SEO táctico (captura de demanda)</td><td>Catálogo / fichas técnicas</td><td>Capturan tráfico pero no construyen marca</td></tr>
+              <tr><td>Jugadores medios</td><td>Sisvent, Ventanas Hermex, ABATIK</td><td>Medio</td><td>Medio-bajo</td><td>Presencia digital básica</td><td>Beneficios genéricos</td><td>Mercado comoditizado</td></tr>
+              <tr><td>Especialistas</td><td>Vetrogalo, Canceles Finos, Aviglass</td><td>Bajo-medio</td><td>Medio-alto</td><td>Experiencia más cuidada</td><td>Portafolio / inspiración</td><td>Generan interés pero no escalan</td></tr>
+              <tr><td>Jugadores técnicos</td><td>Veka</td><td>Bajo</td><td>Alto</td><td>Contenido técnico especializado</td><td>Especificaciones / sistemas</td><td>Alta credibilidad pero baja masividad</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>2. Lectura estructural del benchmark</h2>
+        <h3 style="margin:0.6rem 0;">2.1. Volumen sin profundidad</h3>
+        <p>Los principales generadores de tráfico presentan alto volumen orgánico, bajo tiempo de permanencia, baja exploración del sitio y alta tasa de rebote.</p>
+        <p>Esto indica estrategias centradas en SEO táctico, contenidos funcionales y ausencia de storytelling o arquitectura de conversión.</p>
+        <p class="insight">Insight clave: el tráfico existe, pero no se está capitalizando en construcción de marca ni decisión.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Tipo de contenido</th>
+                <th>Presencia en competidores (ejemplos)</th>
+                <th>Impacto en engagement</th>
+                <th>Evaluación estratégica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Catálogo de productos</td><td>Cristel, Ideal Ventanas, Ventanas Hermex, Sisvent, ABATIK, Aviglass</td><td>Bajo</td><td>Necesario pero insuficiente</td></tr>
+              <tr><td>Fichas técnicas</td><td>Alvagsa, Veka, Cristel</td><td>Bajo</td><td>Útil solo para usuarios avanzados</td></tr>
+              <tr><td>Beneficios genéricos</td><td>Ideal Ventanas, Termoacústicas PVC, ABATIK, Sisvent, Aviglass</td><td>Bajo</td><td>No diferencia ni retiene</td></tr>
+              <tr><td>Casos / inspiración</td><td>Vetrogalo, Canceles Finos, Aviglass</td><td>Medio-alto</td><td>Genera mayor interés</td></tr>
+              <tr><td>Contenido educativo</td><td>Veka (referente), esfuerzos aislados en especialistas</td><td>Alto (cuando existe)</td><td>Gran oportunidad</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="citation">Nota: los competidores con mayor volumen concentran su contenido en catálogos y beneficios genéricos, lo que explica sus bajos niveles de engagement.</p>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin:0.2rem 0;">2.2. El “middle market” digitalmente genérico</h3>
+        <p>La mayoría de competidores se ubican aquí: sitios mobile-first poco optimizados en experiencia, contenido repetitivo y baja diferenciación.</p>
+        <p class="insight">Insight clave: el mercado está comoditizado a nivel comunicación.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Competidor</th><th>Visitas mensuales aprox</th><th>Tiempo en sitio</th><th>Páginas por sesión</th><th>Rebote</th><th>Dispositivo dominante</th><th>Tipo de contenido</th><th>Diagnóstico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Ideal Ventanas</td><td>~2,100</td><td>01:09</td><td>2.03</td><td>51.9%</td><td>Mobile</td><td>Beneficios genéricos + catálogo</td><td>Mejor desempeño relativo pero sin diferenciación</td></tr>
+              <tr><td>Ventanas Hermex</td><td>~1,600</td><td>00:56</td><td>2.25</td><td>51.1%</td><td>Mobile</td><td>Catálogo + beneficios básicos</td><td>Navegación aceptable, bajo valor percibido</td></tr>
+              <tr><td>Termoacústicas PVC</td><td>~1,800</td><td>00:38</td><td>1.66</td><td>75.8%</td><td>Mobile</td><td>Beneficios genéricos</td><td>Alto rebote, bajo interés</td></tr>
+              <tr><td>ABATIK</td><td>~900</td><td>00:35</td><td>1.73</td><td>68.4%</td><td>Mobile</td><td>Catálogo + beneficios básicos</td><td>Experiencia débil</td></tr>
+              <tr><td>Sisvent</td><td>~2,200</td><td>00:23</td><td>1.44</td><td>68.5%</td><td>Mobile</td><td>Catálogo + contenido comercial</td><td>Tráfico rápido, poca profundidad</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin:0.2rem 0;">2.3. Especialistas con mejor engagement</h3>
+        <p>Jugadores como Vetrogalo, Canceles Finos o Aviglass muestran mayor profundidad, mejor tiempo en sitio y menor rebote, pero no escalan tráfico ni posicionamiento aspiracional.</p>
+        <p class="insight">Insight clave: sí existe interés cuando el contenido es relevante, pero nadie lo escala.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Competidor</th><th>Visitas mensuales aprox</th><th>Tiempo en sitio</th><th>Páginas por sesión</th><th>Rebote</th><th>Dispositivo dominante</th><th>Tipo de contenido</th><th>Diagnóstico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Canceles Finos</td><td>~870</td><td>01:34</td><td>2.63</td><td>43.4%</td><td>Desktop</td><td>Portafolio + inspiración</td><td>Buen balance entre contenido y navegación</td></tr>
+              <tr><td>Vetrogalo</td><td>~485</td><td>01:19</td><td>2.83</td><td>38.8%</td><td>Desktop</td><td>Portafolio + visual</td><td>Mejor engagement del mercado</td></tr>
+              <tr><td>Aviglass</td><td>~568</td><td>01:23</td><td>2.60</td><td>47.1%</td><td>Desktop</td><td>Catálogo + inspiración</td><td>Tráfico cualificado, buena retención</td></tr>
+              <tr><td>Alvagsa</td><td>~246</td><td>00:58</td><td>2.04</td><td>45.5%</td><td>Desktop</td><td>Técnico + catálogo</td><td>Alta recurrencia, menor profundidad</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin:0.2rem 0;">2.4. El caso técnico (Veka)</h3>
+        <p>Veka representa un jugador de alta credibilidad técnica: engagement alto, tráfico reducido pero cualificado y enfoque especializado.</p>
+        <p class="insight">Insight clave: el contenido técnico genera valor, pero no conecta con el usuario final premium.</p>
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Competidor</th><th>Visitas mensuales aprox</th><th>Tiempo en sitio</th><th>Páginas por sesión</th><th>Rebote</th><th>Dispositivo dominante</th><th>Canales</th><th>Tipo de contenido</th><th>Diagnóstico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Veka LATAM</td><td>~763</td><td>02:44</td><td>3.10</td><td>37.5%</td><td>Desktop</td><td>Directo + orgánico</td><td>Técnico / especializado</td><td>Tráfico altamente cualificado</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>3. Análisis del contenido: el verdadero problema</h2>
+        <p>Más allá de métricas, el benchmark evidencia un problema estructural.</p>
+        <div class="grid2">
+          <div>
+            <p><strong>Lo que domina hoy</strong></p>
+            <ul class="notes">
+              <li>Catálogos de productos.</li>
+              <li>Beneficios funcionales genéricos.</li>
+              <li>Lenguaje técnico o comercial básico.</li>
+              <li>Poca jerarquía de información.</li>
+              <li>Nula construcción emocional.</li>
+            </ul>
+          </div>
+          <div>
+            <p><strong>Lo que falta en el mercado</strong></p>
+            <ul class="notes">
+              <li>Narrativa de estilo de vida.</li>
+              <li>Beneficios aspiracionales (confort, silencio, bienestar).</li>
+              <li>Explicación clara del valor integral del sistema.</li>
+              <li>Contenido que ayude a decidir (no solo a ver productos).</li>
+              <li>Arquitectura de conversión (funnels claros).</li>
+            </ul>
+          </div>
+        </div>
+        <p class="insight">En otras palabras: el mercado habla de ventanas. Nadie habla de lo que cambia vivir con ellas.</p>
+      </div>
+
+      <div class="panel">
+        <h2>4. Implicaciones estratégicas para Vitralogic</h2>
+        <h3 style="margin:0.4rem 0;">4.1. Oportunidad clara de posicionamiento</h3>
+        <p>Existe un espacio evidente para un jugador que combine escala + calidad de experiencia, integre discurso técnico + beneficio emocional y eleve la categoría hacia un territorio premium.</p>
+        <p class="insight">Vitralogic no debe competir como proveedor; debe posicionarse como solución integral de arquitectura y confort.</p>
+
+        <h3 style="margin:0.8rem 0 0.4rem;">4.2. Cambio de narrativa</h3>
+        <p>Pasar de “ventanas de PVC / aluminio” a “sistemas que transforman la experiencia del espacio”.</p>
+        <ul class="notes">
+          <li>Confort térmico → bienestar diario</li>
+          <li>Aislamiento acústico → tranquilidad</li>
+          <li>Diseño → estatus / estética arquitectónica</li>
+          <li>Eficiencia → inversión inteligente</li>
+        </ul>
+
+        <h3 style="margin:0.8rem 0 0.4rem;">4.3. Estructura de contenido recomendada</h3>
+        <ol style="margin:0.3rem 0 0 1.1rem;color:var(--text);font-size:0.88rem;">
+          <li><strong>Capa aspiracional:</strong> inspiración, lifestyle, beneficios emocionales.</li>
+          <li><strong>Capa funcional:</strong> productos, comparativas, casos.</li>
+          <li><strong>Capa técnica:</strong> especificaciones, sistemas, certificaciones.</li>
+        </ol>
+        <p class="insight">Hoy ningún competidor integra las tres capas de forma consistente.</p>
+      </div>
+
+      <div class="panel">
+        <h2>5. Conclusión estratégica</h2>
+        <p>El benchmark no solo muestra competidores, muestra una oportunidad: el mercado de ventanas en México está atrapado en una comunicación funcional, fragmentada y poco diferenciada.</p>
+        <p>Eso abre un espacio claro: Vitralogic puede convertirse en el primer jugador que construya una marca aspiracional dentro de la categoría, conectando desempeño técnico con valor emocional.</p>
+        <p class="insight">Hoy el mercado vende ventanas. La oportunidad está en vender cómo se vive mejor a través de ellas.</p>
+      </div>
+    </section>
+
+    <section id="tab-mercado" class="tab-content hidden">
+      <div class="panel">
+        <h2>Periodo y alcance</h2>
+        <p style="color:var(--muted);font-size:0.85rem;margin:0 0 0.5rem;">Los filtros de segmento, Castel y perfil se aplican a <strong>Mercado general</strong> y <strong>Mapa estratégico</strong>.</p>
+        <div class="controls">
+          <label>Desde (mes)
+            <select id="m-from"></select>
+          </label>
+          <label>Hasta (mes)
+            <select id="m-to"></select>
+          </label>
+          <label>Segmento
+            <select id="grp-filter">
+              <option value="all">Todos los competidores</option>
+            </select>
+          </label>
+          <label>Contexto Castel
+            <select id="filter-castel">
+              <option value="all">Todos</option>
+              <option value="castel_only">Solo Isla / zona Castel</option>
+            </select>
+          </label>
+          <label>Rol
+            <select id="filter-role">
+              <option value="all">Todos</option>
+              <option value="fabricante">Fabricante</option>
+              <option value="distribuidor">Distribuidor</option>
+            </select>
+          </label>
+          <label>Marca de perfil
+            <select id="filter-brand">
+              <option value="all">Todas</option>
+              <option value="Kömmerling">Kömmerling</option>
+              <option value="Aluplast">Aluplast</option>
+              <option value="Deceuninck">Deceuninck</option>
+              <option value="Veka">Veka</option>
+            </select>
+          </label>
+        </div>
+        <div class="kpi-row" id="kpi-row"></div>
+        <div class="table-wrap">
+        <table class="data" id="tabla-mercado">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Competidor</th>
+              <th></th>
+              <th>Grupo</th>
+              <th>Rol</th>
+              <th>Enfoque</th>
+              <th class="num sortable" data-sort="avg" title="Clic para ordenar">Promedio mensual<span class="sort-ind" aria-hidden="true"></span></th>
+              <th class="num sortable" data-sort="total" title="Clic para ordenar">Total periodo<span class="sort-ind" aria-hidden="true"></span></th>
+              <th class="num sortable" data-sort="share" title="Clic para ordenar">Share<span class="sort-ind" aria-hidden="true"></span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        </div>
+        <p class="insight" id="insight-tabla"></p>
+      </div>
+        <div class="grid2">
+        <div class="panel">
+          <h2>Participación de tráfico entre competidores</h2>
+          <div class="pie-chart-cell">
+            <div class="chart-box chart-box--pie"><canvas id="chart-pie"></canvas></div>
+          </div>
+          <p class="insight" id="insight-pie"></p>
+        </div>
+        <div class="panel">
+          <h2>Mix de fuentes (mercado agregado, periodo seleccionado)</h2>
+          <div class="chart-box"><canvas id="chart-sources"></canvas></div>
+          <p class="insight" id="insight-sources"></p>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Calendario mensual (Ene–Dic): tráfico agregado por año</h2>
+        <div class="chart-box chart-box--mercado-year"><canvas id="chart-mercado-year"></canvas></div>
+        <p class="insight" id="insight-mercado-year"></p>
+      </div>
+      <div class="panel">
+        <h2>Mix de fuentes por mes calendario (Ene–Dic, visitas apiladas)</h2>
+        <div class="chart-box chart-box--mercado-stack"><canvas id="chart-mercado-stack"></canvas></div>
+        <p class="insight" id="insight-mercado-stack"></p>
+      </div>
+    </section>
+
+    <section id="tab-mapa" class="tab-content hidden">
+      <div class="panel">
+        <h2>Mapa estratégico (periodo seleccionado en «Mercado»)</h2>
+        <p style="color:var(--muted);font-size:0.88rem;">Eje X: participación del tráfico total dentro del subconjunto. Eje Y: % del tráfico del sitio que es búsqueda orgánica (ponderado en el periodo).</p>
+        <div class="chart-box tall"><canvas id="chart-scatter"></canvas></div>
+        <p class="insight" id="insight-scatter"></p>
+      </div>
+    </section>
+
+    <section id="tab-comunicacion" class="tab-content hidden">
+      <div class="panel">
+        <h2>Comunicacion y diseno por competidor</h2>
+        <p style="color:var(--muted);font-size:0.85rem;margin:0 0 0.75rem;">
+          Sintesis automatica desde scraping textual + screenshots de paginas del sitio.
+        </p>
+        <div class="table-wrap">
+          <table class="data" id="tabla-comunicacion">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Marca</th>
+                <th>Temas principales</th>
+                <th>Productos / servicios</th>
+                <th>Audiencias</th>
+                <th>Diferenciador comunicado</th>
+                <th>Senales empresa (V2)</th>
+                <th>Evidencia</th>
+                <th>Visual (colores/fuentes)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Resumen ejecutivo del segmento</h2>
+        <div id="segment-exec"></div>
+      </div>
+    </section>
+
+    <section id="tab-ficha360" class="tab-content hidden">
+      <div class="panel">
+        <h2>Ficha 360 por empresa (trafico + comunicacion)</h2>
+        <div class="controls">
+          <label>Empresa
+            <select id="card-domain"></select>
+          </label>
+          <div class="slider-controls" style="padding-bottom:0.25rem;">
+            <button id="card-prev" type="button" class="nav-btn" title="Anterior">◀</button>
+            <button id="card-next" type="button" class="nav-btn" title="Siguiente">▶</button>
+          </div>
+        </div>
+        <div id="card360-wrap"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="profile-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button type="button" class="modal-close" id="modal-close" aria-label="Cerrar">&times;</button>
+      <h3 id="modal-title">Ficha</h3>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+/*__EMBED_DATA__*/
+  </script>
+  <script>
+(function () {
+  const DATA = window.__BENCHMARK_DATA__;
+  if (!DATA || !DATA.meta) {
+    document.body.innerHTML = "<p style='padding:2rem;color:#fff'>No se cargaron datos.</p>";
+    return;
+  }
+
+  var AUTH_SESSION_KEY = "vl_benchmark_auth_v1";
+  var EXPECT_USER = "gato";
+  var EXPECT_PASS = "123";
+  var loginGate = document.getElementById("login-gate");
+  var loginForm = document.getElementById("login-form");
+  var loginUser = document.getElementById("login-user");
+  var loginPass = document.getElementById("login-pass");
+  var loginErr = document.getElementById("login-error");
+
+  function applyAuthState() {
+    if (sessionStorage.getItem(AUTH_SESSION_KEY) === "1") {
+      if (loginGate) loginGate.classList.add("hidden");
+    } else if (loginGate) {
+      loginGate.classList.remove("hidden");
+    }
+  }
+
+  function loginOk() {
+    sessionStorage.setItem(AUTH_SESSION_KEY, "1");
+    if (loginGate) loginGate.classList.add("hidden");
+    if (loginErr) loginErr.textContent = "";
+  }
+
+  function loginFail() {
+    if (loginErr) loginErr.textContent = "Usuario o contraseña incorrectos.";
+  }
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var u = (loginUser && loginUser.value) || "";
+      var p = (loginPass && loginPass.value) || "";
+      if (u === EXPECT_USER && p === EXPECT_PASS) {
+        loginOk();
+      } else {
+        loginFail();
+      }
+    });
+  }
+
+  var logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      sessionStorage.removeItem(AUTH_SESSION_KEY);
+      if (loginGate) loginGate.classList.remove("hidden");
+      if (loginPass) loginPass.value = "";
+      if (loginUser) loginUser.focus();
+    });
+  }
+
+  applyAuthState();
+
+  const meta = DATA.meta;
+  const sites = DATA.sites;
+  var pieSliceSpokesRegistered = false;
+  if (typeof Chart !== "undefined") {
+    Chart.defaults.color = "#64748b";
+    Chart.defaults.borderColor = "rgba(99, 102, 241, 0.12)";
+    if (!pieSliceSpokesRegistered) {
+      pieSliceSpokesRegistered = true;
+      Chart.register({
+        id: "pieSliceSpokes",
+        afterDatasetsDraw: function (chart) {
+          if (chart.config.type !== "doughnut") return;
+          var ds = chart.data.datasets[0];
+          if (!ds) return;
+          var dm = chart.getDatasetMeta(0);
+          if (!dm || !dm.data || !dm.data.length) return;
+          var colors = ds.backgroundColor;
+          var labels = chart.data.labels || [];
+          var ctx = chart.ctx;
+          var lineExt = 18;
+          var textPad = 5;
+          dm.data.forEach(function (arc, i) {
+            if (!arc) return;
+            var mid = (arc.startAngle + arc.endAngle) / 2;
+            var cx = arc.x;
+            var cy = arc.y;
+            var r = arc.outerRadius;
+            var x0 = cx + Math.cos(mid) * r;
+            var y0 = cy + Math.sin(mid) * r;
+            var x1 = cx + Math.cos(mid) * (r + lineExt);
+            var y1 = cy + Math.sin(mid) * (r + lineExt);
+            var col = Array.isArray(colors) ? colors[i % colors.length] : colors;
+            ctx.save();
+            ctx.strokeStyle = col;
+            ctx.globalAlpha = 0.92;
+            ctx.lineWidth = 2;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.stroke();
+            var lab = String(labels[i] != null ? labels[i] : "");
+            if (lab.length > 28) lab = lab.slice(0, 27) + "…";
+            ctx.font = '600 11.5px "Segoe UI",system-ui,sans-serif';
+            ctx.textBaseline = "middle";
+            var cos = Math.cos(mid);
+            var sin = Math.sin(mid);
+            if (cos > 0.12) ctx.textAlign = "left";
+            else if (cos < -0.12) ctx.textAlign = "right";
+            else ctx.textAlign = "center";
+            var tx = x1 + cos * textPad;
+            var ty = y1 + sin * textPad;
+            ctx.fillStyle = "#334155";
+            ctx.globalAlpha = 1;
+            ctx.fillText(lab, tx, ty);
+            ctx.restore();
+          });
+        }
+      });
+    }
+  }
+  const groupLabels = {};
+  for (const [k, v] of Object.entries(meta.groups || {})) {
+    groupLabels[k] = v.label;
+  }
+
+  const PALETTE = [
+    "#3b82f6", "#22c55e", "#eab308", "#ef4444", "#a855f7", "#06b6d4",
+    "#f97316", "#ec4899", "#84cc16", "#6366f1", "#14b8a6", "#64748b"
+  ];
+
+  function monthListRange(from, to) {
+    const all = meta.monthList || [];
+    const fi = all.indexOf(from);
+    const ti = all.indexOf(to);
+    if (fi < 0 || ti < 0 || fi > ti) return [];
+    return all.slice(fi, ti + 1);
+  }
+
+  function siteMonthTotal(site, month) {
+    const m = site.monthly[month];
+    return m ? m.total : 0;
+  }
+
+  function sitePeriodTotals(site, months) {
+    let t = 0;
+    for (const mo of months) t += siteMonthTotal(site, mo);
+    return t;
+  }
+
+  function siteOrganicShare(site, months) {
+    let traf = 0, org = 0;
+    for (const mo of months) {
+      const entry = site.monthly[mo];
+      if (!entry) continue;
+      traf += entry.total;
+      org += (entry.channels["Organic Search"] || 0);
+    }
+    if (traf <= 0) return 0;
+    return org / traf;
+  }
+
+  function aggregateMarketChannels(months, siteFilter) {
+    const chans = {};
+    for (const s of sites) {
+      if (!siteFilter(s)) continue;
+      if (!s.hasData) continue;
+      for (const mo of months) {
+        const e = s.monthly[mo];
+        if (!e) continue;
+        for (const [c, v] of Object.entries(e.channels)) {
+          chans[c] = (chans[c] || 0) + v;
+        }
+      }
+    }
+    return chans;
+  }
+
+  function aggregateMonthChannelsTotal(monthKey, siteFilter) {
+    var byCh = {};
+    var grand = 0;
+    for (const s of sites) {
+      if (!siteFilter(s) || !s.hasData) continue;
+      var e = s.monthly[monthKey];
+      if (!e || !e.channels) continue;
+      for (const k of Object.keys(e.channels)) {
+        var v = e.channels[k] || 0;
+        byCh[k] = (byCh[k] || 0) + v;
+        grand += v;
+      }
+    }
+    return { byCh: byCh, grand: grand };
+  }
+
+  function channelSumCalendarMonth(range, month1to12, ch, siteFilter) {
+    var t = 0;
+    for (var ri = 0; ri < range.length; ri++) {
+      var mo = range[ri];
+      var mm = parseInt(String(mo).slice(5, 7), 10);
+      if (mm !== month1to12) continue;
+      var agg = aggregateMonthChannelsTotal(mo, siteFilter);
+      t += agg.byCh[ch] || 0;
+    }
+    return t;
+  }
+
+  function mercadoPeakMonthsFromSeries(vals, monthLabels) {
+    var max = 0;
+    for (var i = 0; i < vals.length; i++) {
+      if (vals[i] > max) max = vals[i];
+    }
+    if (max <= 0) return { max: 0, labels: [] };
+    var labels = [];
+    for (var j = 0; j < vals.length; j++) {
+      if (vals[j] === max) labels.push(monthLabels[j]);
+    }
+    return { max: max, labels: labels };
+  }
+
+  function channelLabelEs(name) {
+    var map = {
+      "Organic Search": "Búsqueda orgánica",
+      Direct: "Tráfico directo",
+      "Paid Search": "Búsqueda de pago",
+      Referrals: "Referidos",
+      "Display Ads": "Display",
+      Email: "Email",
+      Social: "Social"
+    };
+    return map[name] || name;
+  }
+
+  function yearsInMonthRange(range) {
+    const ys = new Set();
+    range.forEach(function (m) {
+      if (!m || String(m).length < 7) return;
+      const y = parseInt(String(m).slice(0, 4), 10);
+      if (!Number.isNaN(y)) ys.add(y);
+    });
+    return Array.from(ys).sort(function (a, b) {
+      return a - b;
+    });
+  }
+
+  function aggregateMarketYearMonth(year, month1to12, siteFilter) {
+    const mm = String(month1to12).padStart(2, "0");
+    const key = year + "-" + mm;
+    let t = 0;
+    for (const s of sites) {
+      if (!siteFilter(s) || !s.hasData) continue;
+      const e = s.monthly[key];
+      if (e) t += e.total;
+    }
+    return t;
+  }
+
+  function hexToRgba(hex, alpha) {
+    var h = String(hex).replace("#", "");
+    if (h.length !== 6) return "rgba(99, 102, 241, " + alpha + ")";
+    var r = parseInt(h.slice(0, 2), 16);
+    var g = parseInt(h.slice(2, 4), 16);
+    var b = parseInt(h.slice(4, 6), 16);
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+  }
+
+  function filterSitesSubset(val) {
+    if (val === "all") return () => true;
+    const doms = new Set(meta.groups[val].domains);
+    return (s) => doms.has(s.domain);
+  }
+
+  function getCombinedPred() {
+    const gval = gf.value;
+    const base = filterSitesSubset(gval);
+    const fc = document.getElementById("filter-castel");
+    const fr = document.getElementById("filter-role");
+    const fb = document.getElementById("filter-brand");
+    return function (s) {
+      if (!base(s)) return false;
+      const p = s.profile || {};
+      if (fc && fc.value === "castel_only") {
+        if (!p.castel || !p.castel.inLens) return false;
+      }
+      if (fr && fr.value !== "all") {
+        if ((p.role || "") !== fr.value) return false;
+      }
+      if (fb && fb.value !== "all") {
+        const brands = p.profileBrands || [];
+        if (!brands.includes(fb.value)) return false;
+      }
+      return true;
+    };
+  }
+
+  let chartPie, chartSrc, chartMercadoYear, chartMercadoStack, chartScatter, chartCardMix, chartCardYearArea;
+  let cardIdx = 0;
+  let shotIdx = 0;
+  let shotSection = "all";
+
+  function fmt(n) {
+    if (n === null || n === undefined || Number.isNaN(n)) return "—";
+    if (n >= 1e6) return (n / 1e6).toFixed(2) + " M";
+    if (n >= 1e3) return (n / 1e3).toFixed(1) + " k";
+    return n.toFixed(0);
+  }
+
+  function fmtPct(x) {
+    if (x === null || Number.isNaN(x)) return "—";
+    return (x * 100).toFixed(1) + "%";
+  }
+
+  function fmtDistKm(km) {
+    if (km === null || km === undefined || Number.isNaN(km)) return "—";
+    var s = km < 10 ? km.toFixed(1).replace(".", ",") : String(Math.round(km));
+    return s + " km";
+  }
+
+  function profileCell(site) {
+    var p = site.profile || {};
+    return {
+      role: p.roleLabel || "—",
+      materials: p.materialsLabel || "—",
+      castel: p.castel && p.castel.inLens ? fmtDistKm(p.castel.distanceKm) : "—"
+    };
+  }
+
+  function openProfileModal(site) {
+    var p = site.profile || {};
+    var title = document.getElementById("modal-title");
+    var body = document.getElementById("modal-body");
+    title.textContent = site.label;
+    var h = "";
+    if (site.logo) {
+      h +=
+        "<p style='text-align:center;margin-bottom:0.75rem'><img class='brand-logo' style='width:56px;height:56px' src='" +
+        escapeAttr(site.logo) +
+        "' alt=''/></p>";
+    }
+    if (p.positioning) h += "<p>" + escapeHtml(p.positioning) + "</p>";
+    h += "<dl>";
+    if (p.founded) h += "<dt>Antigüedad</dt><dd>" + escapeHtml(p.founded) + "</dd>";
+    if (p.hqNote) h += "<dt>Cobertura / ubicación</dt><dd>" + escapeHtml(p.hqNote) + "</dd>";
+    if (p.roleLabel) h += "<dt>Rol</dt><dd>" + escapeHtml(p.roleLabel) + "</dd>";
+    if (p.materialsLabel) h += "<dt>Enfoque</dt><dd>" + escapeHtml(p.materialsLabel) + "</dd>";
+    if (p.profileBrands && p.profileBrands.length) {
+      h += "<dt>Marcas de perfil</dt><dd>" + p.profileBrands.map(function (b) {
+        return "<span class='chip'>" + escapeHtml(b) + "</span>";
+      }).join(" ") + "</dd>";
+    }
+    if (p.website) h += "<dt>Web</dt><dd><a href='" + escapeAttr(p.website) + "' target='_blank' rel='noopener'>" + escapeHtml(p.website) + "</a></dd>";
+    if (p.castel && p.castel.note) {
+      h += "<dt>Contexto Isla / Castel</dt><dd>" + escapeHtml(p.castel.note) + "</dd>";
+    }
+    if (p.qualitativeNote) {
+      h += "<dt>Nota interna</dt><dd>" + escapeHtml(p.qualitativeNote) + "</dd>";
+    }
+    var ca = site.contentAudit || {};
+    if (ca.pagesFetched != null && ca.pagesFetched !== undefined) {
+      var cap =
+        meta.contentAuditMeta && meta.contentAuditMeta.maxPagesPerDomain
+          ? meta.contentAuditMeta.maxPagesPerDomain
+          : 50;
+      h +=
+        "<dt>Páginas analizadas (scraping)</dt><dd>" +
+        escapeHtml(String(ca.pagesFetched)) +
+        " URLs (límite " +
+        escapeHtml(String(cap)) +
+        " / dominio)</dd>";
+    }
+    if (ca.logoSourceUrl) {
+      h +=
+        "<dt>Logo (origen)</dt><dd><a href='" +
+        escapeAttr(ca.logoSourceUrl) +
+        "' target='_blank' rel='noopener'>Enlace</a></dd>";
+    }
+    h += "</dl>";
+    body.innerHTML = h || "<p>Sin ficha cualitativa cargada.</p>";
+    document.getElementById("profile-modal").classList.remove("hidden");
+  }
+
+  function escapeHtml(t) {
+    if (!t) return "";
+    var d = document.createElement("div");
+    d.textContent = t;
+    return d.innerHTML;
+  }
+
+  function escapeAttr(t) {
+    return String(t).replace(/"/g, "&quot;");
+  }
+
+  function brandImgHtml(site, sm, xs) {
+    var sizeClass = "";
+    var phSize = "";
+    if (xs) {
+      sizeClass = " brand-logo--xs";
+      phSize = " brand-logo-ph--xs";
+    } else if (sm) {
+      sizeClass = " brand-logo--sm";
+      phSize = " brand-logo-ph--sm";
+    }
+    if (site.logo) {
+      return (
+        "<img class='brand-logo" +
+        sizeClass +
+        "' src='" +
+        escapeAttr(site.logo) +
+        "' alt='' loading='lazy'/>"
+      );
+    }
+    var ch = (site.label || site.domain || "?").charAt(0).toUpperCase();
+    return "<span class='brand-logo-ph" + phSize + "'>" + escapeHtml(ch) + "</span>";
+  }
+
+  // --- Tabs ---
+  const tabDefs = [
+    { id: "ejecutivo", label: "Resumen ejecutivo" },
+    { id: "mercado", label: "Mercado general" },
+    { id: "comunicacion", label: "Comunicacion y diseno" },
+    { id: "ficha360", label: "Ficha 360 empresas" }
+  ];
+  const tabsEl = document.getElementById("tabs");
+  tabDefs.forEach((t, i) => {
+    const b = document.createElement("button");
+    b.textContent = t.label;
+    b.dataset.tab = t.id;
+    if (i === 0) b.classList.add("active");
+    b.addEventListener("click", () => {
+      tabsEl.querySelectorAll("button").forEach((x) => x.classList.remove("active"));
+      b.classList.add("active");
+      document.querySelectorAll(".tab-content").forEach((sec) => sec.classList.add("hidden"));
+      document.getElementById("tab-" + t.id).classList.remove("hidden");
+      if (t.id === "mercado") renderMercado();
+      if (t.id === "mapa") renderMap();
+      if (t.id === "comunicacion") renderCommunication();
+      if (t.id === "ficha360") renderCard360();
+    });
+    tabsEl.appendChild(b);
+  });
+
+  // --- Resumen ---
+  document.getElementById("resumen-meta").textContent =
+    "Rango disponible: " + (meta.monthMin || "—") + " → " + (meta.monthMax || "—") +
+    " (" + (meta.monthList || []).length + " meses).";
+
+  var ctxW = document.getElementById("resumen-context-wrap");
+  var ctx = meta.context || {};
+  if (ctxW && (ctx.marketContext || ctx.citation)) {
+    var htmlCtx = "";
+    if (ctx.marketContext) {
+      htmlCtx += "<p class='context-quote'>" + escapeHtml(ctx.marketContext) + "</p>";
+    }
+    if (ctx.citation && ctx.citation.label) {
+      htmlCtx += "<p class='citation'><em>Fuente mercado:</em> " + escapeHtml(ctx.citation.label);
+      if (ctx.citation.detail) htmlCtx += " — " + escapeHtml(ctx.citation.detail);
+      htmlCtx += "</p>";
+    }
+    if (ctx.castelLensTitle || ctx.castelLensNote) {
+      htmlCtx += "<div class='castel-box'>";
+      if (ctx.castelLensTitle) htmlCtx += "<strong>" + escapeHtml(ctx.castelLensTitle) + "</strong><br/>";
+      if (ctx.castelLensNote) htmlCtx += escapeHtml(ctx.castelLensNote);
+      htmlCtx += "</div>";
+    }
+    if (ctx.lastUpdated) {
+      htmlCtx += "<p class='meta-updated'>Contexto cualitativo actualizado: " + escapeHtml(ctx.lastUpdated) + "</p>";
+    }
+    ctxW.innerHTML = htmlCtx;
+  }
+
+  const ul = document.getElementById("resumen-notes");
+  (meta.notes || []).forEach((n) => {
+    const li = document.createElement("li");
+    li.textContent = n;
+    ul.appendChild(li);
+  });
+
+  const tbSit = document.querySelector("#tabla-sitios tbody");
+  sites.forEach((s, i) => {
+    const tr = document.createElement("tr");
+    const g = groupLabels[s.group] || s.group;
+    var pc = profileCell(s);
+    var btn = "<button type='button' class='info-btn' data-domain='" + escapeAttr(s.domain) + "' title='Ficha'>i</button>";
+    tr.innerHTML =
+      "<td>" + brandImgHtml(s) + "</td>" +
+      "<td>" + s.label + "</td>" +
+      "<td>" + btn + "</td>" +
+      "<td><span class='badge'>" + s.domain + "</span></td>" +
+      "<td>" + g + "</td>" +
+      "<td>" + pc.role + "</td>" +
+      "<td>" + pc.materials + "</td>" +
+      "<td>" + pc.castel + "</td>" +
+      "<td>" + (s.hasData ? "Sí" : "<span style='color:var(--warn)'>Sin datos</span>") + "</td>";
+    tbSit.appendChild(tr);
+  });
+
+  // --- Group filter options ---
+  const gf = document.getElementById("grp-filter");
+  for (const [k, v] of Object.entries(meta.groups || {})) {
+    const o = document.createElement("option");
+    o.value = k;
+    o.textContent = v.label;
+    gf.appendChild(o);
+  }
+
+  // --- Month selects ---
+  const months = meta.monthList || [];
+  function fillSelect(sel, val) {
+    sel.innerHTML = "";
+    months.forEach((m) => {
+      const o = document.createElement("option");
+      o.value = m;
+      o.textContent = m;
+      sel.appendChild(o);
+    });
+    if (val && months.includes(val)) sel.value = val;
+  }
+  const mFrom = document.getElementById("m-from");
+  const mTo = document.getElementById("m-to");
+  fillSelect(mFrom, months[0]);
+  fillSelect(mTo, months[months.length - 1]);
+
+  var mercadoSortKey = "share";
+  var mercadoSortDir = "desc";
+  var mercadoFocusDomain = null;
+
+  function updateMercadoSortHeaders() {
+    document.querySelectorAll("#tabla-mercado thead th.sortable").forEach(function (th) {
+      var key = th.getAttribute("data-sort");
+      var ind = th.querySelector(".sort-ind");
+      if (!ind) return;
+      if (key === mercadoSortKey) {
+        th.classList.add("active");
+        ind.textContent = mercadoSortDir === "desc" ? " ▼" : " ▲";
+      } else {
+        th.classList.remove("active");
+        ind.textContent = "";
+      }
+    });
+  }
+
+  function renderMercado() {
+    const from = mFrom.value;
+    const to = mTo.value;
+    const range = monthListRange(from, to);
+    const nMonths = range.length || 1;
+    const basePred = getCombinedPred();
+    if (mercadoFocusDomain) {
+      var stillOk = sites.some(function (s) {
+        return basePred(s) && s.domain === mercadoFocusDomain;
+      });
+      if (!stillOk) mercadoFocusDomain = null;
+    }
+    const pred = mercadoFocusDomain
+      ? function (s) {
+          return basePred(s) && s.domain === mercadoFocusDomain;
+        }
+      : basePred;
+
+    const rows = [];
+    let sumAll = 0;
+    sites.forEach((s) => {
+      if (!pred(s)) return;
+      if (!s.hasData) {
+        rows.push({ site: s, total: 0, avg: null, share: null });
+        return;
+      }
+      const total = sitePeriodTotals(s, range);
+      sumAll += total;
+      rows.push({ site: s, total, avg: total / nMonths, share: null });
+    });
+    rows.forEach((r) => {
+      if (r.avg !== null && sumAll > 0) r.share = r.total / sumAll;
+    });
+
+    var sortKey = mercadoSortKey;
+    var dir = mercadoSortDir === "asc" ? 1 : -1;
+    rows.sort(function (a, b) {
+      var an = a.avg === null, bn = b.avg === null;
+      if (an && bn) return a.site.label.localeCompare(b.site.label);
+      if (an) return 1;
+      if (bn) return -1;
+      var av = sortKey === "avg" ? a.avg : (sortKey === "total" ? a.total : (a.share || 0));
+      var bv = sortKey === "avg" ? b.avg : (sortKey === "total" ? b.total : (b.share || 0));
+      if (av < bv) return -1 * dir;
+      if (av > bv) return 1 * dir;
+      return a.site.label.localeCompare(b.site.label);
+    });
+
+    const kpi = document.getElementById("kpi-row");
+    var focusSite = mercadoFocusDomain
+      ? sites.find(function (x) {
+          return x.domain === mercadoFocusDomain;
+        })
+      : null;
+    var focusBanner = focusSite
+      ? "<div class='mercado-focus-banner'>Viendo solo <strong>" +
+        escapeHtml(focusSite.label) +
+        "</strong>. Clic de nuevo en la fila para volver al subconjunto completo.</div>"
+      : "";
+    kpi.innerHTML =
+      focusBanner +
+      "<div class='kpi'><div class='l'>Meses en periodo</div><div class='v'>" + nMonths + "</div></div>" +
+      "<div class='kpi'><div class='l'>Tráfico total (subconjunto)</div><div class='v'>" + fmt(sumAll) + "</div></div>";
+
+    const tb = document.querySelector("#tabla-mercado tbody");
+    tb.innerHTML = "";
+    rows.forEach((r) => {
+      const tr = document.createElement("tr");
+      tr.setAttribute("data-domain", r.site.domain);
+      tr.setAttribute("title", "Clic para filtrar gráficos a esta marca; otro clic en la misma fila para quitar.");
+      if (mercadoFocusDomain && r.site.domain === mercadoFocusDomain) tr.classList.add("row-focused");
+      const g = groupLabels[r.site.group] || r.site.group;
+      var pc = profileCell(r.site);
+      var btn = "<button type='button' class='info-btn' data-domain='" + escapeAttr(r.site.domain) + "' title='Ficha'>i</button>";
+      if (r.avg === null) {
+        tr.innerHTML =
+          "<td>" + brandImgHtml(r.site) + "</td>" +
+          "<td>" + r.site.label + "</td>" +
+          "<td>" + btn + "</td>" +
+          "<td>" + g + "</td>" +
+          "<td>" + pc.role + "</td>" +
+          "<td>" + pc.materials + "</td>" +
+          "<td class='num'>— <span style='color:var(--muted);font-size:0.8rem'>(sin datos)</span></td>" +
+          "<td class='num'>—</td>" +
+          "<td class='num'>—</td>";
+      } else {
+        tr.innerHTML =
+          "<td>" + brandImgHtml(r.site) + "</td>" +
+          "<td>" + r.site.label + "</td>" +
+          "<td>" + btn + "</td>" +
+          "<td>" + g + "</td>" +
+          "<td>" + pc.role + "</td>" +
+          "<td>" + pc.materials + "</td>" +
+          "<td class='num'>" + fmt(r.avg) + "</td>" +
+          "<td class='num'>" + fmt(r.total) + "</td>" +
+          "<td class='num'>" + fmtPct(r.share) + "</td>";
+      }
+      tb.appendChild(tr);
+    });
+
+    // Fila total del subconjunto filtrado
+    var trTot = document.createElement("tr");
+    var validRows = rows.filter(function (r) { return r.avg !== null; });
+    var avgCompetitors = validRows.length
+      ? validRows.reduce(function (acc, r) { return acc + (r.avg || 0); }, 0) / validRows.length
+      : null;
+    trTot.innerHTML =
+      "<td></td>" +
+      "<td><strong>Total</strong></td>" +
+      "<td></td>" +
+      "<td>—</td>" +
+      "<td>—</td>" +
+      "<td>—</td>" +
+      "<td class='num'><strong>" + (avgCompetitors !== null ? fmt(avgCompetitors) : "—") + "</strong></td>" +
+      "<td class='num'><strong>" + fmt(sumAll) + "</strong></td>" +
+      "<td class='num'><strong>" + (sumAll > 0 ? "100.0%" : "—") + "</strong></td>";
+    tb.appendChild(trTot);
+    updateMercadoSortHeaders();
+
+    const leader = rows.filter((r) => r.avg !== null).sort((a, b) => b.total - a.total)[0];
+    var focusRow = mercadoFocusDomain
+      ? rows.find(function (r) {
+          return r.site.domain === mercadoFocusDomain;
+        })
+      : null;
+    var fc = document.getElementById("filter-castel");
+    var castelHint = fc && fc.value === "castel_only"
+      ? " Vista filtrada a competidores con referencia de distancia a Castel (PVC en zona); contrastar tráfico web con proximidad física."
+      : "";
+    document.getElementById("insight-tabla").textContent =
+      mercadoFocusDomain && focusRow && focusRow.avg !== null
+        ? "Vista centrada en «" +
+          focusRow.site.label +
+          "». Promedio mensual = total del periodo ÷ " +
+          nMonths +
+          " meses." +
+          castelHint
+        : mercadoFocusDomain && focusRow
+          ? "Vista centrada en «" +
+            focusRow.site.label +
+            "» — sin datos de serie SimilarWeb en este periodo." +
+            castelHint
+          : leader
+            ? "En este periodo y filtros activos, el mayor volumen estimado corresponde a «" + leader.site.label +
+              "» (" + fmtPct(leader.share) + " del tráfico agregado). Promedio mensual = total del periodo ÷ " +
+              nMonths + " meses." + castelHint
+            : "No hay sitios con datos en el filtro actual.";
+
+    // Pie: only positive totals (ordenados por volumen)
+    const pieRows = rows
+      .filter((r) => r.avg !== null && r.total > 0)
+      .sort((a, b) => b.total - a.total);
+    const pieLabels = pieRows.map((r) => r.site.label);
+    const pieData = pieRows.map((r) => r.total);
+    const pieInsight = document.getElementById("insight-pie");
+    if (chartPie) chartPie.destroy();
+    const ctxp = document.getElementById("chart-pie").getContext("2d");
+    const pieSum = pieData.reduce((a, b) => a + b, 0);
+    chartPie = new Chart(ctxp, {
+      type: "doughnut",
+      data: {
+        labels: pieLabels,
+        datasets: [{
+          data: pieData,
+          backgroundColor: pieLabels.map((_, i) => PALETTE[i % PALETTE.length]),
+          borderWidth: 2,
+          borderColor: "#ffffff",
+          hoverBorderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "52%",
+        layout: {
+          padding: { top: 28, right: 36, bottom: 28, left: 36 }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => {
+                const v = c.raw;
+                const sum = pieSum || 1;
+                const p = sum ? (v / sum) * 100 : 0;
+                return c.label + ": " + fmt(v) + " (" + p.toFixed(1) + "%)";
+              }
+            }
+          }
+        }
+      }
+    });
+    if (pieRows.length === 0) {
+      pieInsight.textContent = "No hay tráfico positivo para graficar en este filtro.";
+    } else {
+      const top2 = pieRows.slice(0, 2).reduce((a, r) => a + r.share, 0);
+      pieInsight.textContent =
+        "Los dos primeros competidores concentran aproximadamente " + (top2 * 100).toFixed(0) +
+        "% del tráfico del subconjunto. Marcas sin datos (p. ej. Vitralogic si aplica) no entran en el gráfico.";
+    }
+
+    // Stacked bar single - actually doughnut for channel mix market
+    const chans = aggregateMarketChannels(range, pred);
+    const chLabels = Object.keys(chans).sort((a, b) => chans[b] - chans[a]);
+    const chVals = chLabels.map((k) => chans[k]);
+    const chTotal = chVals.reduce((a, b) => a + b, 0);
+    if (chartSrc) chartSrc.destroy();
+    const ctxs = document.getElementById("chart-sources").getContext("2d");
+    chartSrc = new Chart(ctxs, {
+      type: "bar",
+      data: {
+        labels: chLabels,
+        datasets: [{
+          label: "Visitas est.",
+          data: chVals,
+          backgroundColor: chLabels.map((_, i) => PALETTE[i % PALETTE.length])
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: "y",
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => {
+                const v = c.raw;
+                const p = chTotal ? (v / chTotal) * 100 : 0;
+                return fmt(v) + " (" + p.toFixed(1) + "% del periodo)";
+              }
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { color: "#64748b" }, grid: { color: "rgba(99,102,241,0.1)" } },
+          y: { ticks: { color: "#475569" }, grid: { display: false } }
+        }
+      }
+    });
+    const topCh = chLabels[0];
+    document.getElementById("insight-sources").textContent =
+      chTotal > 0
+        ? "En el agregado del subconjunto, la fuente con mayor peso es «" + topCh + "» (" +
+          ((chans[topCh] / chTotal) * 100).toFixed(1) +
+          "% del tráfico del periodo). Comparar con el mix de un solo competidor puede requerir vista por marca."
+        : "Sin tráfico en el periodo seleccionado.";
+
+    const monthLabelsCal = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    const yearsCal = yearsInMonthRange(range);
+    var ctxMercYear = document.getElementById("chart-mercado-year");
+    var insMercYear = document.getElementById("insight-mercado-year");
+    if (chartMercadoYear) {
+      chartMercadoYear.destroy();
+      chartMercadoYear = null;
+    }
+    if (ctxMercYear && insMercYear) {
+      if (yearsCal.length === 0) {
+        insMercYear.textContent = "Ajusta Desde/Hasta para incluir al menos un mes.";
+      } else {
+        var dsYear = yearsCal.map(function (y, i) {
+          var col = PALETTE[i % PALETTE.length];
+          return {
+            label: String(y),
+            data: monthLabelsCal.map(function (_, mi) {
+              return aggregateMarketYearMonth(y, mi + 1, pred);
+            }),
+            borderColor: col,
+            backgroundColor: hexToRgba(col, 0.24),
+            borderWidth: 2,
+            fill: true,
+            tension: 0.25,
+            pointRadius: 0,
+            pointHoverRadius: 5
+          };
+        });
+        var yearInsightParts = [];
+        dsYear.forEach(function (ds) {
+          var peak = mercadoPeakMonthsFromSeries(ds.data, monthLabelsCal);
+          if (peak.max <= 0) {
+            yearInsightParts.push(
+              "En " + ds.label + " no hay tráfico positivo en la curva Ene–Dic."
+            );
+          } else {
+            var mesesPico =
+              peak.labels.length > 1 ? peak.labels.join(" y ") : peak.labels[0];
+            yearInsightParts.push(
+              "Año " +
+                ds.label +
+                ": el máximo mensual se da en " +
+                mesesPico +
+                " (" +
+                fmt(peak.max) +
+                " visitas est.)"
+            );
+          }
+        });
+        insMercYear.textContent =
+          "Picos en el calendario (subconjunto y filtros activos): " +
+          yearInsightParts.join(" ") +
+          " Cada punto agrega el tráfico del subconjunto en ese mes calendario.";
+        chartMercadoYear = new Chart(ctxMercYear.getContext("2d"), {
+          type: "line",
+          data: { labels: monthLabelsCal, datasets: dsYear },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { color: "#475569", boxWidth: 10, usePointStyle: true, padding: 12 }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (c) {
+                    return c.dataset.label + " · " + c.label + ": " + fmt(c.parsed.y);
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: "#64748b", maxRotation: 0 },
+                grid: { color: "rgba(99,102,241,0.06)" }
+              },
+              y: {
+                ticks: { color: "#64748b" },
+                grid: { color: "rgba(99,102,241,0.08)" },
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    }
+
+    var channelOrderMerc = ["Organic Search", "Direct", "Paid Search", "Referrals", "Display Ads", "Email", "Social"];
+    var presentMerc = new Set();
+    range.forEach(function (mo) {
+      sites.forEach(function (s) {
+        if (!pred(s) || !s.hasData) return;
+        var e = s.monthly[mo];
+        if (!e) return;
+        Object.keys(e.channels).forEach(function (c) {
+          presentMerc.add(c);
+        });
+      });
+    });
+    var chansListMerc = channelOrderMerc.filter(function (c) {
+      return presentMerc.has(c);
+    });
+    presentMerc.forEach(function (c) {
+      if (chansListMerc.indexOf(c) === -1) chansListMerc.push(c);
+    });
+    if (chartMercadoStack) {
+      chartMercadoStack.destroy();
+      chartMercadoStack = null;
+    }
+    var ctxMercStack = document.getElementById("chart-mercado-stack");
+    var insMercStack = document.getElementById("insight-mercado-stack");
+    if (ctxMercStack && insMercStack) {
+      if (range.length === 0 || chansListMerc.length === 0) {
+        insMercStack.textContent =
+          range.length === 0
+            ? "Ajusta el periodo Desde/Hasta."
+            : "Sin desglose por canal en el subconjunto seleccionado.";
+      } else {
+        var monthLabelsStack = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+        var dsMercStack = chansListMerc.map(function (ch, i) {
+          return {
+            label: ch,
+            data: monthLabelsStack.map(function (_, mi) {
+              return channelSumCalendarMonth(range, mi + 1, ch, pred);
+            }),
+            backgroundColor: PALETTE[i % PALETTE.length],
+            stack: "stackMercado"
+          };
+        });
+        var chTotals = {};
+        chansListMerc.forEach(function (ch) {
+          var tot = 0;
+          for (var mi = 0; mi < 12; mi++) {
+            tot += channelSumCalendarMonth(range, mi + 1, ch, pred);
+          }
+          chTotals[ch] = tot;
+        });
+        var topChName = null;
+        var topChVal = -1;
+        chansListMerc.forEach(function (ch) {
+          if (chTotals[ch] > topChVal) {
+            topChVal = chTotals[ch];
+            topChName = ch;
+          }
+        });
+        var stackInsightText = "";
+        if (topChName && topChVal > 0) {
+          var grandCh = 0;
+          chansListMerc.forEach(function (ch) {
+            grandCh += chTotals[ch];
+          });
+          var pctTop = grandCh > 0 ? (topChVal / grandCh) * 100 : 0;
+          var monthVals = [];
+          for (var m = 0; m < 12; m++) {
+            monthVals.push({
+              label: monthLabelsStack[m],
+              v: channelSumCalendarMonth(range, m + 1, topChName, pred)
+            });
+          }
+          monthVals.sort(function (a, b) {
+            return b.v - a.v;
+          });
+          var positiveM = monthVals.filter(function (x) {
+            return x.v > 0;
+          });
+          var topMonthsStr = positiveM.length
+            ? positiveM
+                .slice(0, Math.min(4, positiveM.length))
+                .map(function (x) {
+                  return x.label;
+                })
+                .join(", ")
+            : "—";
+          stackInsightText =
+            "La fuente con mayor volumen acumulado (suma de los 12 meses en el periodo Desde/Hasta) es «" +
+            channelLabelEs(topChName) +
+            "» (" +
+            fmt(topChVal) +
+            " visitas; ≈" +
+            pctTop.toFixed(0) +
+            "% del total por canal). Ese canal aporta más en: " +
+            topMonthsStr +
+            " (meses ordenados por volumen).";
+        } else {
+          stackInsightText =
+            "Eje X: enero–diciembre. Cada barra suma visitas de ese mes calendario en todo el periodo; segmentos = canales.";
+        }
+        chartMercadoStack = new Chart(ctxMercStack.getContext("2d"), {
+          type: "bar",
+          data: {
+            labels: monthLabelsStack,
+            datasets: dsMercStack
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { color: "#475569", boxWidth: 10, usePointStyle: true, padding: 10 }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (ctx) {
+                    return ctx.dataset.label + ": " + fmt(ctx.parsed.y);
+                  },
+                  footer: function (items) {
+                    if (!items.length) return "";
+                    var chart = items[0].chart;
+                    var di = items[0].dataIndex;
+                    var total = 0;
+                    chart.data.datasets.forEach(function (ds) {
+                      var v = ds.data[di];
+                      total += typeof v === "number" ? v : 0;
+                    });
+                    return "Total mes: " + fmt(total);
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                stacked: true,
+                ticks: { color: "#64748b", maxRotation: 0 },
+                grid: { display: false }
+              },
+              y: {
+                stacked: true,
+                beginAtZero: true,
+                ticks: { color: "#64748b" },
+                grid: { color: "rgba(99,102,241,0.08)" }
+              }
+            }
+          }
+        });
+        insMercStack.textContent = stackInsightText;
+      }
+    }
+  }
+
+  function renderMap() {
+    const from = mFrom.value;
+    const to = mTo.value;
+    const range = monthListRange(from, to);
+    const pred = getCombinedPred();
+
+    const pts = [];
+    let sum = 0;
+    const tmp = [];
+    sites.forEach((s) => {
+      if (!pred(s) || !s.hasData) return;
+      const total = sitePeriodTotals(s, range);
+      tmp.push({ s, total });
+      sum += total;
+    });
+    tmp.forEach((o) => {
+      const share = sum > 0 ? o.total / sum : 0;
+      const orgShare = siteOrganicShare(o.s, range);
+      pts.push({ x: share * 100, y: orgShare * 100, label: o.s.label });
+    });
+
+    if (chartScatter) chartScatter.destroy();
+    chartScatter = new Chart(document.getElementById("chart-scatter").getContext("2d"), {
+      type: "scatter",
+      data: {
+        datasets: [{
+          label: "Marcas",
+          data: pts.map((p) => ({ x: p.x, y: p.y })),
+          backgroundColor: pts.map((_, i) => PALETTE[i % PALETTE.length]),
+          pointRadius: 10,
+          pointHoverRadius: 12
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const p = pts[ctx.dataIndex];
+                return p.label + ": participación " + p.x.toFixed(1) + "%, orgánico " + p.y.toFixed(1) + "%";
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: "Participación tráfico total (%)", color: "#64748b" },
+            ticks: { color: "#64748b" },
+            grid: { color: "rgba(99,102,241,0.1)" }
+          },
+          y: {
+            title: { display: true, text: "Share orgánico del sitio (%)", color: "#64748b" },
+            ticks: { color: "#64748b" },
+            grid: { color: "rgba(99,102,241,0.1)" },
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+
+    // crude label plugin using afterDraw - skip for simplicity; tooltip has names
+
+    const hi = pts.sort((a, b) => b.y - a.y)[0];
+    document.getElementById("insight-scatter").textContent =
+      pts.length
+        ? "Mayor dependencia de orgánico en el periodo: «" + hi.label + "» (~" + hi.y.toFixed(0) +
+          "% del tráfico propio). Eje X es participación dentro del grupo filtrado en «Mercado general»."
+        : "Sin puntos: ajusta filtros o periodo.";
+  }
+
+  function topicList(c) {
+    if (!c || !c.topics || !c.topics.length) return "—";
+    return c.topics.slice(0, 3).map(function (x) { return x.topic; }).join(", ");
+  }
+
+  function visualMini(vs) {
+    if (!vs) return "—";
+    var colors = (vs.dominantColors || []).slice(0, 3).map(function (c) {
+      return "<span class='swatch' style='background:" + escapeAttr(c.hex) + "'></span>" + escapeHtml(c.hex);
+    }).join("<br/>");
+    var fonts = (vs.fontFamilies || []).slice(0, 2).map(escapeHtml).join(", ");
+    return (colors || "—") + "<div style='color:var(--muted);font-size:0.75rem;margin-top:0.3rem;'>Fuentes: " + (fonts || "n/d") + "</div>";
+  }
+
+  function renderCommunication() {
+    var tb = document.querySelector("#tabla-comunicacion tbody");
+    if (!tb) return;
+    tb.innerHTML = "";
+    var aggregate = {};
+    var totalShots = 0;
+    var withComm = 0;
+    function signalsText(sig) {
+      if (!sig || !Object.keys(sig).length) return "—";
+      var bits = [];
+      if (sig.foundedYear) bits.push("Desde " + sig.foundedYear);
+      if (sig.yearsExperienceClaim) bits.push(sig.yearsExperienceClaim + " anos exp.");
+      if (sig.branchCountEstimate) bits.push(sig.branchCountEstimate + " sucursales (est.)");
+      if (sig.coverageScope) bits.push("Cobertura " + sig.coverageScope);
+      if (sig.coveragePlaces && sig.coveragePlaces.length) {
+        bits.push("Zonas: " + sig.coveragePlaces.slice(0, 3).join(", "));
+      }
+      bits.push("Conf.: " + (sig.confidence || "baja"));
+      return bits.join(" · ");
+    }
+
+    sites.forEach(function (s) {
+      var c = s.communication || {};
+      var sig = s.companySignals || {};
+      if (!c || !Object.keys(c).length) return;
+      withComm += 1;
+      (c.topics || []).forEach(function (t) {
+        aggregate[t.topic] = (aggregate[t.topic] || 0) + (t.score || 1);
+      });
+      var shots = c.visualSummary && c.visualSummary.screenshotsCaptured ? c.visualSummary.screenshotsCaptured : 0;
+      totalShots += shots;
+      var tr = document.createElement("tr");
+      var evidence = (c.evidenceQuotes || []).slice(0, 1).map(function (q) {
+        var u = q.url ? "<a href='" + escapeAttr(q.url) + "' target='_blank' rel='noopener'>URL</a>" : "";
+        return "<div class='quote-box'>" + escapeHtml(q.quote || "") + "<div style='margin-top:0.3rem;'>" + u + "</div></div>";
+      }).join("");
+      tr.innerHTML =
+        "<td>" + brandImgHtml(s) + "</td>" +
+        "<td>" + escapeHtml(s.label) + "</td>" +
+        "<td>" + escapeHtml(topicList(c)) + "</td>" +
+        "<td>" + escapeHtml(((c.products || []).slice(0, 4).join(", ") || "—") + " / " + ((c.services || []).slice(0, 3).join(", ") || "—")) + "</td>" +
+        "<td>" + escapeHtml((c.audiences || []).join(", ") || "—") + "</td>" +
+        "<td>" + escapeHtml((c.differentiators || []).slice(0, 2).join(" | ") || "—") + "</td>" +
+        "<td>" + escapeHtml(signalsText(sig)) + "</td>" +
+        "<td>" + (evidence || "—") + "</td>" +
+        "<td>" + visualMini(c.visualSummary) + "</td>";
+      tb.appendChild(tr);
+    });
+
+    var topTopics = Object.entries(aggregate).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 5);
+    var execEl = document.getElementById("segment-exec");
+    if (!execEl) return;
+    if (!withComm) {
+      execEl.innerHTML = "<p style='color:var(--muted)'>Aun no hay datos de comunicacion cargados.</p>";
+      return;
+    }
+    execEl.innerHTML =
+      "<p class='insight'>Se analizaron <strong>" + withComm + "</strong> sitios con <strong>" + totalShots + "</strong> screenshots capturados.</p>" +
+      "<p style='margin:0.4rem 0;color:#334155'>Temas dominantes del segmento: " +
+      topTopics.map(function (t) { return "<span class='chip'>" + escapeHtml(t[0]) + " (" + t[1] + ")</span>"; }).join(" ") +
+      "</p>" +
+      "<p style='color:var(--muted);font-size:0.82rem;'>Los hallazgos combinan señales de texto y diseno visual. Revisar la evidencia por marca para decisiones de posicionamiento.</p>";
+  }
+
+  function renderCard360() {
+    var sel = document.getElementById("card-domain");
+    var wrap = document.getElementById("card360-wrap");
+    if (!sel || !wrap) return;
+    if (!sel.options.length) {
+      sites.forEach(function (s) {
+        var o = document.createElement("option");
+        o.value = s.domain;
+        o.textContent = s.label;
+        sel.appendChild(o);
+      });
+    }
+    var site = sites.find(function (x) { return x.domain === sel.value; }) || sites[0];
+    if (!site) return;
+    if (!sel.value) sel.value = site.domain;
+    cardIdx = Math.max(0, sites.findIndex(function (x) { return x.domain === site.domain; }));
+    var card = site.companyCard || {};
+    var k = card.kpi2025 || {};
+    var galleryAll = (card.screenshotGallery || []);
+    if (!galleryAll.length && card.homeScreenshot) {
+      galleryAll = [{ image: card.homeScreenshot, url: site.domain, pageType: "home", title: "" }];
+    }
+    var sections = ["all"];
+    galleryAll.forEach(function (g) {
+      var t = g.pageType || "general";
+      if (!sections.includes(t)) sections.push(t);
+    });
+    if (!sections.includes(shotSection)) shotSection = "all";
+    var gallery = shotSection === "all" ? galleryAll : galleryAll.filter(function (g) { return (g.pageType || "general") === shotSection; });
+    if (!gallery.length) shotIdx = 0;
+    else if (shotIdx >= gallery.length) shotIdx = 0;
+    var topics = (card.topics || []).slice(0, 4).map(function (t) { return t.topic; }).join(", ");
+    var quoteHtml = (card.evidenceQuotes || []).slice(0, 2).map(function (q) {
+      var u = q.url ? "<a href='" + escapeAttr(q.url) + "' target='_blank' rel='noopener'>URL</a>" : "";
+      return "<div class='quote-box'>" + escapeHtml(q.quote || "") + "<div style='margin-top:0.25rem;'>" + u + "</div></div>";
+    }).join("");
+    var logo = brandImgHtml(site);
+    var shotCurrent = gallery[shotIdx] || null;
+    var sectionBtns = sections.map(function (sct) {
+      var label = sct === "all" ? "Todos" : sct.charAt(0).toUpperCase() + sct.slice(1);
+      var active = sct === shotSection ? " active" : "";
+      return "<button type='button' class='section-tab" + active + "' data-shot-section='" + escapeAttr(sct) + "'>" + escapeHtml(label) + "</button>";
+    }).join("");
+    var shot = shotCurrent
+      ? "<div class='shot-wrap'><img class='home-shot' src='" + escapeAttr(shotCurrent.image) + "' alt='Screenshot sitio' loading='lazy'/>" +
+        "<div class='shot-nav'><button id='shot-prev' type='button' class='nav-btn' title='Screenshot anterior'>▲</button><button id='shot-next' type='button' class='nav-btn' title='Siguiente screenshot'>▼</button></div>" +
+        "</div><div class='citation'>Screenshot " + (shotIdx + 1) + " de " + gallery.length +
+        " · Seccion: " + escapeHtml((shotCurrent.pageType || "general")) +
+        (shotCurrent.title ? " · " + escapeHtml(shotCurrent.title) : "") +
+        "<br/><a href='" + escapeAttr(shotCurrent.url || "") + "' target='_blank' rel='noopener'>" + escapeHtml(shotCurrent.url || "URL no disponible") + "</a></div>" +
+        "<div class='section-tabs'>" + sectionBtns + "</div>"
+      : "<div class='quote-box'>Sin screenshots disponibles.</div>";
+    wrap.innerHTML =
+      "<div class='card360-head'>" +
+      "<div>" + logo + "</div>" +
+      "<div><h3 style='margin:0;'>" + escapeHtml(site.label) + "</h3><div style='color:var(--muted);font-size:0.85rem;'>" + escapeHtml(site.domain) + " · " + escapeHtml(groupLabels[site.group] || site.group) + "</div></div>" +
+      "</div>" +
+      "<div class='ficha-hero'>" +
+      "<div>" + shot + "</div>" +
+      "<div>" +
+      "<p style='margin:0 0 0.4rem;'><strong>Resumen marca:</strong> " + escapeHtml((card.summaryShort || "").replace(/Senal de tamano:[^.]*\./i, "").trim() || "—") + "</p>" +
+      "<p style='margin:0 0 0.4rem;'><strong>Donde estan:</strong> " + escapeHtml(card.where || "—") + "</p>" +
+      "<p style='margin:0;'><strong>Enfoque:</strong> " + escapeHtml((site.profile && site.profile.materialsLabel) || "—") + "</p>" +
+      "<div class='kpi-row' style='margin-top:0.8rem;'>" +
+      "<div class='kpi'><div class='l'>Total trafico 2025</div><div class='v'>" + fmt(k.totalTraffic || 0) + "</div></div>" +
+      "<div class='kpi'><div class='l'>Promedio mensual 2025</div><div class='v'>" + fmt(k.avgMonthlyTraffic || 0) + "</div></div>" +
+      "<div class='kpi'><div class='l'>Share en su segmento 2025</div><div class='v'>" + fmtPct(k.shareInGroup) + "</div></div>" +
+      "<div class='kpi'><div class='l'>Canal principal</div><div class='v'>" + escapeHtml(k.topSource || "—") + "</div></div>" +
+      "</div>" +
+      "<p><strong>Temas principales:</strong> " + escapeHtml(topics || "—") + "</p>" +
+      "<p><strong>Productos:</strong> " + escapeHtml((card.products || []).slice(0, 6).join(", ") || "—") + "</p>" +
+      "<p><strong>Servicios:</strong> " + escapeHtml((card.services || []).slice(0, 6).join(", ") || "—") + "</p>" +
+      "<p><strong>Audiencias:</strong> " + escapeHtml((card.audiences || []).join(", ") || "—") + "</p>" +
+      "<p><strong>Diferenciadores:</strong> " + escapeHtml((card.differentiators || []).join(" | ") || "—") + "</p>" +
+      "<p><strong>Certificaciones detectadas:</strong> " + escapeHtml(((card.certifications && card.certifications.certifications) || []).join(", ") || "No detectadas en scraping") + "</p>" +
+      "</div>" +
+      "</div>" +
+      "<div class='mini-grid-2' style='margin-top:0.85rem;'>" +
+      "<div><div class='chart-box' style='height:280px;'><canvas id='chart-card-mix'></canvas></div>" +
+      "<p class='citation'>Share por fuente de trafico (2025).</p></div>" +
+      "<div><div class='chart-box' style='height:280px;'><canvas id='chart-card-year-area'></canvas></div>" +
+      "<p class='citation'>Trafico total mensual comparado por ano (2024 vs 2025 vs 2026).</p></div>" +
+      "</div>" +
+      "<div><h3 style='font-size:0.9rem;margin:0.7rem 0 0.4rem;'>Evidencia textual</h3>" + (quoteHtml || "<p style='color:var(--muted);'>Sin evidencia textual suficiente.</p>") +
+      "<h3 style='font-size:0.95rem;margin:0.7rem 0 0.4rem;'>Evidencia certificaciones</h3>" +
+      (((card.certifications && card.certifications.evidence) || []).slice(0,2).map(function (e) {
+        var u = e.url ? "<div style='margin-top:0.25rem;'><a href='" + escapeAttr(e.url) + "' target='_blank' rel='noopener'>URL evidencia</a></div>" : "";
+        return "<div class='quote-box'><strong>" + escapeHtml(e.certification || "Certificacion") + ":</strong> " + escapeHtml(e.quote || "") + u + "</div>";
+      }).join("") || "<p style='color:var(--muted);'>Sin evidencia explicita de certificaciones en el contenido capturado.</p>") +
+      "</div>";
+
+    if (chartCardMix) chartCardMix.destroy();
+    var mix = k.sourceMix || {};
+    var labs = Object.keys(mix);
+    var vals = labs.map(function (x) { return (mix[x] || 0) * 100; });
+    if (labs.length) {
+      chartCardMix = new Chart(document.getElementById("chart-card-mix").getContext("2d"), {
+        type: "doughnut",
+        data: {
+          labels: labs,
+          datasets: [{ data: vals, backgroundColor: labs.map(function (_, i) { return PALETTE[i % PALETTE.length]; }) }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom", labels: { boxWidth: 10 } },
+            tooltip: { callbacks: { label: function (c) { return c.label + ": " + c.raw.toFixed(1) + "%"; } } }
+          }
+        }
+      });
+    }
+    if (chartCardYearArea) chartCardYearArea.destroy();
+    var monthKeys = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+    var labelsMonths = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    function yearSeries(y) {
+      return monthKeys.map(function (mm) {
+        var kym = y + "-" + mm;
+        var e = site.monthly && site.monthly[kym] ? site.monthly[kym] : null;
+        return e ? (e.total || 0) : 0;
+      });
+    }
+    var y2024 = yearSeries("2024");
+    var y2025 = yearSeries("2025");
+    var y2026 = yearSeries("2026");
+    chartCardYearArea = new Chart(document.getElementById("chart-card-year-area").getContext("2d"), {
+      type: "line",
+      data: {
+        labels: labelsMonths,
+        datasets: [
+          { label: "2024", data: y2024, borderColor: "#60a5fa", backgroundColor: "rgba(96,165,250,0.22)", fill: true, tension: 0.25, pointRadius: 0 },
+          { label: "2025", data: y2025, borderColor: "#22c55e", backgroundColor: "rgba(34,197,94,0.22)", fill: true, tension: 0.25, pointRadius: 0 },
+          { label: "2026", data: y2026, borderColor: "#f59e0b", backgroundColor: "rgba(245,158,11,0.2)", fill: true, tension: 0.25, pointRadius: 0 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 10 } } },
+        scales: {
+          x: { ticks: { color: "#64748b" }, grid: { color: "rgba(99,102,241,0.08)" } },
+          y: { ticks: { color: "#64748b" }, grid: { color: "rgba(99,102,241,0.08)" } }
+        }
+      }
+    });
+
+    var sp = document.getElementById("shot-prev");
+    var sn = document.getElementById("shot-next");
+    if (sp && sn) {
+      sp.addEventListener("click", function () {
+        if (!gallery.length) return;
+        shotIdx = (shotIdx - 1 + gallery.length) % gallery.length;
+        renderCard360();
+      });
+      sn.addEventListener("click", function () {
+        if (!gallery.length) return;
+        shotIdx = (shotIdx + 1) % gallery.length;
+        renderCard360();
+      });
+    }
+    wrap.querySelectorAll("[data-shot-section]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        shotSection = btn.getAttribute("data-shot-section") || "all";
+        shotIdx = 0;
+        renderCard360();
+      });
+    });
+  }
+
+
+  function clampMercadoMonthRange() {
+    if (mFrom.value > mTo.value) mTo.value = mFrom.value;
+    if (mTo.value < mFrom.value) mFrom.value = mTo.value;
+  }
+
+  function onMercadoDatesInput() {
+    clampMercadoMonthRange();
+    renderMercado();
+  }
+
+  mFrom.addEventListener("change", onMercadoDatesInput);
+  mTo.addEventListener("change", onMercadoDatesInput);
+  gf.addEventListener("change", function () {
+    renderMercado();
+    renderMap();
+  });
+
+  var cardSel = document.getElementById("card-domain");
+  if (cardSel) {
+    cardSel.addEventListener("change", function () {
+      shotIdx = 0;
+      shotSection = "all";
+      renderCard360();
+    });
+  }
+  var cPrev = document.getElementById("card-prev");
+  var cNext = document.getElementById("card-next");
+  if (cPrev) {
+    cPrev.addEventListener("click", function () {
+      if (!sites.length || !cardSel) return;
+      cardIdx = (cardIdx - 1 + sites.length) % sites.length;
+      cardSel.value = sites[cardIdx].domain;
+      shotIdx = 0;
+      shotSection = "all";
+      renderCard360();
+    });
+  }
+  if (cNext) {
+    cNext.addEventListener("click", function () {
+      if (!sites.length || !cardSel) return;
+      cardIdx = (cardIdx + 1) % sites.length;
+      cardSel.value = sites[cardIdx].domain;
+      shotIdx = 0;
+      shotSection = "all";
+      renderCard360();
+    });
+  }
+
+  ["filter-castel", "filter-role", "filter-brand"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("change", function () {
+        renderMercado();
+        renderMap();
+      });
+    }
+  });
+  var mercadoThead = document.querySelector("#tabla-mercado thead");
+  if (mercadoThead) {
+    mercadoThead.addEventListener("click", function (e) {
+      var th = e.target.closest("th.sortable");
+      if (!th || !document.getElementById("tabla-mercado").contains(th)) return;
+      var key = th.getAttribute("data-sort");
+      if (!key) return;
+      if (mercadoSortKey === key) {
+        mercadoSortDir = mercadoSortDir === "desc" ? "asc" : "desc";
+      } else {
+        mercadoSortKey = key;
+        mercadoSortDir = "desc";
+      }
+      renderMercado();
+    });
+  }
+
+  var mercadoTabla = document.getElementById("tabla-mercado");
+  if (mercadoTabla) {
+    mercadoTabla.addEventListener("click", function (e) {
+      if (e.target.closest(".info-btn")) return;
+      var tr = e.target.closest("tr[data-domain]");
+      if (!tr || !mercadoTabla.contains(tr)) return;
+      var d = tr.getAttribute("data-domain");
+      if (!d) return;
+      if (mercadoFocusDomain === d) mercadoFocusDomain = null;
+      else mercadoFocusDomain = d;
+      renderMercado();
+    });
+  }
+
+  document.querySelector(".wrap").addEventListener("click", function (e) {
+    var btn = e.target.closest(".info-btn");
+    if (!btn) return;
+    var d = btn.getAttribute("data-domain");
+    var site = sites.find(function (x) {
+      return x.domain === d;
+    });
+    if (site) openProfileModal(site);
+  });
+  document.getElementById("modal-close").addEventListener("click", function () {
+    document.getElementById("profile-modal").classList.add("hidden");
+  });
+  document.getElementById("profile-modal").addEventListener("click", function (e) {
+    if (e.target.id === "profile-modal") document.getElementById("profile-modal").classList.add("hidden");
+  });
+
+  renderMercado();
+  renderCommunication();
+  renderCard360();
+})();
+  </script>
+</body>
+</html>
