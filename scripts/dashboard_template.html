@@ -677,21 +677,22 @@
         <p>La mayoría de competidores se ubican aquí: sitios mobile-first poco optimizados en experiencia, contenido repetitivo y baja diferenciación.</p>
         <p class="insight">Insight clave: el mercado está comoditizado a nivel comunicación.</p>
         <div class="table-wrap">
-          <table class="data">
+          <table class="data" id="tabla-ejecutivo-middle">
             <thead>
               <tr>
                 <th>Competidor</th><th>Visitas mensuales aprox</th><th>Tiempo en sitio</th><th>Páginas por sesión</th><th>Rebote</th><th>Dispositivo dominante</th><th>Tipo de contenido</th><th>Diagnóstico</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Ideal Ventanas</td><td>~2,100</td><td>01:09</td><td>2.03</td><td>51.9%</td><td>Mobile</td><td>Beneficios genéricos + catálogo</td><td>Mejor desempeño relativo pero sin diferenciación</td></tr>
-              <tr><td>Ventanas Hermex</td><td>~1,600</td><td>00:56</td><td>2.25</td><td>51.1%</td><td>Mobile</td><td>Catálogo + beneficios básicos</td><td>Navegación aceptable, bajo valor percibido</td></tr>
-              <tr><td>Termoacústicas PVC</td><td>~1,800</td><td>00:38</td><td>1.66</td><td>75.8%</td><td>Mobile</td><td>Beneficios genéricos</td><td>Alto rebote, bajo interés</td></tr>
-              <tr><td>ABATIK</td><td>~900</td><td>00:35</td><td>1.73</td><td>68.4%</td><td>Mobile</td><td>Catálogo + beneficios básicos</td><td>Experiencia débil</td></tr>
-              <tr><td>Sisvent</td><td>~2,200</td><td>00:23</td><td>1.44</td><td>68.5%</td><td>Mobile</td><td>Catálogo + contenido comercial</td><td>Tráfico rápido, poca profundidad</td></tr>
+              <tr><td>Ideal Ventanas</td><td class="num" data-exec-traffic-domain="idealventanas.com">—</td><td>01:09</td><td>2.03</td><td>51.9%</td><td>Mobile</td><td>Beneficios genéricos + catálogo</td><td>Mejor desempeño relativo pero sin diferenciación</td></tr>
+              <tr><td>Ventanas Hermex</td><td class="num" data-exec-traffic-domain="ventanashermex.com.mx">—</td><td>00:56</td><td>2.25</td><td>51.1%</td><td>Mobile</td><td>Catálogo + beneficios básicos</td><td>Navegación aceptable, bajo valor percibido</td></tr>
+              <tr><td>Termoacústicas PVC</td><td class="num" data-exec-traffic-domain="ventanastermoacusticasdepvc.com.mx">—</td><td>00:38</td><td>1.66</td><td>75.8%</td><td>Mobile</td><td>Beneficios genéricos</td><td>Alto rebote, bajo interés</td></tr>
+              <tr><td>ABATIK</td><td class="num" data-exec-traffic-domain="abatikventanas.com">—</td><td>00:35</td><td>1.73</td><td>68.4%</td><td>Mobile</td><td>Catálogo + beneficios básicos</td><td>Experiencia débil</td></tr>
+              <tr><td>Sisvent</td><td class="num" data-exec-traffic-domain="sisvent.mx">—</td><td>00:23</td><td>1.44</td><td>68.5%</td><td>Mobile</td><td>Catálogo + contenido comercial</td><td>Tráfico rápido, poca profundidad</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="citation" style="margin-top:0.5rem;">La columna <strong>Visitas mensuales aprox</strong> usa el mismo <em>promedio mensual</em> que la tabla de Mercado general: tráfico total del periodo (Desde/Hasta) entre número de meses, con los mismos filtros de subconjunto, Castel y perfil.</p>
       </div>
 
       <div class="panel">
@@ -1492,6 +1493,33 @@
     });
   }
 
+  /** Promedio mensual = misma fórmula y filtros que #tabla-mercado (columna Promedio mensual). */
+  function updateExecutiveMiddleMarketTraffic() {
+    var from = mFrom.value;
+    var to = mTo.value;
+    var range = monthListRange(from, to);
+    var nMonths = range.length || 1;
+    var pred = getCombinedPred();
+    document.querySelectorAll("[data-exec-traffic-domain]").forEach(function (cell) {
+      var dom = cell.getAttribute("data-exec-traffic-domain");
+      if (!dom) return;
+      if (!range.length) {
+        cell.textContent = "—";
+        return;
+      }
+      var site = sites.find(function (s) {
+        return s.domain === dom;
+      });
+      if (!site || !pred(site) || !site.hasData) {
+        cell.textContent = "—";
+        return;
+      }
+      var total = sitePeriodTotals(site, range);
+      var avg = total / nMonths;
+      cell.textContent = fmt(avg);
+    });
+  }
+
   function renderMercado() {
     const from = mFrom.value;
     const to = mTo.value;
@@ -1981,6 +2009,7 @@
         insMercStack.textContent = stackInsightText;
       }
     }
+    updateExecutiveMiddleMarketTraffic();
   }
 
   function renderMap() {
