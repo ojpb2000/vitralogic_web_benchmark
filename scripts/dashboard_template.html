@@ -131,6 +131,91 @@
       font-size: 1rem;
       line-height: 1.35;
     }
+    .benchmark-hub {
+      position: fixed;
+      inset: 0;
+      z-index: 1990;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: var(--bg-gradient);
+      backdrop-filter: blur(8px);
+    }
+    .benchmark-hub.hidden { display: none !important; }
+    .benchmark-hub-inner {
+      width: 100%;
+      max-width: 640px;
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem 1.35rem 1.75rem;
+      box-shadow: 0 8px 40px rgba(79, 70, 229, 0.12);
+    }
+    .benchmark-hub-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .benchmark-hub-inner > .hub-title {
+      margin: 0 0 0.35rem;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #312e81;
+    }
+    .benchmark-hub-inner > .hub-sub {
+      margin: 0 0 1.1rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .hub-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+    @media (min-width: 560px) {
+      .hub-cards { grid-template-columns: 1fr 1fr; }
+    }
+    .hub-card {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 1.1rem 1rem;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.95);
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .hub-card:hover {
+      border-color: rgba(99, 102, 241, 0.45);
+      box-shadow: 0 4px 20px rgba(79, 70, 229, 0.12);
+    }
+    .hub-card-title {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #312e81;
+      margin-bottom: 0.35rem;
+    }
+    .hub-card-desc {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .hub-footer-note {
+      margin: 1.15rem 0 0;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+    }
     .site-footer {
       text-align: center;
       padding: 1rem 1.25rem 1.75rem;
@@ -563,7 +648,7 @@
 <body>
   <div id="login-gate" class="login-gate" role="dialog" aria-labelledby="login-title">
     <form class="login-card" id="login-form" autocomplete="on">
-      <h2 id="login-title">MOS Marketing Intelligence — Benchmark de sitios web para Vitralogic 2026</h2>
+      <h2 id="login-title">MOS Marketing Intelligence — Acceso Vitralogic 2026</h2>
       <p class="sub">Introduce usuario y contraseña para continuar.</p>
       <p class="login-error" id="login-error" aria-live="polite"></p>
       <label for="login-user">Usuario</label>
@@ -573,13 +658,41 @@
       <button type="submit">Entrar</button>
     </form>
   </div>
+
+  <div id="benchmark-hub" class="benchmark-hub hidden" role="region" aria-label="Seleccionar benchmark">
+    <div class="benchmark-hub-inner">
+      <div class="benchmark-hub-top">
+        <div>
+          <h2 class="hub-title">MOS Marketing Intelligence</h2>
+          <p class="hub-sub">Vitralogic 2026 — elige el benchmark que deseas consultar.</p>
+        </div>
+        <button type="button" class="logout-btn" id="hub-logout-btn" title="Cerrar sesión">Salir</button>
+      </div>
+      <div class="hub-cards">
+        <button type="button" class="hub-card" id="hub-pick-web">
+          <span class="hub-card-title">Benchmark de sitios web</span>
+          <span class="hub-card-desc">Tráfico, canales, contenido y fichas 360 (SimilarWeb y análisis actual).</span>
+        </button>
+        <button type="button" class="hub-card" id="hub-pick-social">
+          <span class="hub-card-title">Benchmark de redes sociales</span>
+          <span class="hub-card-desc">Vista dedicada a presencia y desempeño en redes (en construcción).</span>
+        </button>
+      </div>
+      <p class="hub-footer-note">Created by <a href="https://mosmkt.com/" target="_blank" rel="noopener noreferrer">MOS Marketing</a> — April 2026</p>
+    </div>
+  </div>
+
+  <div id="app-web-dashboard" class="hidden">
   <header>
     <div class="header-inner">
       <div>
         <h1>Benchmark Vitralogic — Tráfico web &amp; competencia</h1>
         <p>SimilarWeb (feb 2024 – feb 2026) · Vidrio / cancelería · Ventanas</p>
       </div>
-      <button type="button" class="logout-btn" id="logout-btn" title="Cerrar sesión en este navegador">Salir</button>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+        <a href="index.html?hub=1" class="logout-btn" style="text-decoration:none;display:inline-block;">Otros benchmarks</a>
+        <button type="button" class="logout-btn" id="logout-btn" title="Cerrar sesión en este navegador">Salir</button>
+      </div>
     </div>
   </header>
   <div class="wrap">
@@ -940,6 +1053,7 @@
   <footer class="site-footer">
     <p style="margin:0;">Created by <a href="https://mosmkt.com/" target="_blank" rel="noopener noreferrer">MOS Marketing</a> — April 2026.</p>
   </footer>
+  </div>
 
   <div id="profile-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
     <div class="modal-box">
@@ -961,31 +1075,64 @@
   }
 
   var AUTH_SESSION_KEY = "vl_benchmark_auth_v1";
+  var BENCHMARK_CHOICE_KEY = "vl_benchmark_choice";
   var EXPECT_USER = "gato";
   var EXPECT_PASS = "123";
   var loginGate = document.getElementById("login-gate");
+  var benchmarkHub = document.getElementById("benchmark-hub");
+  var appWebDashboard = document.getElementById("app-web-dashboard");
   var loginForm = document.getElementById("login-form");
   var loginUser = document.getElementById("login-user");
   var loginPass = document.getElementById("login-pass");
   var loginErr = document.getElementById("login-error");
 
   function applyAuthState() {
-    if (sessionStorage.getItem(AUTH_SESSION_KEY) === "1") {
-      if (loginGate) loginGate.classList.add("hidden");
-    } else if (loginGate) {
-      loginGate.classList.remove("hidden");
+    var authed = sessionStorage.getItem(AUTH_SESSION_KEY) === "1";
+    var wantWeb = sessionStorage.getItem(BENCHMARK_CHOICE_KEY) === "web";
+    if (!authed) {
+      if (loginGate) loginGate.classList.remove("hidden");
+      if (benchmarkHub) benchmarkHub.classList.add("hidden");
+      if (appWebDashboard) appWebDashboard.classList.add("hidden");
+      return;
     }
+    if (loginGate) loginGate.classList.add("hidden");
+    if (wantWeb && appWebDashboard) {
+      if (benchmarkHub) benchmarkHub.classList.add("hidden");
+      appWebDashboard.classList.remove("hidden");
+    } else {
+      if (benchmarkHub) benchmarkHub.classList.remove("hidden");
+      if (appWebDashboard) appWebDashboard.classList.add("hidden");
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem(AUTH_SESSION_KEY);
+    sessionStorage.removeItem(BENCHMARK_CHOICE_KEY);
+    if (loginPass) loginPass.value = "";
+    if (loginUser) loginUser.focus();
+    applyAuthState();
   }
 
   function loginOk() {
     sessionStorage.setItem(AUTH_SESSION_KEY, "1");
-    if (loginGate) loginGate.classList.add("hidden");
+    sessionStorage.removeItem(BENCHMARK_CHOICE_KEY);
     if (loginErr) loginErr.textContent = "";
+    applyAuthState();
   }
 
   function loginFail() {
     if (loginErr) loginErr.textContent = "Usuario o contraseña incorrectos.";
   }
+
+  try {
+    var _params = new URLSearchParams(window.location.search);
+    if (_params.get("open") === "web" && sessionStorage.getItem(AUTH_SESSION_KEY) === "1") {
+      sessionStorage.setItem(BENCHMARK_CHOICE_KEY, "web");
+    }
+    if (_params.get("hub") === "1" && sessionStorage.getItem(AUTH_SESSION_KEY) === "1") {
+      sessionStorage.removeItem(BENCHMARK_CHOICE_KEY);
+    }
+  } catch (e) {}
 
   if (loginForm) {
     loginForm.addEventListener("submit", function (e) {
@@ -1002,12 +1149,11 @@
 
   var logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      sessionStorage.removeItem(AUTH_SESSION_KEY);
-      if (loginGate) loginGate.classList.remove("hidden");
-      if (loginPass) loginPass.value = "";
-      if (loginUser) loginUser.focus();
-    });
+    logoutBtn.addEventListener("click", doLogout);
+  }
+  var hubLogoutBtn = document.getElementById("hub-logout-btn");
+  if (hubLogoutBtn) {
+    hubLogoutBtn.addEventListener("click", doLogout);
   }
 
   applyAuthState();
@@ -2437,6 +2583,26 @@
   document.getElementById("profile-modal").addEventListener("click", function (e) {
     if (e.target.id === "profile-modal") document.getElementById("profile-modal").classList.add("hidden");
   });
+
+  var hubPickWeb = document.getElementById("hub-pick-web");
+  var hubPickSocial = document.getElementById("hub-pick-social");
+  if (hubPickWeb) {
+    hubPickWeb.addEventListener("click", function () {
+      sessionStorage.setItem(BENCHMARK_CHOICE_KEY, "web");
+      applyAuthState();
+      requestAnimationFrame(function () {
+        renderMercado();
+        renderMap();
+        renderCommunication();
+        renderCard360();
+      });
+    });
+  }
+  if (hubPickSocial) {
+    hubPickSocial.addEventListener("click", function () {
+      window.location.href = "social.html";
+    });
+  }
 
   renderMercado();
   renderCommunication();

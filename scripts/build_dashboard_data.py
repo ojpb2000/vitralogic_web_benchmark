@@ -974,6 +974,11 @@ def main():
     fichas_360 = build_fichas_360_payload(payload)
     out_fichas = ROOT / "dashboard" / "fichas_360.json"
     out_fichas.write_text(json.dumps(fichas_360, ensure_ascii=False, indent=2), encoding="utf-8")
+    social_tpl = ROOT / "scripts" / "social_dashboard_template.html"
+    if social_tpl.is_file():
+        out_social = ROOT / "dashboard" / "social.html"
+        out_social.write_text(social_tpl.read_text(encoding="utf-8"), encoding="utf-8")
+        print("Wrote:", out_social)
     print("Wrote:", out_json)
     print("Wrote:", out_html)
     print("Wrote:", out_fichas)
