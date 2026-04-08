@@ -983,6 +983,18 @@ def main():
     print("Wrote:", out_html)
     print("Wrote:", out_fichas)
 
+    try:
+        import importlib.util
+
+        _soc_path = ROOT / "scripts" / "build_social_benchmark.py"
+        _spec = importlib.util.spec_from_file_location("build_social_benchmark", _soc_path)
+        _mod = importlib.util.module_from_spec(_spec)
+        if _spec.loader:
+            _spec.loader.exec_module(_mod)
+            _mod.main()
+    except Exception as _e:
+        print("Social benchmark (opcional):", _e)
+
 
 if __name__ == "__main__":
     main()
