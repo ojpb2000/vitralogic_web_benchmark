@@ -17,3 +17,7 @@ Thumbs.db
 # Datos de origen local (no subir si son confidenciales)
 *.xlsx
 *.xls
+.env
+data/.social_vision_cache.json
+data/.social_gemini_classify_cache.json
+data/.fb_media_type_cache.json

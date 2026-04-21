@@ -991,7 +991,7 @@ def main():
         _mod = importlib.util.module_from_spec(_spec)
         if _spec.loader:
             _spec.loader.exec_module(_mod)
-            _mod.main()
+            _mod.run_social_benchmark()
     except Exception as _e:
         print("Social benchmark (opcional):", _e)
 
