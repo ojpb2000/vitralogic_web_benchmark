@@ -180,8 +180,29 @@
     @media (min-width: 560px) {
       .hub-cards { grid-template-columns: 1fr 1fr; }
     }
-    @media (min-width: 880px) {
+    @media (min-width: 900px) {
       .hub-cards { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .benchmark-hub-inner { max-width: 860px; }
+    .hub-card.hub-card-accent {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.10) 0%, rgba(124, 58, 237, 0.08) 100%);
+      border-color: rgba(124, 58, 237, 0.35);
+    }
+    .hub-card.hub-card-accent:hover {
+      border-color: rgba(124, 58, 237, 0.6);
+      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.18);
+    }
+    .hub-card-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.12);
+      color: #5b21b6;
+      margin-bottom: 0.45rem;
     }
     .hub-card {
       display: block;
@@ -681,9 +702,10 @@
           <span class="hub-card-title">Benchmark de redes sociales</span>
           <span class="hub-card-desc">Vista dedicada a presencia y desempeño en redes (en construcción).</span>
         </button>
-        <button type="button" class="hub-card" id="hub-pick-personas">
-          <span class="hub-card-title">Buyer Personas — GWI</span>
-          <span class="hub-card-desc">Affluent Home Buyer, Prescriptor técnico-arquitectónico y comparativo entre audiencias (Mexico, GWI 2024–2025).</span>
+        <button type="button" class="hub-card hub-card-accent" id="hub-pick-personas">
+          <span class="hub-card-tag">Nuevo</span>
+          <span class="hub-card-title">Buyer Personas Vitralogic</span>
+          <span class="hub-card-desc">Retratos narrativos de las 3 audiencias prioritarias de Vitralogic: motivaciones, medios y disparadores de decisión.</span>
         </button>
       </div>
       <p class="hub-footer-note">Created by <a href="https://mosmkt.com/" target="_blank" rel="noopener noreferrer">MOS Marketing</a> — April 2026</p>
