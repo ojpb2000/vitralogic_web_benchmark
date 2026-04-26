@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<title>Buyer Personas — Vitralogic 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#0a1624;
+  --navy-2:#0e1f33;
+  --copper:#c89254;
+  --copper-2:#e5b872;
+  --blueprint:#4a90e2;
+  --blueprint-2:#7fb3ff;
+  --pearl:#f1f4f8;
+  --muted:#7d8fa3;
+  --mint:#4fd1c5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--pearl);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{
+  background:
+    radial-gradient(900px 600px at 18% 25%, rgba(200,146,84,.16), transparent 60%),
+    radial-gradient(900px 600px at 82% 75%, rgba(74,144,226,.16), transparent 60%),
+    var(--navy);
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+.wrap{position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:80px 6vw 100px}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:60px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.topbar a{color:inherit;text-decoration:none;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);transition:all .25s}
+.topbar a:hover{color:var(--pearl);border-color:rgba(255,255,255,.4)}
+
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:24px;display:flex;align-items:center;gap:14px;
+}
+.eyebrow::before{content:"";width:40px;height:1px;background:linear-gradient(90deg,var(--copper),var(--blueprint))}
+
+h1{font-family:'Fraunces',serif;font-weight:300;font-style:italic;font-size:clamp(48px,7vw,96px);line-height:1.05;letter-spacing:-.02em;margin-bottom:28px}
+h1 .gold{color:var(--copper-2);font-style:normal;font-weight:500}
+h1 .blue{color:var(--blueprint-2);font-style:normal;font-weight:500}
+.lead{font-family:'Fraunces',serif;font-size:clamp(18px,1.8vw,22px);font-weight:300;line-height:1.5;max-width:780px;color:#dde3ec;opacity:.92;margin-bottom:64px}
+.lead em{font-style:italic;color:var(--copper-2)}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media (max-width:980px){.cards{grid-template-columns:1fr}}
+
+.card{
+  position:relative;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,rgba(15,30,52,.7),rgba(10,22,36,.95));
+  border:1px solid rgba(255,255,255,.1);border-radius:18px;overflow:hidden;
+  text-decoration:none;color:var(--pearl);
+  transition:transform .35s, border-color .35s, box-shadow .35s;
+  min-height:520px;
+}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;z-index:2}
+.card.aff::before{background:linear-gradient(90deg,var(--copper),var(--copper-2))}
+.card.pre::before{background:linear-gradient(90deg,var(--blueprint),var(--blueprint-2))}
+.card.dual::before{background:linear-gradient(90deg,var(--copper),var(--mint),var(--blueprint))}
+
+.card:hover{transform:translateY(-6px);box-shadow:0 30px 70px -20px rgba(0,0,0,.7)}
+.card.aff:hover{border-color:rgba(228,184,114,.5)}
+.card.pre:hover{border-color:rgba(127,179,255,.5)}
+.card.dual:hover{border-color:rgba(79,209,197,.5)}
+
+.card-art{
+  height:240px;flex-shrink:0;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#152a44,#0a1624);
+}
+.card-art svg{width:100%;height:100%;display:block}
+.card.aff .card-art{
+  background:radial-gradient(120% 80% at 50% 25%,#f4efe8 0%,#e7dfd3 35%,#c89254 75%,#3a200a 100%);
+}
+.card.pre .card-art{
+  background:linear-gradient(180deg,#1a2a40 0%,#0a1624 100%);
+}
+.card.dual .card-art{
+  background:
+    linear-gradient(135deg,rgba(228,184,114,.18) 0%,transparent 50%,rgba(74,144,226,.18) 100%),
+    linear-gradient(180deg,#152a44,#0a1624);
+}
+
+.card-body{padding:28px;display:flex;flex-direction:column;flex:1}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.card.aff .card-tag{color:var(--copper-2)}
+.card.pre .card-tag{color:var(--blueprint-2)}
+.card.dual .card-tag{color:var(--mint)}
+.card-title{font-family:'Fraunces',serif;font-size:32px;font-weight:500;line-height:1.05;margin-bottom:8px}
+.card-sub{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:#cbd3dc;font-weight:300;margin-bottom:18px;line-height:1.4}
+.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:auto}
+.card-stats .s{padding:10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+.card-stats .v{font-family:'Fraunces',serif;font-size:20px;font-weight:500;line-height:1}
+.card.aff .card-stats .v{color:var(--copper-2)}
+.card.pre .card-stats .v{color:var(--blueprint-2)}
+.card.dual .card-stats .v{color:var(--mint)}
+.card-stats .l{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.card-cta{margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);transition:color .25s}
+.card-cta .arrow{font-size:18px;line-height:1;transition:transform .35s;color:var(--pearl)}
+.card:hover .card-cta{color:var(--pearl)}
+.card:hover .card-cta .arrow{transform:translateX(6px)}
+.card.aff:hover .card-cta .arrow{color:var(--copper-2)}
+.card.pre:hover .card-cta .arrow{color:var(--blueprint-2)}
+.card.dual:hover .card-cta .arrow{color:var(--mint)}
+
+.meta{margin-top:80px;padding-top:32px;border-top:1px solid rgba(255,255,255,.08);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between}
+.meta a{color:var(--muted);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:2px;transition:all .25s}
+.meta a:hover{color:var(--pearl);border-color:var(--pearl)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>MOS · Vitralogic 2026 · Buyer Personas</div>
+    <a href="index.html?hub=1">← Otros benchmarks</a>
+  </div>
+
+  <div class="eyebrow">Audiencias clave · GWI México · Q1&#39;24 — Q4&#39;25</div>
+  <h1>El retrato del cliente <span class="gold">premium</span> y de quien <span class="blue">especifica</span>.</h1>
+  <p class="lead">Tres lecturas construidas sobre 970 atributos GWI: el <em>habitante</em> de la casa Vitralogic, el <em>profesional</em> que la firma, y el cruce comparativo donde se decide <strong>cómo activarlos a ambos</strong>. Cada ficha es un dashboard editorial autocontenido, scrollable, con datos verificables.</p>
+
+  <div class="cards">
+
+    <a href="personas/affluent.html" class="card aff">
+      <div class="card-art">
+        <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="aSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4efe8"/><stop offset="1" stop-color="#dfb08a"/></linearGradient>
+            <linearGradient id="aJacket" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#17324d"/><stop offset="1" stop-color="#0a1624"/></linearGradient>
+            <linearGradient id="aCu" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5b872"/><stop offset="1" stop-color="#c89254"/></linearGradient>
+          </defs>
+          <ellipse cx="200" cy="110" rx="50" ry="62" fill="url(#aSkin)"/>
+          <path d="M150 90 Q160 40 200 38 Q240 38 250 90 Q244 76 220 75 Q200 78 180 75 Q156 78 150 100 Z" fill="#3a3530"/>
+          <g fill="#0c0d10"><ellipse cx="180" cy="108" rx="2.6" ry="3.4"/><ellipse cx="220" cy="108" rx="2.6" ry="3.4"/></g>
+          <path d="M186 138 Q200 144 214 138" stroke="#8a4a3a" stroke-width="2" fill="none"/>
+          <path d="M120 240 Q120 190 160 168 L240 168 Q280 190 280 240 Z" fill="url(#aJacket)"/>
+          <path d="M186 170 L200 198 L214 170 Z" fill="#f4efe8"/>
+          <path d="M196 170 L194 200 L200 208 L206 200 L204 170 Z" fill="url(#aCu)"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Persona 01 · Affluent Home Buyer</div>
+        <div class="card-title">Alejandro, 54</div>
+        <div class="card-sub">Vive la casa como inversión y escenario. Compra premium, viaja, exige confort.</div>
+        <div class="card-stats">
+          <div class="s"><div class="v">287K</div><div class="l">Universo MX</div></div>
+          <div class="s"><div class="v">n=110</div><div class="l">Encuestados</div></div>
+          <div class="s"><div class="v">37%</div><div class="l">Decisor</div></div>
+        </div>
+        <div class="card-cta"><span>Ver ficha</span><span class="arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="personas/prescriptor.html" class="card pre">
+      <div class="card-art">
+        <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="pSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4efe8"/><stop offset="1" stop-color="#cd9b80"/></linearGradient>
+            <linearGradient id="pShirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2a40"/><stop offset="1" stop-color="#0a1624"/></linearGradient>
+            <pattern id="pBP" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M0 10 L20 10" stroke="#4a90e2" stroke-width=".4" opacity=".3"/>
+              <path d="M10 0 L10 20" stroke="#4a90e2" stroke-width=".4" opacity=".3"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="240" fill="url(#pBP)"/>
+          <ellipse cx="200" cy="110" rx="48" ry="58" fill="url(#pSkin)"/>
+          <path d="M154 92 Q162 42 200 40 Q238 40 246 92 Q240 80 222 78 Q200 80 178 78 Q160 80 154 102 Z" fill="#2a2520"/>
+          <g stroke="#0c0d10" stroke-width="2.2" fill="none">
+            <rect x="166" y="100" width="26" height="16" rx="2.5"/>
+            <rect x="208" y="100" width="26" height="16" rx="2.5"/>
+            <line x1="192" y1="108" x2="208" y2="108"/>
+          </g>
+          <g fill="#0c0d10"><ellipse cx="179" cy="108" rx="1.8" ry="2.6"/><ellipse cx="221" cy="108" rx="1.8" ry="2.6"/></g>
+          <path d="M186 138 Q200 144 214 138" stroke="#7a3a30" stroke-width="2" fill="none"/>
+          <path d="M120 240 Q120 188 160 168 L240 168 Q280 188 280 240 Z" fill="url(#pShirt)"/>
+          <path d="M188 170 L200 200 L212 170 Z" fill="#0a1624" stroke="#4a90e2" stroke-width="1"/>
+          <circle cx="200" cy="186" r="2.2" fill="#4a90e2"/>
+          <rect x="184" y="218" width="32" height="22" rx="2" fill="#0a1624" stroke="#4a90e2" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Persona 02 · Prescriptor Técnico-Arquitectónico</div>
+        <div class="card-title">Diego, 41</div>
+        <div class="card-sub">Vive entre planos y obra. Especifica decisiones por millones de pesos. Si firma, vendes.</div>
+        <div class="card-stats">
+          <div class="s"><div class="v">1.21M</div><div class="l">Universo MX</div></div>
+          <div class="s"><div class="v">n=464</div><div class="l">Encuestados</div></div>
+          <div class="s"><div class="v">78%</div><div class="l">Decisor</div></div>
+        </div>
+        <div class="card-cta"><span>Ver ficha</span><span class="arrow">→</span></div>
+      </div>
+    </a>
+
+    <a href="personas/comparativo.html" class="card dual">
+      <div class="card-art">
+        <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="cAff" cx="35%" cy="55%" r="40%"><stop offset="0" stop-color="#e5b872" stop-opacity=".55"/><stop offset="1" stop-color="#c89254" stop-opacity="0"/></radialGradient>
+            <radialGradient id="cPre" cx="65%" cy="55%" r="40%"><stop offset="0" stop-color="#7fb3ff" stop-opacity=".55"/><stop offset="1" stop-color="#4a90e2" stop-opacity="0"/></radialGradient>
+          </defs>
+          <circle cx="140" cy="125" r="95" fill="url(#cAff)" stroke="rgba(228,184,114,.65)" stroke-width="2"/>
+          <circle cx="260" cy="125" r="95" fill="url(#cPre)" stroke="rgba(127,179,255,.65)" stroke-width="2"/>
+          <text x="100" y="80" font-family="Fraunces, serif" font-size="22" font-style="italic" fill="#e5b872">Alejandro</text>
+          <text x="270" y="80" font-family="Fraunces, serif" font-size="22" font-style="italic" fill="#7fb3ff">Diego</text>
+          <text x="200" y="130" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="20" fill="#4fd1c5">14 cruces</text>
+          <text x="200" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#7d8fa3" letter-spacing="2">CONVERGENCIAS</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-tag">Comparativo · Affluent vs Prescriptor</div>
+        <div class="card-title">Dos personajes,<br/>un mismo mercado.</div>
+        <div class="card-sub">Cuadrante estratégico, mapa de convergencias y divergencias en demografía, tech, advocacy y deportes.</div>
+        <div class="card-stats">
+          <div class="s"><div class="v">747</div><div class="l">Atributos cruzados</div></div>
+          <div class="s"><div class="v">14</div><div class="l">Convergencias</div></div>
+          <div class="s"><div class="v">9</div><div class="l">Implicaciones</div></div>
+        </div>
+        <div class="card-cta"><span>Ver comparativo</span><span class="arrow">→</span></div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="meta">
+    <div>Fuente: GWI Core · Mexico · Q1 2024 – Q4 2025 · Affluent n=110 · Prescriptor n=464 · Base MX n=40,065</div>
+    <div>Created by <a href="https://mosmkt.com/" target="_blank" rel="noopener noreferrer">MOS Marketing</a> — April 2026</div>
+  </div>
+</div>
+
+<script>
+// Si el usuario no está autenticado, lo mandamos al login del hub
+(function(){
+  try{
+    var authed = sessionStorage.getItem("vl_benchmark_auth_v1") === "1";
+    if(!authed){ window.location.href = "index.html"; }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

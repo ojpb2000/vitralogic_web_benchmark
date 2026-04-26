@@ -180,6 +180,9 @@
     @media (min-width: 560px) {
       .hub-cards { grid-template-columns: 1fr 1fr; }
     }
+    @media (min-width: 880px) {
+      .hub-cards { grid-template-columns: 1fr 1fr 1fr; }
+    }
     .hub-card {
       display: block;
       width: 100%;
@@ -677,6 +680,10 @@
         <button type="button" class="hub-card" id="hub-pick-social">
           <span class="hub-card-title">Benchmark de redes sociales</span>
           <span class="hub-card-desc">Vista dedicada a presencia y desempeño en redes (en construcción).</span>
+        </button>
+        <button type="button" class="hub-card" id="hub-pick-personas">
+          <span class="hub-card-title">Buyer Personas — GWI</span>
+          <span class="hub-card-desc">Affluent Home Buyer, Prescriptor técnico-arquitectónico y comparativo entre audiencias (Mexico, GWI 2024–2025).</span>
         </button>
       </div>
       <p class="hub-footer-note">Created by <a href="https://mosmkt.com/" target="_blank" rel="noopener noreferrer">MOS Marketing</a> — April 2026</p>
@@ -2602,6 +2609,12 @@ window.__BENCHMARK_DATA__ = {"meta": {"title": "Benchmark tráfico web (SimilarW
   if (hubPickSocial) {
     hubPickSocial.addEventListener("click", function () {
       window.location.href = "social.html";
+    });
+  }
+  var hubPickPersonas = document.getElementById("hub-pick-personas");
+  if (hubPickPersonas) {
+    hubPickPersonas.addEventListener("click", function () {
+      window.location.href = "personas.html";
     });
   }
 

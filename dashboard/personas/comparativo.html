@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dos personajes, un mismo mercado · Affluent vs Prescriptor · Vitralogic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#0a1624;
+  --navy-2:#0e1f33;
+  --navy-3:#152a44;
+
+  /* Affluent palette (copper) */
+  --copper:#c89254;
+  --copper-2:#e5b872;
+  --copper-3:#f2d9a8;
+
+  /* Prescriptor palette (blueprint) */
+  --blueprint:#4a90e2;
+  --blueprint-2:#7fb3ff;
+  --blueprint-3:#b8d4ff;
+
+  /* Shared */
+  --pearl:#f1f4f8;
+  --pearl-2:#dbe3ec;
+  --muted:#7d8fa3;
+  --mint:#4fd1c5;
+  --accent:#ff7a59;
+  --grid: rgba(255,255,255,0.04);
+  --shadow: 0 40px 80px -30px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--pearl);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:inherit}
+::selection{background:var(--mint);color:var(--navy)}
+
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.04;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+/* Nav */
+.nav{
+  position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:30;
+  display:flex;gap:6px;padding:8px;
+  background:rgba(10,22,36,.78);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.12);border-radius:999px;
+  box-shadow:0 10px 40px rgba(0,0,0,.55);
+  max-width:92vw;overflow-x:auto;scrollbar-width:none;
+  font-size:12px;font-weight:500;letter-spacing:.02em;
+}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:9px 14px;border-radius:999px;color:var(--pearl);text-decoration:none;white-space:nowrap;transition:all .3s;opacity:.8}
+.nav a:hover{background:rgba(255,255,255,.08);opacity:1}
+.nav a.active{background:linear-gradient(90deg,var(--copper),var(--blueprint));color:var(--navy);opacity:1;font-weight:600}
+
+section{position:relative;z-index:2;padding:140px 6vw 120px}
+.container{max-width:1320px;margin:0 auto}
+
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:14px
+}
+.eyebrow::before{content:"";width:40px;height:1px;background:linear-gradient(90deg,var(--copper),var(--blueprint))}
+
+h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-.02em;line-height:1.05}
+h1{font-size:clamp(48px,8vw,124px)}
+h2{font-size:clamp(36px,5vw,72px);margin-bottom:28px}
+h3{font-size:clamp(22px,2.4vw,32px);margin-bottom:14px}
+h4{font-size:18px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--pearl-2)}
+
+p.lead{font-family:'Fraunces',serif;font-size:clamp(20px,2.1vw,26px);font-weight:300;line-height:1.45;max-width:920px;color:var(--pearl);opacity:.92}
+p{color:#cbd3dc;max-width:680px}
+em{font-style:italic;color:var(--copper-2)}
+strong{color:var(--pearl);font-weight:600}
+
+.gold{color:var(--copper-2)}
+.blue{color:var(--blueprint-2)}
+
+/* ============ HERO ============ */
+#hero{
+  min-height:100vh;padding:120px 6vw 80px;display:flex;align-items:center;
+  background:
+    radial-gradient(700px 500px at 20% 30%, rgba(200,146,84,.18), transparent 60%),
+    radial-gradient(700px 500px at 80% 70%, rgba(74,144,226,.18), transparent 60%),
+    var(--navy);
+  overflow:hidden;
+}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;width:100%;max-width:1500px;margin:0 auto}
+@media (max-width:1100px){.hero-grid{grid-template-columns:1fr}}
+
+.hero-title{grid-column:1/-1;text-align:center;margin-bottom:60px}
+.hero-title h1{font-family:'Fraunces',serif;font-style:italic;font-weight:300}
+.hero-title h1 .gold{font-style:normal;font-weight:500}
+.hero-title h1 .blue{font-style:normal;font-weight:500}
+.hero-title .lead{margin:36px auto 0;text-align:center;max-width:780px}
+
+/* Two portraits */
+.persona-card{
+  position:relative;padding:36px;border-radius:18px;
+  background:linear-gradient(180deg,rgba(10,22,36,.6),rgba(10,22,36,.85));
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;flex-direction:column;gap:14px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.persona-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;
+}
+.persona-card.aff::before{background:linear-gradient(90deg,var(--copper),var(--copper-2))}
+.persona-card.pre::before{background:linear-gradient(90deg,var(--blueprint),var(--blueprint-2))}
+
+.persona-head{display:flex;align-items:flex-start;gap:24px}
+.portrait-mini{
+  width:140px;height:180px;flex:0 0 140px;border-radius:12px;overflow:hidden;
+  background:linear-gradient(180deg,#1a2a40,#0a1624);
+  border:1px solid rgba(255,255,255,.1);
+}
+.portrait-mini svg{width:100%;height:100%;display:block}
+
+.aff .portrait-mini{
+  background:radial-gradient(120% 80% at 50% 20%,#f4efe8 0%,#e7dfd3 40%,#c89254 80%,#5a3916 100%);
+}
+
+.persona-name{font-family:'Fraunces',serif;font-size:34px;line-height:1;font-weight:500}
+.persona-role{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-top:8px;color:var(--muted)}
+.aff .persona-name{color:var(--copper-2)}
+.pre .persona-name{color:var(--blueprint-2)}
+
+.persona-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.persona-stats .s{padding:12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+.persona-stats .v{font-family:'Fraunces',serif;font-size:24px;font-weight:500;line-height:1}
+.aff .persona-stats .v{color:var(--copper-2)}
+.pre .persona-stats .v{color:var(--blueprint-2)}
+.persona-stats .l{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+.persona-bio{font-family:'Fraunces',serif;font-style:italic;font-size:18px;line-height:1.45;color:#dde3ec;margin-top:6px}
+
+.vs-divider{
+  text-align:center;font-family:'Fraunces',serif;font-size:80px;color:var(--muted);font-style:italic;font-weight:300;line-height:1;
+  position:relative;padding:20px 0;
+}
+@media (max-width:1100px){.vs-divider{padding:0;font-size:48px}}
+
+.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;opacity:.7}
+.scroll-hint::after{content:"";display:block;width:1px;height:30px;background:linear-gradient(180deg,var(--copper),var(--blueprint));margin:12px auto 0;animation:drop 2s ease-in-out infinite}
+@keyframes drop{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.3);opacity:.3}}
+
+/* ============ SIZE Section ============ */
+#sizes{padding:100px 6vw;background:linear-gradient(180deg,var(--navy),var(--navy-2))}
+.size-canvas{position:relative;height:400px;margin-top:60px;border:1px dashed rgba(255,255,255,.1);border-radius:16px;background:radial-gradient(circle at center,rgba(255,255,255,.02),transparent 60%);overflow:hidden}
+.bubble{
+  position:absolute;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;font-family:'JetBrains Mono',monospace;
+  transition:transform .4s;cursor:default;
+}
+.bubble:hover{transform:scale(1.05)}
+.bubble.b-base{
+  width:380px;height:380px;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(125,143,163,.16),rgba(125,143,163,.04));
+  border:2px solid rgba(255,255,255,.06);
+}
+.bubble.b-pre{
+  width:140px;height:140px;left:calc(50% - 50px);top:calc(50% - 70px);
+  background:radial-gradient(circle,rgba(74,144,226,.32),rgba(74,144,226,.08));
+  border:2px solid var(--blueprint);box-shadow:0 0 60px rgba(74,144,226,.3);
+}
+.bubble.b-aff{
+  width:60px;height:60px;left:calc(50% + 60px);top:calc(50% + 50px);
+  background:radial-gradient(circle,rgba(228,184,114,.45),rgba(228,184,114,.1));
+  border:2px solid var(--copper);box-shadow:0 0 40px rgba(228,184,114,.3);
+}
+.bubble .n{font-family:'Fraunces',serif;font-size:30px;color:var(--pearl);font-weight:500;line-height:1}
+.bubble .l{font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-top:6px;color:var(--muted)}
+.bubble.b-base .n{font-size:42px}
+.bubble.b-pre .n{color:var(--blueprint-2)}
+.bubble.b-aff .n{color:var(--copper-2);font-size:20px}
+.bubble.b-aff .l{font-size:8px}
+
+@media (max-width:700px){
+  .bubble.b-base{width:280px;height:280px}
+  .bubble.b-pre{width:110px;height:110px;left:calc(50% - 40px)}
+  .bubble.b-aff{width:50px;height:50px;left:calc(50% + 40px);top:calc(50% + 30px)}
+}
+
+/* ============ Compare bars (mirror) ============ */
+.compare{display:flex;flex-direction:column;gap:12px;margin-top:40px}
+.cmp-row{
+  display:grid;grid-template-columns:1fr 320px 1fr;gap:0;align-items:center;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)
+}
+.cmp-row:last-child{border-bottom:0}
+@media (max-width:900px){.cmp-row{grid-template-columns:1fr;gap:8px;padding:18px 12px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}}
+
+.cmp-side{display:flex;align-items:center;gap:14px;font-size:13px;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+.cmp-side.left{justify-content:flex-end;text-align:right}
+.cmp-side.right{justify-content:flex-start;text-align:left}
+.cmp-side .n{font-family:'Fraunces',serif;font-size:24px;font-weight:500;letter-spacing:-.01em;line-height:1}
+.cmp-side.left .n{color:var(--copper-2)}
+.cmp-side.right .n{color:var(--blueprint-2)}
+
+.cmp-mid{padding:0 18px;text-align:center}
+.cmp-label{font-size:14px;color:var(--pearl);font-weight:500;line-height:1.3}
+.cmp-mid .meta{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-top:6px;letter-spacing:.05em}
+.cmp-mid .baseline{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.16em}
+
+/* Mirror bars */
+.mirror{display:grid;grid-template-columns:1fr 6px 1fr;align-items:center;height:14px;margin-top:8px}
+.mirror .barL,.mirror .barR{height:14px;border-radius:4px;width:0;transition:width 1.6s cubic-bezier(.17,.67,.2,1)}
+.mirror .barL{background:linear-gradient(90deg,transparent,var(--copper));margin-left:auto}
+.mirror .barR{background:linear-gradient(90deg,var(--blueprint),transparent)}
+.mirror .axis{height:24px;width:6px;background:rgba(255,255,255,.16);border-radius:3px}
+
+@media (max-width:900px){
+  .cmp-side.left,.cmp-side.right{justify-content:flex-start;text-align:left}
+  .cmp-side.left::before{content:"Affluent ";color:var(--copper-2);font-weight:600}
+  .cmp-side.right::before{content:"Prescriptor ";color:var(--blueprint-2);font-weight:600}
+  .mirror{grid-template-columns:1fr 6px 1fr}
+}
+
+.cmp-section-head{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:end;margin-bottom:24px}
+.cmp-h-aff{text-align:right}
+.cmp-h-pre{text-align:left}
+.cmp-h-aff .who, .cmp-h-pre .who{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.cmp-h-aff .who span{color:var(--copper-2)}
+.cmp-h-pre .who span{color:var(--blueprint-2)}
+.cmp-h-mid{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;text-align:center;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.04)}
+@media (max-width:900px){.cmp-section-head{display:none}}
+
+/* ============ Venn / shared map ============ */
+.venn-wrap{position:relative;height:520px;margin:60px auto 30px;max-width:900px}
+.venn-circle{
+  position:absolute;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  text-align:center;
+}
+.venn-aff{
+  width:380px;height:380px;left:50px;top:50px;
+  background:radial-gradient(circle,rgba(228,184,114,.18),rgba(228,184,114,.05));
+  border:2px solid rgba(228,184,114,.6);
+  mix-blend-mode:screen;
+}
+.venn-pre{
+  width:380px;height:380px;right:50px;top:50px;
+  background:radial-gradient(circle,rgba(74,144,226,.18),rgba(74,144,226,.05));
+  border:2px solid rgba(74,144,226,.6);
+  mix-blend-mode:screen;
+}
+.venn-label{position:absolute;font-family:'Fraunces',serif;font-style:italic;font-size:32px;font-weight:500}
+.venn-label-aff{top:120px;left:120px;color:var(--copper-2)}
+.venn-label-pre{top:120px;right:120px;color:var(--blueprint-2)}
+.venn-label-shared{top:50%;left:50%;transform:translate(-50%,-50%);color:var(--mint);font-size:24px;text-align:center}
+.venn-label-shared .small{display:block;font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;font-style:normal;color:var(--muted);margin-top:6px}
+.venn-list{position:absolute;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);line-height:1.8;max-width:200px}
+.venn-list-aff{top:200px;left:60px}
+.venn-list-pre{top:200px;right:60px;text-align:right}
+.venn-list-shared{top:200px;left:50%;transform:translateX(-50%);text-align:center;color:#dde3ec}
+
+@media (max-width:900px){
+  .venn-wrap{height:auto;display:grid;grid-template-columns:1fr;gap:16px;max-width:680px}
+  .venn-circle,.venn-label,.venn-list{position:relative;left:auto;right:auto;top:auto;transform:none}
+  .venn-circle{width:auto;height:auto;border-radius:18px;padding:30px;mix-blend-mode:normal}
+  .venn-aff{background:rgba(228,184,114,.1)}
+  .venn-pre{background:rgba(74,144,226,.1)}
+  .venn-label{margin-bottom:14px;font-size:24px;text-align:left}
+  .venn-list{display:block;text-align:left;max-width:100%}
+}
+
+/* ============ Quote ============ */
+.quote{font-family:'Fraunces',serif;font-size:clamp(28px,3.2vw,44px);font-style:italic;font-weight:300;line-height:1.2;color:var(--pearl);max-width:920px;margin:0 auto;text-align:center;padding:60px 0;position:relative}
+.quote::before{content:"\201C";position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:160px;color:var(--copper);opacity:.15}
+.quote.blue::before{color:var(--blueprint)}
+.quote.dual::before{background:linear-gradient(90deg,var(--copper),var(--blueprint));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.3}
+.quote cite{display:block;font-size:13px;font-family:'JetBrains Mono',monospace;color:var(--muted);font-style:normal;letter-spacing:.2em;text-transform:uppercase;margin-top:24px}
+
+/* Reveal */
+[data-reveal]{opacity:0;transform:translateY(30px);transition:opacity 1s,transform 1s}
+[data-reveal].in{opacity:1;transform:translateY(0)}
+
+.sec-alt{background:linear-gradient(180deg,var(--navy) 0%,var(--navy-2) 100%)}
+
+/* ============ QUADRANT ============ */
+#quadrant{padding:140px 6vw;background:linear-gradient(180deg,var(--navy-2) 0%,var(--navy) 100%)}
+.quadrant-wrap{
+  position:relative;width:100%;max-width:980px;margin:60px auto 0;
+  aspect-ratio: 1.05/1;
+  border:1px solid rgba(255,255,255,.12);border-radius:18px;
+  background:
+    linear-gradient(180deg, rgba(228,184,114,.04), rgba(74,144,226,.04)),
+    radial-gradient(circle at center, rgba(255,255,255,.04), transparent 70%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 60px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 60px);
+}
+.q-axis-x, .q-axis-y{position:absolute;background:rgba(255,255,255,.18);z-index:2}
+.q-axis-x{left:0;right:0;top:50%;height:1px}
+.q-axis-y{top:0;bottom:0;left:50%;width:1px}
+.q-axis-x::before,.q-axis-x::after,.q-axis-y::before,.q-axis-y::after{
+  content:"";position:absolute;background:rgba(255,255,255,.4);
+}
+.q-axis-x::before{left:0;top:-3px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:7px solid rgba(255,255,255,.5);background:transparent}
+.q-axis-x::after{right:0;top:-3px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:7px solid rgba(255,255,255,.5);background:transparent}
+.q-axis-y::before{top:0;left:-3px;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid rgba(255,255,255,.5);background:transparent}
+.q-axis-y::after{bottom:0;left:-3px;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:7px solid rgba(255,255,255,.5);background:transparent}
+
+.q-axis-label{
+  position:absolute;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--muted);z-index:5;pointer-events:none;
+}
+.q-axis-label.x-left{left:14px;top:calc(50% + 10px)}
+.q-axis-label.x-right{right:14px;top:calc(50% + 10px);text-align:right}
+.q-axis-label.y-top{top:14px;left:calc(50% + 10px)}
+.q-axis-label.y-bot{bottom:14px;left:calc(50% + 10px)}
+
+.q-quad{
+  position:absolute;width:50%;height:50%;display:flex;align-items:flex-start;justify-content:flex-start;
+  padding:24px;flex-direction:column;gap:6px;z-index:1;
+}
+.q-quad .q-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)
+}
+.q-quad .q-name{
+  font-family:'Fraunces',serif;font-style:italic;font-size:24px;font-weight:500;line-height:1.1;
+}
+.q-quad.tl{top:0;left:0;align-items:flex-start;text-align:left}
+.q-quad.tr{top:0;right:0;align-items:flex-end;text-align:right}
+.q-quad.bl{bottom:0;left:0;align-items:flex-start;text-align:left}
+.q-quad.br{bottom:0;right:0;align-items:flex-end;text-align:right}
+.q-quad.tl .q-name{color:var(--blueprint-2)}
+.q-quad.br .q-name{color:var(--copper-2)}
+.q-quad.tr .q-name{color:var(--mint)}
+.q-quad.bl .q-name{color:#9aa6b3}
+
+.q-point{
+  position:absolute;transform:translate(-50%,-50%);z-index:6;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.q-dot{
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-size:13px;font-weight:600;color:var(--navy);
+  border:2px solid rgba(255,255,255,.85);
+  box-shadow:0 12px 30px rgba(0,0,0,.55);
+  transition:transform .4s;
+}
+.q-point:hover .q-dot{transform:scale(1.08)}
+.q-point.aff .q-dot{background:radial-gradient(circle,var(--copper-3),var(--copper));width:64px;height:64px}
+.q-point.pre .q-dot{background:radial-gradient(circle,var(--blueprint-3),var(--blueprint));width:78px;height:78px}
+.q-point.base .q-dot{background:radial-gradient(circle,#cbd3dc,#7d8fa3);width:38px;height:38px;font-size:10px;color:var(--navy)}
+.q-point.anchor .q-dot{background:rgba(255,255,255,.08);width:14px;height:14px;border:1px solid rgba(255,255,255,.45);box-shadow:none;font-size:0}
+.q-label{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--pearl);
+  background:rgba(10,22,36,.85);padding:4px 10px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.1);
+  white-space:nowrap;
+}
+.q-point.anchor .q-label{font-size:10px;opacity:.75;background:transparent;border-color:transparent;color:var(--muted)}
+.q-point .q-meta{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.05em}
+
+.q-bridge{
+  position:absolute;height:1px;background:linear-gradient(90deg,var(--copper),var(--blueprint));
+  z-index:3;opacity:.55;transform-origin:left center;
+}
+.q-bridge::before,.q-bridge::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;top:-3px}
+.q-bridge::before{left:-3px;background:var(--copper)}
+.q-bridge::after{right:-3px;background:var(--blueprint)}
+
+.q-legend{
+  display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-top:36px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted)
+}
+.q-legend .it{display:flex;align-items:center;gap:8px}
+.q-legend .it .sw{width:10px;height:10px;border-radius:50%}
+
+@media (max-width:760px){
+  .q-quad{padding:14px}
+  .q-quad .q-name{font-size:18px}
+  .q-axis-label{font-size:9px;letter-spacing:.18em}
+  .q-axis-label.x-left, .q-axis-label.x-right{top:calc(50% + 6px)}
+  .q-point.aff .q-dot{width:54px;height:54px}
+  .q-point.pre .q-dot{width:64px;height:64px}
+  .q-label{font-size:10px;padding:3px 7px}
+}
+
+/* Implications */
+#impl{background:linear-gradient(180deg,var(--navy-2),var(--navy));padding:140px 6vw}
+.impl-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+@media (max-width:900px){.impl-cards{grid-template-columns:1fr}}
+.impl{padding:30px;border-radius:18px;background:rgba(10,22,36,.55);border:1px solid rgba(255,255,255,.12);transition:all .4s;position:relative;overflow:hidden}
+.impl:hover{transform:translateY(-6px)}
+.impl.aff{border-color:rgba(228,184,114,.3)}
+.impl.aff:hover{border-color:var(--copper)}
+.impl.pre{border-color:rgba(127,179,255,.3)}
+.impl.pre:hover{border-color:var(--blueprint)}
+.impl.dual{background:linear-gradient(160deg,rgba(228,184,114,.08),rgba(74,144,226,.08));border-color:rgba(79,209,197,.3)}
+.impl.dual:hover{border-color:var(--mint)}
+.impl .n{font-family:'Fraunces',serif;font-size:54px;line-height:1;font-weight:300;font-style:italic}
+.impl.aff .n{color:var(--copper)}
+.impl.pre .n{color:var(--blueprint)}
+.impl.dual .n{color:var(--mint)}
+.impl h3{font-size:22px;margin:12px 0 14px;color:var(--pearl)}
+.impl p{font-size:14px;color:#cbd3dc}
+.impl .who{display:inline-block;padding:4px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.impl.aff .who{background:rgba(228,184,114,.18);color:var(--copper-2)}
+.impl.pre .who{background:rgba(74,144,226,.18);color:var(--blueprint-2)}
+.impl.dual .who{background:rgba(79,209,197,.18);color:var(--mint)}
+
+/* Highlight cards (only-aff/only-pre) */
+.solo-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:40px}
+@media (max-width:900px){.solo-grid{grid-template-columns:1fr}}
+.solo{padding:32px;border-radius:18px;background:rgba(10,22,36,.6);border:1px solid rgba(255,255,255,.1);position:relative;overflow:hidden}
+.solo::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px}
+.solo.aff::before{background:linear-gradient(90deg,var(--copper),var(--copper-2))}
+.solo.pre::before{background:linear-gradient(90deg,var(--blueprint),var(--blueprint-2))}
+.solo h3{font-size:28px}
+.solo .lead-mini{font-family:'Fraunces',serif;font-size:18px;font-style:italic;font-weight:300;line-height:1.4;margin-top:6px;color:#cbd3dc}
+.solo ul{margin-top:24px;list-style:none;padding:0}
+.solo li{padding:10px 0 10px 0;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px}
+.solo li:first-child{border-top:0}
+.solo li .name{color:var(--pearl);font-weight:500;font-size:13px}
+.solo li .sub{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+.solo li .idx{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--copper-2);font-weight:600}
+.solo.pre li .idx{color:var(--blueprint-2)}
+
+/* Footer */
+footer{padding:80px 6vw;text-align:center;border-top:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase}
+
+</style>
+</head>
+<body>
+<a href="../personas.html" style="position:fixed;top:24px;left:24px;z-index:50;padding:8px 14px;background:rgba(10,22,36,.78);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:999px;color:#f1f4f8;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;box-shadow:0 10px 40px rgba(0,0,0,.55);transition:all .3s">← Buyer Personas</a>
+
+<nav class="nav" id="nav">
+  <a href="#hero">Dual</a>
+  <a href="#sizes">Tamaños</a>
+  <a href="#shared">Convergencias</a>
+  <a href="#diverge">Divergencias</a>
+  <a href="#quadrant">Cuadrante</a>
+  <a href="#demo">Demografía</a>
+  <a href="#tech">Tecnología</a>
+  <a href="#discovery">Descubrimiento</a>
+  <a href="#advocacy">Advocacy</a>
+  <a href="#sport-lux">Deportes & Lujo</a>
+  <a href="#impl">Estrategia</a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="hero-grid">
+    <div class="hero-title" data-reveal>
+      <div class="eyebrow">Vitralogic · Comparativo de audiencias · GWI Mexico Q1&#39;24 — Q4&#39;25</div>
+      <h1>
+        <span class="gold">Alejandro</span>
+        <span style="color:var(--muted);font-style:italic;font-weight:300"> &amp; </span>
+        <span class="blue">Diego.</span>
+      </h1>
+      <p class="lead">
+        Dos personajes. Un mismo mercado. Uno <em class="gold">vive</em> la casa que el otro <em class="blue">especifica</em>.
+        Vitralogic los necesita a los dos — pero les habla con códigos distintos.
+        Esto es lo que el cruce de 970 atributos GWI revela sobre <strong>dónde se encuentran y dónde divergen</strong>.
+      </p>
+    </div>
+
+    <!-- Affluent persona card -->
+    <div class="persona-card aff" data-reveal>
+      <div class="persona-head">
+        <div class="portrait-mini">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gSkinA" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f4efe8"/><stop offset="1" stop-color="#dfb08a"/>
+              </linearGradient>
+              <linearGradient id="gJacketA" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#17324d"/><stop offset="1" stop-color="#0a1624"/>
+              </linearGradient>
+              <linearGradient id="gCu" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#e5b872"/><stop offset="1" stop-color="#c89254"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="70" cy="65" rx="28" ry="34" fill="url(#gSkinA)"/>
+            <path d="M44 50 Q50 24 70 24 Q90 24 96 50 Q92 42 78 42 Q70 44 62 42 Q48 44 44 56 Z" fill="#3a3530"/>
+            <g fill="#0c0d10"><ellipse cx="60" cy="64" rx="1.5" ry="2"/><ellipse cx="80" cy="64" rx="1.5" ry="2"/></g>
+            <path d="M62 80 Q70 84 78 80" stroke="#8a4a3a" stroke-width="1.2" fill="none"/>
+            <path d="M28 165 Q28 130 50 116 L90 116 Q112 130 112 165 L112 180 L28 180 Z" fill="url(#gJacketA)"/>
+            <path d="M62 118 L70 138 L78 118 Z" fill="#f4efe8"/>
+            <path d="M68 118 L66 138 L70 144 L74 138 L72 118 Z" fill="url(#gCu)"/>
+          </svg>
+        </div>
+        <div>
+          <div class="persona-name">Alejandro, 54</div>
+          <div class="persona-role">Affluent Home Buyer</div>
+          <div class="persona-bio">Vive la casa como una inversión y un escenario.<br/>Compra premium, viaja, y exige confort.</div>
+        </div>
+      </div>
+      <div class="persona-stats">
+        <div class="s"><div class="v">287K</div><div class="l">Universo</div></div>
+        <div class="s"><div class="v">n=110</div><div class="l">Encuestados</div></div>
+        <div class="s"><div class="v">37%</div><div class="l">Decisor</div></div>
+      </div>
+    </div>
+
+    <!-- Prescriptor persona card -->
+    <div class="persona-card pre" data-reveal>
+      <div class="persona-head">
+        <div class="portrait-mini">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gSkinP" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f4efe8"/><stop offset="1" stop-color="#cd9b80"/>
+              </linearGradient>
+              <linearGradient id="gShirtP" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#1a2a40"/><stop offset="1" stop-color="#0a1624"/>
+              </linearGradient>
+              <pattern id="bpA" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M0 5 L10 5" stroke="#4a90e2" stroke-width=".25" opacity=".25"/>
+                <path d="M5 0 L5 10" stroke="#4a90e2" stroke-width=".25" opacity=".25"/>
+              </pattern>
+            </defs>
+            <rect width="140" height="180" fill="url(#bpA)"/>
+            <ellipse cx="70" cy="65" rx="26" ry="32" fill="url(#gSkinP)"/>
+            <path d="M46 52 Q50 26 70 26 Q90 26 94 52 Q90 46 80 44 Q70 46 60 44 Q50 46 46 58 Z" fill="#2a2520"/>
+            <g stroke="#0c0d10" stroke-width="1.3" fill="none">
+              <rect x="52" y="58" width="14" height="9" rx="1.5"/>
+              <rect x="74" y="58" width="14" height="9" rx="1.5"/>
+              <line x1="66" y1="62" x2="74" y2="62"/>
+            </g>
+            <g fill="#0c0d10"><ellipse cx="59" cy="63" rx="1" ry="1.5"/><ellipse cx="81" cy="63" rx="1" ry="1.5"/></g>
+            <path d="M62 80 Q70 84 78 80" stroke="#7a3a30" stroke-width="1.2" fill="none"/>
+            <path d="M30 165 Q30 130 50 116 L90 116 Q110 130 110 165 L110 180 L30 180 Z" fill="url(#gShirtP)"/>
+            <path d="M64 117 L70 137 L76 117 Z" fill="#0a1624" stroke="#4a90e2" stroke-width=".5"/>
+            <circle cx="70" cy="128" r="1.2" fill="#4a90e2"/>
+            <rect x="62" y="148" width="16" height="12" rx="1.5" fill="#0a1624" stroke="#4a90e2" stroke-width=".7"/>
+          </svg>
+        </div>
+        <div>
+          <div class="persona-name">Diego, 41</div>
+          <div class="persona-role">Prescriptor Técnico-Arquitectónico</div>
+          <div class="persona-bio">Vive entre planos y obra. Especifica decisiones por millones de pesos.<br/>Si te firma, vendes.</div>
+        </div>
+      </div>
+      <div class="persona-stats">
+        <div class="s"><div class="v">1.21M</div><div class="l">Universo</div></div>
+        <div class="s"><div class="v">n=464</div><div class="l">Encuestados</div></div>
+        <div class="s"><div class="v">78%</div><div class="l">Decisor</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Cómo se cruzan</div>
+</section>
+
+<!-- ================= TAMAÑOS ================= -->
+<section id="sizes" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Tamaños relativos</div>
+    <h2 data-reveal>Pocos. Pero clave.</h2>
+    <p class="lead" data-reveal style="color:#cbd3dc">
+      Juntos suman <strong>1.5M</strong> de mexicanos en el universo digital de <strong>75.8M</strong> — apenas <strong>2%</strong> de la base.
+      Pero entre los dos definen el negocio: <span class="gold">Alejandro compra</span> y <span class="blue">Diego especifica</span>. La conversión real se mide
+      cuando ambos quedan convencidos.
+    </p>
+    <div class="size-canvas" data-reveal>
+      <div class="bubble b-base">
+        <div class="n">75.8M</div>
+        <div class="l">Mexicanos en internet</div>
+      </div>
+      <div class="bubble b-pre">
+        <div class="n">1.21M</div>
+        <div class="l">Prescriptores</div>
+      </div>
+      <div class="bubble b-aff">
+        <div class="n">287K</div>
+        <div class="l">Affluent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONVERGENCIAS ================= -->
+<section id="shared">
+  <div class="container">
+    <div class="eyebrow" data-reveal>El corazón compartido</div>
+    <h2 data-reveal>Donde Alejandro y Diego se parecen.</h2>
+    <p class="lead" data-reveal>De los 747 atributos comparados, identificamos <strong>14 convergencias fuertes</strong>: comportamientos donde <em>ambos</em> sobre-indexan respecto al mexicano promedio. Aquí Vitralogic puede hablar con un solo mensaje a los dos a la vez.</p>
+
+    <div class="venn-wrap" data-reveal>
+      <div class="venn-circle venn-aff"></div>
+      <div class="venn-circle venn-pre"></div>
+      <div class="venn-label venn-label-aff">Alejandro</div>
+      <div class="venn-label venn-label-pre">Diego</div>
+      <div class="venn-label venn-label-shared">Compartido<span class="small">14 atributos</span></div>
+      <div class="venn-list venn-list-aff">
+        Real Estate idx 611<br/>
+        Cartier idx 373<br/>
+        Government idx 425<br/>
+        Traditional Parents 419<br/>
+        WeChat idx 274
+      </div>
+      <div class="venn-list venn-list-pre">
+        Engineering idx 1240<br/>
+        Construcción idx 1279<br/>
+        Cars/motoring idx 162<br/>
+        Forums/foros idx 158<br/>
+        Elevators ads idx 172
+      </div>
+      <div class="venn-list venn-list-shared">
+        Jet-setters · Highest income<br/>
+        Decision-makers · PGA Tour<br/>
+        Zegna · GANT · Cartier<br/>
+        Parental Investors · Early Adopters<br/>
+        Premium buyers · AI adoption
+      </div>
+    </div>
+
+    <h3 style="margin-top:80px" data-reveal>Top 14 convergencias en datos duros</h3>
+    <p data-reveal>Cada fila muestra el atributo, el porcentaje en cada audiencia y el índice (afinidad vs mexicano promedio). 100 = el mexicano promedio.</p>
+
+    <div class="cmp-section-head">
+      <div class="cmp-h-aff"><div class="who"><span>ALEJANDRO</span> · Affluent</div></div>
+      <div class="cmp-h-mid">vs · MX = 100</div>
+      <div class="cmp-h-pre"><div class="who"><span>DIEGO</span> · Prescriptor</div></div>
+    </div>
+    <div class="compare" id="cmp-converge"></div>
+  </div>
+</section>
+
+<!-- ================= DIVERGENCIAS ================= -->
+<section id="diverge" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Lo que los hace distintos</div>
+    <h2 data-reveal>Donde Alejandro vive y Diego especifica.</h2>
+    <p class="lead" data-reveal>Estos son los atributos donde <em>solo uno</em> sobre-indexa significativamente. Aquí Vitralogic debe diferenciar el mensaje.</p>
+
+    <div class="solo-grid" data-reveal>
+      <div class="solo aff">
+        <h3 class="gold">Sólo Alejandro</h3>
+        <div class="lead-mini">"Vivo lo que tú diseñas, y exijo que se sienta como inversión."</div>
+        <ul id="list-only-aff"></ul>
+      </div>
+      <div class="solo pre">
+        <h3 class="blue">Sólo Diego</h3>
+        <div class="lead-mini">"Diseño y especifico lo que tú vives. Necesito performance, no marketing."</div>
+        <ul id="list-only-pre"></ul>
+      </div>
+    </div>
+
+    <div class="quote dual" data-reveal>
+      Uno habita el confort. El otro responde por sus métricas.
+    </div>
+  </div>
+</section>
+
+<!-- ================= CUADRANTE ESTRATEGICO ================= -->
+<section id="quadrant">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Mapa estratégico</div>
+    <h2 data-reveal>Dos mentalidades en un mismo lienzo.</h2>
+    <p class="lead" data-reveal>
+      Sobre dos ejes que importan a Vitralogic: <strong>cómo deciden</strong> (técnico/funcional &harr; emocional/aspiracional)
+      y <strong>desde dónde deciden</strong> (rol B2B profesional &harr; rol B2C personal). El mexicano promedio queda al centro.
+      Alejandro y Diego ocupan cuadrantes <em>opuestos</em>, pero el puente entre ambos es la oportunidad de marca.
+    </p>
+
+    <div class="quadrant-wrap" data-reveal>
+
+      <!-- Cuadrantes (etiquetas grandes) -->
+      <div class="q-quad tl">
+        <div class="q-tag">↑ B2B · ← Técnico</div>
+        <div class="q-name">El Especificador</div>
+        <div class="q-tag" style="font-style:italic;color:#7d8fa3;text-transform:none;letter-spacing:.05em;font-family:'Fraunces',serif;font-size:13px;margin-top:4px">"Si no hay ficha técnica, no hay venta."</div>
+      </div>
+      <div class="q-quad tr">
+        <div class="q-tag">↑ B2B · → Aspiracional</div>
+        <div class="q-name">El Líder de marca</div>
+        <div class="q-tag" style="font-style:italic;color:#7d8fa3;text-transform:none;letter-spacing:.05em;font-family:'Fraunces',serif;font-size:13px;margin-top:4px">"Compro reputación, vendo marca."</div>
+      </div>
+      <div class="q-quad bl">
+        <div class="q-tag">↓ B2C · ← Técnico</div>
+        <div class="q-name">El Hobbyista DIY</div>
+        <div class="q-tag" style="font-style:italic;color:#7d8fa3;text-transform:none;letter-spacing:.05em;font-family:'Fraunces',serif;font-size:13px;margin-top:4px">"Lo armo, lo entiendo, lo elijo."</div>
+      </div>
+      <div class="q-quad br">
+        <div class="q-tag">↓ B2C · → Aspiracional</div>
+        <div class="q-name">El Conoisseur</div>
+        <div class="q-tag" style="font-style:italic;color:#7d8fa3;text-transform:none;letter-spacing:.05em;font-family:'Fraunces',serif;font-size:13px;margin-top:4px">"Mi casa es mi escenario."</div>
+      </div>
+
+      <!-- Ejes -->
+      <div class="q-axis-x"></div>
+      <div class="q-axis-y"></div>
+      <div class="q-axis-label x-left">← Decisión técnica / funcional</div>
+      <div class="q-axis-label x-right">Decisión aspiracional / emocional →</div>
+      <div class="q-axis-label y-top">↑ Rol B2B / profesional</div>
+      <div class="q-axis-label y-bot">↓ Rol B2C / personal</div>
+
+      <!-- Bridge entre los dos personajes principales -->
+      <div class="q-bridge" id="bridge"></div>
+
+      <!-- Anclas (otros segmentos GWI para context) -->
+      <div class="q-point anchor" style="left:30%;top:18%"><div class="q-dot"></div><div class="q-label">Engineering</div></div>
+      <div class="q-point anchor" style="left:72%;top:22%"><div class="q-dot"></div><div class="q-label">Executive Mgmt</div></div>
+      <div class="q-point anchor" style="left:34%;top:74%"><div class="q-dot"></div><div class="q-label">Early Adopters</div></div>
+      <div class="q-point anchor" style="left:78%;top:64%"><div class="q-dot"></div><div class="q-label">Jet-setters</div></div>
+      <div class="q-point anchor" style="left:82%;top:80%"><div class="q-dot"></div><div class="q-label">Parental Investors</div></div>
+      <div class="q-point anchor" style="left:18%;top:62%"><div class="q-dot"></div><div class="q-label">DIY home</div></div>
+
+      <!-- MX baseline -->
+      <div class="q-point base" style="left:50%;top:50%">
+        <div class="q-dot">MX</div>
+        <div class="q-label">Mexicano promedio</div>
+        <div class="q-meta">75.8M · base</div>
+      </div>
+
+      <!-- Diego (Prescriptor) - top-left -->
+      <div class="q-point pre" style="left:26%;top:28%" id="ptD">
+        <div class="q-dot">D</div>
+        <div class="q-label" style="border-color:rgba(74,144,226,.5);background:rgba(10,22,36,.92)"><strong style="color:var(--blueprint-2)">Diego</strong> · Prescriptor</div>
+        <div class="q-meta">1.21M · idx prom 167</div>
+      </div>
+
+      <!-- Alejandro (Affluent) - bottom-right -->
+      <div class="q-point aff" style="left:74%;top:72%" id="ptA">
+        <div class="q-dot">A</div>
+        <div class="q-label" style="border-color:rgba(228,184,114,.5);background:rgba(10,22,36,.92)"><strong style="color:var(--copper-2)">Alejandro</strong> · Affluent</div>
+        <div class="q-meta">287K · idx prom 189</div>
+      </div>
+
+    </div>
+
+    <div class="q-legend">
+      <div class="it"><span class="sw" style="background:var(--copper)"></span> Alejandro · Affluent Home Buyer</div>
+      <div class="it"><span class="sw" style="background:var(--blueprint)"></span> Diego · Prescriptor</div>
+      <div class="it"><span class="sw" style="background:#7d8fa3"></span> Promedio MX</div>
+      <div class="it"><span class="sw" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4)"></span> Anclas GWI (segmentos relacionados)</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:60px" data-reveal>
+      <div style="padding:26px;border-radius:14px;border:1px solid rgba(228,184,114,.25);background:rgba(228,184,114,.04)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-2)">Por qué Alejandro vive abajo-derecha</div>
+        <p style="margin-top:10px;font-size:14px">Sobre-indexa en <strong>Jet-setters (idx 436)</strong>, <strong>Highest income (342)</strong>, <strong>Cartier (373)</strong> y <strong>Real Estate (611)</strong>. Su trabajo es C-suite, pero su lectura de marca es lifestyle: viaja, compra moda formal, ve la casa como escenario. Su "trabajo" valida; su "vida" decide.</p>
+      </div>
+      <div style="padding:26px;border-radius:14px;border:1px solid rgba(74,144,226,.25);background:rgba(74,144,226,.04)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--blueprint-2)">Por qué Diego vive arriba-izquierda</div>
+        <p style="margin-top:10px;font-size:14px">Sobre-indexa en <strong>Engineering (idx 1240)</strong>, <strong>Construcción (1279)</strong>, <strong>Forums/foros gremiales (158)</strong> y en discovery por <strong>revistas técnicas y trade media</strong>. Pondera ficha, EPDs, BIM y certificaciones. Su decisión es profesional: si firma, su reputación queda atada al producto.</p>
+      </div>
+    </div>
+
+    <div class="quote dual" data-reveal style="margin-top:80px">
+      Vitralogic vive en la diagonal: pasar del cuadrante técnico al aspiracional sin perder credibilidad técnica.
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEMOGRAFIA ================= -->
+<section id="demo">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Demografía y trabajo</div>
+    <h2 data-reveal>Mismas mesas. Pesos diferentes.</h2>
+    <p class="lead" data-reveal>Ambos están en posiciones de poder dentro de sus empresas. Pero su <strong>"esquina ejecutiva"</strong> es distinta: Alejandro reside en consejos directivos del corporativo y gobierno; Diego habita la cabina de mando de la obra.</p>
+
+    <div class="cmp-section-head">
+      <div class="cmp-h-aff"><div class="who"><span>ALEJANDRO</span></div></div>
+      <div class="cmp-h-mid">Sector</div>
+      <div class="cmp-h-pre"><div class="who"><span>DIEGO</span></div></div>
+    </div>
+    <div class="compare" id="cmp-sector"></div>
+
+    <h3 style="margin-top:80px" data-reveal>Nivel jerárquico</h3>
+    <div class="compare" id="cmp-seniority"></div>
+
+    <h3 style="margin-top:80px" data-reveal>Poder de decisión</h3>
+    <div class="compare" id="cmp-decision"></div>
+
+    <h3 style="margin-top:80px" data-reveal>Personalidad</h3>
+    <div class="compare" id="cmp-caracter"></div>
+
+    <h3 style="margin-top:80px" data-reveal>Personas (segmentos GWI) que los describen</h3>
+    <div class="compare" id="cmp-personas"></div>
+  </div>
+</section>
+
+<!-- ================= TECH ================= -->
+<section id="tech" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Tecnología & IA</div>
+    <h2 data-reveal>Ambos abrazan la IA. Pero por motivos opuestos.</h2>
+    <p class="lead" data-reveal>Aquí hay un espejo interesante: <span class="gold">Alejandro</span> es <em>entusiasta confiado</em> ("AI mejora mi vida diaria" 54% vs 35% de Diego). <span class="blue">Diego</span> es <em>crítico pragmático</em>: paga más por marcas con IA ética (idx 208), cree que crea más empleos (idx 187). El primero la disfruta, el segundo la audita.</p>
+
+    <div class="cmp-section-head">
+      <div class="cmp-h-aff"><div class="who"><span>ALEJANDRO</span></div></div>
+      <div class="cmp-h-mid">Tech & AI</div>
+      <div class="cmp-h-pre"><div class="who"><span>DIEGO</span></div></div>
+    </div>
+    <div class="compare" id="cmp-tech"></div>
+  </div>
+</section>
+
+<!-- ================= DISCOVERY ================= -->
+<section id="discovery">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Cómo descubren marcas</div>
+    <h2 data-reveal>Mismas señales. Diferentes códigos editoriales.</h2>
+    <p class="lead" data-reveal><span class="gold">Alejandro</span> descubre marcas en prensa impresa (idx 236), webs editoriales (idx 225) y comparadores (idx 205). <span class="blue">Diego</span>, en revistas técnicas (idx 166), foros gremiales (idx 158) y pantallas en elevadores corporativos (idx 172). Lo común: <strong>contenido editorial &gt; feeds genéricos</strong>. Lo distinto: el <em>tipo</em> de publicación.</p>
+
+    <div class="cmp-section-head">
+      <div class="cmp-h-aff"><div class="who"><span>ALEJANDRO</span></div></div>
+      <div class="cmp-h-mid">Brand Discovery</div>
+      <div class="cmp-h-pre"><div class="who"><span>DIEGO</span></div></div>
+    </div>
+    <div class="compare" id="cmp-discovery"></div>
+  </div>
+</section>
+
+<!-- ================= ADVOCACY ================= -->
+<section id="advocacy" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Qué los activa para recomendar</div>
+    <h2 data-reveal>Ambos quieren sentirse <em>insider</em>. Pero por razones distintas.</h2>
+    <p class="lead" data-reveal>Aquí el pareo es revelador. Los dos privilegian el <strong>insider knowledge</strong>, el <strong>servicio excepcional</strong> y la <strong>calidad alta</strong>. La diferencia es el "qué" del privilegio: para <span class="gold">Alejandro</span>, acceso exclusivo a contenido y experiencias; para <span class="blue">Diego</span>, formación técnica especializada y soporte priorizado.</p>
+
+    <div class="cmp-section-head">
+      <div class="cmp-h-aff"><div class="who"><span>ALEJANDRO</span></div></div>
+      <div class="cmp-h-mid">Brand Advocacy</div>
+      <div class="cmp-h-pre"><div class="who"><span>DIEGO</span></div></div>
+    </div>
+    <div class="compare" id="cmp-advocacy"></div>
+  </div>
+</section>
+
+<!-- ================= DEPORTES Y LUJO ================= -->
+<section id="sport-lux">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Deportes &amp; lujo</div>
+    <h2 data-reveal>El terreno donde se rozan.</h2>
+    <p class="lead" data-reveal>Aquí está el insight de medios más rentable de todo el estudio: ambos siguen <strong>golf, tenis y MLS</strong> con índices altos. Y comparten el código de marca de oficina formal: <strong>Zegna, Cartier, GANT</strong>. Patrocinar deporte aspiracional o aparecer en publicaciones de motor/golf <em>activa a los dos al mismo tiempo</em>.</p>
+
+    <div class="cmp-section-head">
+      <div class="cmp-h-aff"><div class="who"><span>ALEJANDRO</span></div></div>
+      <div class="cmp-h-mid">Deportes que siguen</div>
+      <div class="cmp-h-pre"><div class="who"><span>DIEGO</span></div></div>
+    </div>
+    <div class="compare" id="cmp-deportes"></div>
+
+    <h3 style="margin-top:80px" data-reveal>Marcas de lujo donde ambos sobre-indexan</h3>
+    <div class="compare" id="cmp-lujo"></div>
+  </div>
+</section>
+
+<!-- ================= IMPLICACIONES ================= -->
+<section id="impl">
+  <div class="container">
+    <div class="eyebrow" data-reveal>Implicaciones para Vitralogic</div>
+    <h2 data-reveal>Una marca, dos guiones, una orquesta.</h2>
+    <p class="lead" data-reveal>El cruce arroja una arquitectura de <em>go-to-market</em> dual: hablar con un guion a Alejandro, otro a Diego, y un tercer guion <strong>compartido</strong> donde Vitralogic los conecta en un mismo escenario.</p>
+
+    <div class="impl-cards" data-reveal>
+      <div class="impl aff">
+        <span class="who">Alejandro · Affluent</span>
+        <div class="n">A1</div>
+        <h3>Confort, legado y diseño.</h3>
+        <p>Vende calidad de vida y plusvalía. Branded editorial en revistas de arquitectura premium (AD, ELLE Decor). Email personalizado, configurador asistido por IA, showroom de cita.</p>
+      </div>
+      <div class="impl aff">
+        <span class="who">Alejandro · Affluent</span>
+        <div class="n">A2</div>
+        <h3>Anfitrión y patrimonio.</h3>
+        <p>Activa a través del rol social: cenas privadas con arquitectos, viajes a fábrica europea, alianza con joyería/auto premium para regalo de bienvenida tras instalación.</p>
+      </div>
+      <div class="impl aff">
+        <span class="who">Alejandro · Affluent</span>
+        <div class="n">A3</div>
+        <h3>Periodismo &amp; causas.</h3>
+        <p>Inviértele a contenido editorial con firmas reconocidas y a alianzas con causas tangibles (idx 226 supporting good causes). Evita influencers genéricos.</p>
+      </div>
+
+      <div class="impl pre">
+        <span class="who">Diego · Prescriptor</span>
+        <div class="n">D1</div>
+        <h3>BIM, EPDs y certificaciones.</h3>
+        <p>El producto vive en su ficha técnica. Plataforma con DWG, RVT, especificaciones, U-value, certificaciones LEED/EPD descargables sin formularios molestos.</p>
+      </div>
+      <div class="impl pre">
+        <span class="who">Diego · Prescriptor</span>
+        <div class="n">D2</div>
+        <h3>Programa de prescriptores.</h3>
+        <p>Arquitectos y PMs certificados con beneficios reales: capacitación, soporte priorizado, presencia en proyectos publicados, viajes a planta. Ellos firman; tú ganas la obra.</p>
+      </div>
+      <div class="impl pre">
+        <span class="who">Diego · Prescriptor</span>
+        <div class="n">D3</div>
+        <h3>Foros, OOH en torres y trade media.</h3>
+        <p>Pantallas de elevador en Reforma/Polanco/Santa Fe (idx 172), threads patrocinados en Reddit/Telegram gremiales, Arquine y Obras como ancla editorial.</p>
+      </div>
+
+      <div class="impl dual">
+        <span class="who">Compartido</span>
+        <div class="n">D+A 1</div>
+        <h3>Patrocinio de golf y tenis.</h3>
+        <p>PGA Tour idx 395 (A) e idx 244 (P). Tennis Slams idx 200+ ambos. Un solo patrocinio activa a ambos: el cliente premium y el arquitecto que se lo recomienda. El ROI se duplica.</p>
+      </div>
+      <div class="impl dual">
+        <span class="who">Compartido</span>
+        <div class="n">D+A 2</div>
+        <h3>Casa modelo + cena de proyecto.</h3>
+        <p>Activación que junta a Alejandro (cliente) y Diego (su arquitecto) en una experiencia inmersiva: residencia equipada con Vitralogic, cena con chef, pruebas térmicas/acústicas en vivo. La firma y la decisión cierran en la misma noche.</p>
+      </div>
+      <div class="impl dual">
+        <span class="who">Compartido</span>
+        <div class="n">D+A 3</div>
+        <h3>Editorial cruzado: lifestyle + técnico.</h3>
+        <p>Branded content que vive en dos formatos: visualmente premium para Alejandro, datos técnicos descargables para Diego. Mismo proyecto, dos lecturas. <em>One asset, two journeys.</em></p>
+      </div>
+    </div>
+
+    <div class="quote dual" data-reveal style="margin-top:100px">
+      Si Diego firma y Alejandro siente, Vitralogic vende dos veces el mismo producto.
+    </div>
+  </div>
+</section>
+
+<footer>
+  Fuente: GWI Core · Mexico · Q1 2024 – Q4 2025 · n=110 Affluent + n=464 Prescriptor vs n=40,065 base MX · 970 atributos · 747 cruces válidos · Vitralogic 2026
+</footer>
+
+<script id="data" type="application/json">{"meta": {"source": "GWI - Mexico", "export_date": "26 April 2026", "waves": "Q4 2025, Q3 2025, Q2 2025, Q1 2025, Q4 2024, Q3 2024, Q2 2024, Q1 2024", "universe_affluent": 287423, "universe_prescriptor": 1209243, "universe_global": 75829149, "n_affluent": 110, "n_prescriptor": 464, "joined_attributes": 747}, "convergences": [{"block": "All Personas", "attr": "Jet-setters", "ia": 436, "ip": 409, "pa_a": 13.9, "pa_p": 13.1, "pg": 3.1, "diff": 27.1, "ra_a": 18, "ra_p": 61}, {"block": "Luxury Fashion: Engagement*", "attr": "Rochas (To Q2 2024) - Purchased in Last Year - Purchased in Last 5 Years", "ia": 631, "ip": 370, "pa_a": 13.4, "pa_p": 7.9, "pg": 2.1, "diff": 261.9, "ra_a": 2, "ra_p": 7}, {"block": "All Personas", "attr": "Parental Investors", "ia": 343, "ip": 361, "pa_a": 8.3, "pa_p": 8.7, "pg": 2.4, "diff": -17.5, "ra_a": 10, "ra_p": 41}, {"block": "All Personas", "attr": "Early Adopters", "ia": 296, "ip": 318, "pa_a": 5.3, "pa_p": 5.7, "pg": 1.8, "diff": -22.1, "ra_a": 6, "ra_p": 27}, {"block": "Luxury Fashion: Engagement*", "attr": "Zegna - Purchased in Last Year - Purchased in Last 5 Years", "ia": 421, "ip": 291, "pa_a": 17.2, "pa_p": 11.9, "pg": 4.1, "diff": 130.5, "ra_a": 11, "ra_p": 40}, {"block": "Work Decision-Making Power", "attr": "Purchasers", "ia": 265, "ip": 297, "pa_a": 22.3, "pa_p": 24.9, "pg": 8.4, "diff": -31.4, "ra_a": 24, "ra_p": 117}, {"block": "Luxury Fashion: Engagement*", "attr": "GANT - Purchased in Last Year - Purchased in Last 5 Years", "ia": 250, "ip": 260, "pa_a": 5.7, "pa_p": 5.9, "pg": 2.3, "diff": -10, "ra_a": 3, "ra_p": 18}, {"block": "Income (by segment)", "attr": "Highest (Subset of High)", "ia": 342, "ip": 247, "pa_a": 32.8, "pa_p": 23.7, "pg": 9.6, "diff": 95.4, "ra_a": 38, "ra_p": 111}, {"block": "Job Seniority", "attr": "Executive Management (e.g. President / Partner, CEO, CFO, C-Suite)", "ia": 300, "ip": 246, "pa_a": 13.5, "pa_p": 11.1, "pg": 4.5, "diff": 54.0, "ra_a": 15, "ra_p": 54}, {"block": "Sport Events & Leagues", "attr": "PGA Tour (Golf) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 395, "ip": 244, "pa_a": 12.2, "pa_p": 7.5, "pg": 2.9, "diff": 150.7, "ra_a": 14, "ra_p": 35}, {"block": "Luxury Fashion: Engagement*", "attr": "Davidoff - Purchased in Last Year - Purchased in Last 5 Years", "ia": 258, "ip": 239, "pa_a": 6.5, "pa_p": 6, "pg": 2.5, "diff": 19.0, "ra_a": 4, "ra_p": 18}, {"block": "Luxury Fashion: Engagement*", "attr": "Cartier - Purchased in Last Year - Purchased in Last 5 Years", "ia": 373, "ip": 238, "pa_a": 29.1, "pa_p": 18.6, "pg": 7.8, "diff": 134.8, "ra_a": 16, "ra_p": 58}, {"block": "Luxury Fashion: Engagement*", "attr": "Nina Ricci - Purchased in Last Year - Purchased in Last 5 Years", "ia": 453, "ip": 238, "pa_a": 23.9, "pa_p": 12.6, "pg": 5.3, "diff": 215.1, "ra_a": 13, "ra_p": 38}, {"block": "B2B Purchase Influencers", "attr": "Emails from brands", "ia": 238, "ip": 237, "pa_a": 22.1, "pa_p": 21.9, "pg": 9.3, "diff": 1.8, "ra_a": 25, "ra_p": 101}], "only_affluent": [{"block": "Work Sector / Industry", "attr": "Government (National or Local) (Select Markets Only)", "ia": 425, "ip": 0, "pa_a": 9.6, "pa_p": 0, "pg": 2.2, "diff": 425.2, "ra_a": 12, "ra_p": 0}, {"block": "All Personas", "attr": "Shopaholics", "ia": 317, "ip": 86, "pa_a": 8.3, "pa_p": 2.3, "pg": 2.7, "diff": 231, "ra_a": 9, "ra_p": 11}, {"block": "Work Sector / Industry", "attr": "HR & Training", "ia": 291, "ip": 0, "pa_a": 4.7, "pa_p": 0, "pg": 1.6, "diff": 290.9, "ra_a": 5, "ra_p": 0}, {"block": "Gaming Franchises*", "attr": "Football Manager", "ia": 274, "ip": 103, "pa_a": 13, "pa_p": 4.9, "pg": 4.7, "diff": 171.9, "ra_a": 8, "ra_p": 15}, {"block": "Work Sector / Industry", "attr": "IT / Telecommunications", "ia": 215, "ip": 0, "pa_a": 6.8, "pa_p": 0, "pg": 3.1, "diff": 214.8, "ra_a": 9, "ra_p": 0}, {"block": "Accounts Followed on Social Media", "attr": "Wildlife organizations or animals", "ia": 180, "ip": 98, "pa_a": 25.5, "pa_p": 13.8, "pg": 14.2, "diff": 82.7, "ra_a": 28, "ra_p": 64}, {"block": "All Personas", "attr": "Social Learners", "ia": 178, "ip": 97, "pa_a": 29.7, "pa_p": 16.2, "pg": 16.8, "diff": 81.1, "ra_a": 31, "ra_p": 75}, {"block": "Gaming Franchises*", "attr": "Plants vs. Zombies", "ia": 174, "ip": 95, "pa_a": 42.8, "pa_p": 23.4, "pg": 24.5, "diff": 79.0, "ra_a": 26, "ra_p": 68}, {"block": "Attitudes: Tech & Trends", "attr": "I am comfortable with my apps tracking my activity (e.g. walking, sleeping)", "ia": 158, "ip": 93, "pa_a": 33.4, "pa_p": 19.6, "pg": 20.4, "diff": 65.6, "ra_a": 36, "ra_p": 90}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I am comfortable with my apps tracking my activity (e.g. walking, sleeping)", "ia": 158, "ip": 93, "pa_a": 33.4, "pa_p": 19.6, "pg": 20.4, "diff": 65.6, "ra_a": 36, "ra_p": 90}], "only_prescriptor": [{"block": "Work Sector / Industry", "attr": "Engineering", "ia": 88, "ip": 1240, "pa_a": 2.2, "pa_p": 30.9, "pg": 2.4, "diff": -1152.3, "ra_a": 3, "ra_p": 147}, {"block": "Luxury Fashion: Engagement*", "attr": "Hogan - Purchased in Last Year - Purchased in Last 5 Years", "ia": 102, "ip": 232, "pa_a": 2.1, "pa_p": 4.7, "pg": 2, "diff": -129.9, "ra_a": 1, "ra_p": 13}, {"block": "Luxury Fashion: Engagement*", "attr": "Longchamp - Purchased in Last Year - Purchased in Last 5 Years", "ia": 64, "ip": 232, "pa_a": 1.2, "pa_p": 4.5, "pg": 1.9, "diff": -167.3, "ra_a": 1, "ra_p": 13}, {"block": "Sport Events & Leagues", "attr": "European Tour / DP World Tour (Golf) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 43, "ip": 224, "pa_a": 0.9, "pa_p": 4.4, "pg": 1.8, "diff": -181.0, "ra_a": 1, "ra_p": 20}, {"block": "Gaming Franchises*", "attr": "DiRT (to Q1 2025)", "ia": 0, "ip": 210, "pa_a": 0, "pa_p": 4.5, "pg": 2.1, "diff": -209.7, "ra_a": 0, "ra_p": 8}, {"block": "Luxury Fashion: Engagement*", "attr": "Bottega Veneta - Purchased in Last Year - Purchased in Last 5 Years", "ia": 73, "ip": 208, "pa_a": 1.4, "pa_p": 3.9, "pg": 1.9, "diff": -134.4, "ra_a": 1, "ra_p": 12}, {"block": "Luxury Fashion: Engagement*", "attr": "Lanvin - Purchased in Last Year - Purchased in Last 5 Years", "ia": 49, "ip": 197, "pa_a": 1.2, "pa_p": 4.9, "pg": 2.5, "diff": -147.4, "ra_a": 1, "ra_p": 14}, {"block": "Luxury Fashion: Engagement*", "attr": "Fendi - Purchased in Last Year - Purchased in Last 5 Years", "ia": 37, "ip": 153, "pa_a": 2.1, "pa_p": 8.4, "pg": 5.5, "diff": -115.4, "ra_a": 1, "ra_p": 26}, {"block": "Luxury Fashion: Engagement*", "attr": "Stella McCartney - Purchased in Last Year - Purchased in Last 5 Years", "ia": 46, "ip": 159, "pa_a": 1.2, "pa_p": 4.3, "pg": 2.7, "diff": -112.7, "ra_a": 1, "ra_p": 13}, {"block": "Gaming Franchises*", "attr": "Tekken", "ia": 77, "ip": 173, "pa_a": 3.6, "pa_p": 8.1, "pg": 4.7, "diff": -95.8, "ra_a": 2, "ra_p": 24}], "diverge_a": [{"block": "Work Sector / Industry", "attr": "Government (National or Local) (Select Markets Only)", "ia": 425, "ip": 0, "pa_a": 9.6, "pa_p": 0, "pg": 2.2, "diff": 425.2, "ra_a": 12, "ra_p": 0}, {"block": "Luxury Fashion: Engagement*", "attr": "Escada - Purchased in Last Year - Purchased in Last 5 Years", "ia": 452, "ip": 189, "pa_a": 11.2, "pa_p": 4.7, "pg": 2.5, "diff": 262.3, "ra_a": 5, "ra_p": 14}, {"block": "All Personas", "attr": "Shopaholics", "ia": 317, "ip": 86, "pa_a": 8.3, "pa_p": 2.3, "pg": 2.7, "diff": 231, "ra_a": 9, "ra_p": 11}, {"block": "Work Sector / Industry", "attr": "Real Estate / Property", "ia": 611, "ip": 390, "pa_a": 5.1, "pa_p": 3.2, "pg": 0.8, "diff": 220.8, "ra_a": 5, "ra_p": 15}, {"block": "All Personas", "attr": "Traditional Parents", "ia": 419, "ip": 203, "pa_a": 20.2, "pa_p": 9.8, "pg": 5, "diff": 215.5, "ra_a": 23, "ra_p": 47}, {"block": "Luxury Fashion: Engagement*", "attr": "Nina Ricci - Purchased in Last Year - Purchased in Last 5 Years", "ia": 453, "ip": 238, "pa_a": 23.9, "pa_p": 12.6, "pg": 5.3, "diff": 215.1, "ra_a": 13, "ra_p": 38}, {"block": "Work Sector / Industry", "attr": "IT / Telecommunications", "ia": 215, "ip": 0, "pa_a": 6.8, "pa_p": 0, "pg": 3.1, "diff": 214.8, "ra_a": 9, "ra_p": 0}, {"block": "Company Size", "attr": "2001-5000 employees", "ia": 313, "ip": 137, "pa_a": 8.7, "pa_p": 3.8, "pg": 2.8, "diff": 175.7, "ra_a": 11, "ra_p": 19}, {"block": "All Personas", "attr": "Tech Trackers", "ia": 319, "ip": 145, "pa_a": 7.9, "pa_p": 3.6, "pg": 2.7, "diff": 174.1, "ra_a": 9, "ra_p": 16}, {"block": "Gaming Franchises*", "attr": "Football Manager", "ia": 274, "ip": 103, "pa_a": 13, "pa_p": 4.9, "pg": 4.7, "diff": 171.9, "ra_a": 8, "ra_p": 15}], "diverge_p": [{"block": "Work Sector / Industry", "attr": "Engineering", "ia": 88, "ip": 1240, "pa_a": 2.2, "pa_p": 30.9, "pg": 2.4, "diff": -1152.3, "ra_a": 3, "ra_p": 147}, {"block": "Work Sector / Industry", "attr": "Building / Construction", "ia": 184, "ip": 1279, "pa_a": 9.5, "pa_p": 65.8, "pg": 5.2, "diff": -1095.5, "ra_a": 10, "ra_p": 302}, {"block": "Job Seniority", "attr": "Project Manager (e.g. Project Director, Team Leader)", "ia": 207, "ip": 570, "pa_a": 12.9, "pa_p": 35.6, "pg": 6.1, "diff": -362.9, "ra_a": 14, "ra_p": 166}, {"block": "Work Decision-Making Power", "attr": "Decision-Makers", "ia": 198, "ip": 418, "pa_a": 37.2, "pa_p": 78.2, "pg": 18.7, "diff": -219.3, "ra_a": 42, "ra_p": 364}, {"block": "Job Seniority", "attr": "Supervisor / Junior Manager", "ia": 128, "ip": 304, "pa_a": 14.3, "pa_p": 33.7, "pg": 11.1, "diff": -175.2, "ra_a": 17, "ra_p": 153}, {"block": "Work Decision-Making Power", "attr": "Operations", "ia": 153, "ip": 280, "pa_a": 16.8, "pa_p": 30.6, "pg": 10.9, "diff": -126.6, "ra_a": 18, "ra_p": 141}, {"block": "Gaming Franchises*", "attr": "EA Sports WRC", "ia": 146, "ip": 266, "pa_a": 8.1, "pa_p": 14.6, "pg": 5.5, "diff": -119.2, "ra_a": 1, "ra_p": 15}, {"block": "Luxury Fashion: Engagement*", "attr": "Fendi - Purchased in Last Year - Purchased in Last 5 Years", "ia": 37, "ip": 153, "pa_a": 2.1, "pa_p": 8.4, "pg": 5.5, "diff": -115.4, "ra_a": 1, "ra_p": 26}, {"block": "Job Seniority", "attr": "Management (e.g. Department / Group Manager, VP)", "ia": 219, "ip": 320, "pa_a": 11.2, "pa_p": 16.3, "pg": 5.1, "diff": -101.4, "ra_a": 13, "ra_p": 76}, {"block": "Attitudes: Artificial Intelligence (AI)", "attr": "AI-generated content can be of high quality, even with minimum or no human input", "ia": 44, "ip": 143, "pa_a": 9.2, "pa_p": 30.2, "pg": 21.1, "diff": -99.8, "ra_a": 1, "ra_p": 20}], "paired": {"trabajo_sector": [{"block": "Work Sector / Industry", "attr": "Building / Construction", "ia": 184, "ip": 1279, "pa_a": 9.5, "pa_p": 65.8, "pg": 5.2, "diff": -1095.5, "ra_a": 10, "ra_p": 302}, {"block": "Work Sector / Industry", "attr": "Engineering", "ia": 88, "ip": 1240, "pa_a": 2.2, "pa_p": 30.9, "pg": 2.4, "diff": -1152.3, "ra_a": 3, "ra_p": 147}, {"block": "Work Sector / Industry", "attr": "Real Estate / Property", "ia": 611, "ip": 390, "pa_a": 5.1, "pa_p": 3.2, "pg": 0.8, "diff": 220.8, "ra_a": 5, "ra_p": 15}, {"block": "Work Sector / Industry", "attr": "Government (National or Local) (Select Markets Only)", "ia": 425, "ip": 0, "pa_a": 9.6, "pa_p": 0, "pg": 2.2, "diff": 425.2, "ra_a": 12, "ra_p": 0}, {"block": "Work Sector / Industry", "attr": "HR & Training", "ia": 291, "ip": 0, "pa_a": 4.7, "pa_p": 0, "pg": 1.6, "diff": 290.9, "ra_a": 5, "ra_p": 0}, {"block": "Work Sector / Industry", "attr": "IT / Telecommunications", "ia": 215, "ip": 0, "pa_a": 6.8, "pa_p": 0, "pg": 3.1, "diff": 214.8, "ra_a": 9, "ra_p": 0}, {"block": "Work Sector / Industry", "attr": "Manufacturing (Other sectors)", "ia": 148, "ip": 0, "pa_a": 6, "pa_p": 0, "pg": 4.1, "diff": 147.7, "ra_a": 6, "ra_p": 0}, {"block": "Work Sector / Industry", "attr": "Retail / Fashion", "ia": 106, "ip": 0, "pa_a": 7.8, "pa_p": 0, "pg": 7.4, "diff": 105.8, "ra_a": 8, "ra_p": 0}], "trabajo_seniority": [{"block": "Job Seniority", "attr": "Project Manager (e.g. Project Director, Team Leader)", "ia": 207, "ip": 570, "pa_a": 12.9, "pa_p": 35.6, "pg": 6.1, "diff": -362.9, "ra_a": 14, "ra_p": 166}, {"block": "Job Seniority", "attr": "Management (e.g. Department / Group Manager, VP)", "ia": 219, "ip": 320, "pa_a": 11.2, "pa_p": 16.3, "pg": 5.1, "diff": -101.4, "ra_a": 13, "ra_p": 76}, {"block": "Job Seniority", "attr": "Supervisor / Junior Manager", "ia": 128, "ip": 304, "pa_a": 14.3, "pa_p": 33.7, "pg": 11.1, "diff": -175.2, "ra_a": 17, "ra_p": 153}, {"block": "Job Seniority", "attr": "Executive Management (e.g. President / Partner, CEO, CFO, C-Suite)", "ia": 300, "ip": 246, "pa_a": 13.5, "pa_p": 11.1, "pg": 4.5, "diff": 54.0, "ra_a": 15, "ra_p": 54}, {"block": "Job Seniority", "attr": "Senior Management (e.g. Executive VP, Senior VP)", "ia": 298, "ip": 262, "pa_a": 3.7, "pa_p": 3.3, "pg": 1.3, "diff": 36.1, "ra_a": 5, "ra_p": 15}, {"block": "Job Seniority", "attr": "Intermediate team member / staff", "ia": 106, "ip": 0, "pa_a": 17.1, "pa_p": 0, "pg": 16, "diff": 105.8, "ra_a": 18, "ra_p": 0}, {"block": "Job Seniority", "attr": "Junior team member / staff", "ia": 47, "ip": 0, "pa_a": 4.3, "pa_p": 0, "pg": 9.2, "diff": 46.6, "ra_a": 5, "ra_p": 0}, {"block": "Job Seniority", "attr": "Other", "ia": 43, "ip": 0, "pa_a": 7, "pa_p": 0, "pg": 16.3, "diff": 42.8, "ra_a": 7, "ra_p": 0}], "decision": [{"block": "Work Decision-Making Power", "attr": "Decision-Makers", "ia": 198, "ip": 418, "pa_a": 37.2, "pa_p": 78.2, "pg": 18.7, "diff": -219.3, "ra_a": 42, "ra_p": 364}, {"block": "Work Decision-Making Power", "attr": "Purchasers", "ia": 265, "ip": 297, "pa_a": 22.3, "pa_p": 24.9, "pg": 8.4, "diff": -31.4, "ra_a": 24, "ra_p": 117}, {"block": "Work Decision-Making Power", "attr": "Operations", "ia": 153, "ip": 280, "pa_a": 16.8, "pa_p": 30.6, "pg": 10.9, "diff": -126.6, "ra_a": 18, "ra_p": 141}, {"block": "Work Decision-Making Power", "attr": "Senior Decision-Makers", "ia": 199, "ip": 243, "pa_a": 18.4, "pa_p": 22.4, "pg": 9.2, "diff": -43.8, "ra_a": 22, "ra_p": 108}], "deportes": [{"block": "Sport Events & Leagues", "attr": "PGA Tour (Golf) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 395, "ip": 244, "pa_a": 12.2, "pa_p": 7.5, "pg": 2.9, "diff": 150.7, "ra_a": 14, "ra_p": 35}, {"block": "Sport Events & Leagues", "attr": "US Open (Tennis) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 274, "ip": 200, "pa_a": 21.3, "pa_p": 15.6, "pg": 7.6, "diff": 74.1, "ra_a": 24, "ra_p": 73}, {"block": "Sport Events & Leagues", "attr": "Wimbledon (Tennis) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 248, "ip": 186, "pa_a": 19.2, "pa_p": 14.4, "pg": 7.5, "diff": 61.8, "ra_a": 23, "ra_p": 67}, {"block": "Sport Events & Leagues", "attr": "Golf Majors (The Masters, British and US Opens, PGA Championship) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 247, "ip": 176, "pa_a": 8.4, "pa_p": 6, "pg": 3.3, "diff": 70.8, "ra_a": 9, "ra_p": 28}, {"block": "Sport Events & Leagues", "attr": "French Open (Tennis) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 226, "ip": 189, "pa_a": 14.6, "pa_p": 12.2, "pg": 6.2, "diff": 37.7, "ra_a": 17, "ra_p": 58}, {"block": "Sport Events & Leagues", "attr": "ATP Tour (Tennis) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 212, "ip": 165, "pa_a": 8.5, "pa_p": 6.6, "pg": 3.9, "diff": 47.2, "ra_a": 10, "ra_p": 31}, {"block": "Sport Events & Leagues", "attr": "Major League Baseball / MLB - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 205, "ip": 177, "pa_a": 33.9, "pa_p": 29.4, "pg": 16.7, "diff": 27.2, "ra_a": 37, "ra_p": 138}, {"block": "Sport Events & Leagues", "attr": "Major League Soccer / MLS (Football/Soccer) - Follow / Interested in - Watch live on a TV channel - Watch live on a Streaming service - Watch highlights / Follow news", "ia": 179, "ip": 204, "pa_a": 13, "pa_p": 14.8, "pg": 7.2, "diff": -24.8, "ra_a": 14, "ra_p": 68}], "lujo": [{"block": "Luxury Fashion: Engagement*", "attr": "Rochas (To Q2 2024) - Purchased in Last Year - Purchased in Last 5 Years", "ia": 631, "ip": 370, "pa_a": 13.4, "pa_p": 7.9, "pg": 2.1, "diff": 261.9, "ra_a": 2, "ra_p": 7}, {"block": "Luxury Fashion: Engagement*", "attr": "Nina Ricci - Purchased in Last Year - Purchased in Last 5 Years", "ia": 453, "ip": 238, "pa_a": 23.9, "pa_p": 12.6, "pg": 5.3, "diff": 215.1, "ra_a": 13, "ra_p": 38}, {"block": "Luxury Fashion: Engagement*", "attr": "Escada - Purchased in Last Year - Purchased in Last 5 Years", "ia": 452, "ip": 189, "pa_a": 11.2, "pa_p": 4.7, "pg": 2.5, "diff": 262.3, "ra_a": 5, "ra_p": 14}, {"block": "Luxury Fashion: Engagement*", "attr": "Zegna - Purchased in Last Year - Purchased in Last 5 Years", "ia": 421, "ip": 291, "pa_a": 17.2, "pa_p": 11.9, "pg": 4.1, "diff": 130.5, "ra_a": 11, "ra_p": 40}, {"block": "Luxury Fashion: Engagement*", "attr": "Cartier - Purchased in Last Year - Purchased in Last 5 Years", "ia": 373, "ip": 238, "pa_a": 29.1, "pa_p": 18.6, "pg": 7.8, "diff": 134.8, "ra_a": 16, "ra_p": 58}, {"block": "Luxury Fashion: Engagement*", "attr": "Ferragamo - Purchased in Last Year - Purchased in Last 5 Years", "ia": 356, "ip": 191, "pa_a": 19.4, "pa_p": 10.4, "pg": 5.4, "diff": 165.1, "ra_a": 11, "ra_p": 32}, {"block": "Luxury Fashion: Engagement*", "attr": "Kenzo - Purchased in Last Year - Purchased in Last 5 Years", "ia": 333, "ip": 186, "pa_a": 20.1, "pa_p": 11.2, "pg": 6, "diff": 147.1, "ra_a": 12, "ra_p": 36}, {"block": "Luxury Fashion: Engagement*", "attr": "Swarovski - Purchased in Last Year - Purchased in Last 5 Years", "ia": 323, "ip": 199, "pa_a": 23.6, "pa_p": 14.5, "pg": 7.3, "diff": 124.3, "ra_a": 12, "ra_p": 47}], "discovery": [{"block": "Brand Discovery", "attr": "Stories / articles in printed editions of newspapers or magazines (To Q1 2025)", "ia": 236, "ip": 168, "pa_a": 17, "pa_p": 12.1, "pg": 7.8, "diff": 67.2, "ra_a": 11, "ra_p": 36}, {"block": "Brand Discovery", "attr": "Stories / articles on newspaper or magazine websites", "ia": 225, "ip": 122, "pa_a": 25.1, "pa_p": 13.6, "pg": 12.5, "diff": 103.1, "ra_a": 27, "ra_p": 64}, {"block": "Brand Discovery", "attr": "Product comparison websites", "ia": 205, "ip": 138, "pa_a": 32.6, "pa_p": 22, "pg": 18.1, "diff": 66.6, "ra_a": 35, "ra_p": 99}, {"block": "Brand Discovery", "attr": "Ads in magazines or newspapers", "ia": 186, "ip": 166, "pa_a": 16.9, "pa_p": 15, "pg": 10.6, "diff": 20.5, "ra_a": 17, "ra_p": 70}, {"block": "Brand Discovery", "attr": "Personalized purchase recommendations on websites", "ia": 179, "ip": 117, "pa_a": 26.2, "pa_p": 17.1, "pg": 17.2, "diff": 62.1, "ra_a": 28, "ra_p": 78}, {"block": "Brand Discovery", "attr": "Emails or letters / mailshots from companies", "ia": 176, "ip": 103, "pa_a": 24.7, "pa_p": 14.4, "pg": 15.3, "diff": 73.3, "ra_a": 26, "ra_p": 67}, {"block": "Brand Discovery", "attr": "Ads seen on websites", "ia": 174, "ip": 112, "pa_a": 41.2, "pa_p": 26.6, "pg": 25.1, "diff": 61.6, "ra_a": 45, "ra_p": 124}, {"block": "Brand Discovery", "attr": "Ads seen/heard in elevators", "ia": 140, "ip": 172, "pa_a": 10.4, "pa_p": 12.7, "pg": 7.9, "diff": -31.7, "ra_a": 4, "ra_p": 21}], "advocacy": [{"block": "Brand Advocacy", "attr": "Access to exclusive content or services (e.g. music, videos, etc)", "ia": 161, "ip": 127, "pa_a": 35.8, "pa_p": 28.1, "pg": 22.2, "diff": 34.7, "ra_a": 38, "ra_p": 127}, {"block": "Brand Advocacy", "attr": "Having insider knowledge about the brand or its products", "ia": 160, "ip": 100, "pa_a": 44.5, "pa_p": 27.8, "pg": 27.9, "diff": 60.1, "ra_a": 48, "ra_p": 131}, {"block": "Brand Advocacy", "attr": "When something is relevant to my own interests", "ia": 152, "ip": 116, "pa_a": 43.9, "pa_p": 33.5, "pg": 28.8, "diff": 36.1, "ra_a": 47, "ra_p": 158}, {"block": "Brand Advocacy", "attr": "The feeling of taking part / being involved", "ia": 147, "ip": 98, "pa_a": 27.9, "pa_p": 18.6, "pg": 18.9, "diff": 48.9, "ra_a": 30, "ra_p": 86}, {"block": "Brand Advocacy", "attr": "When I've received great customer service", "ia": 143, "ip": 101, "pa_a": 54.6, "pa_p": 38.5, "pg": 38.2, "diff": 42.3, "ra_a": 60, "ra_p": 180}, {"block": "Brand Advocacy", "attr": "High-quality products", "ia": 134, "ip": 104, "pa_a": 76.8, "pa_p": 59.2, "pg": 57.1, "diff": 30.7, "ra_a": 84, "ra_p": 276}, {"block": "Brand Advocacy", "attr": "Rewards (e.g. discounts, free gifts, etc)", "ia": 130, "ip": 94, "pa_a": 55.5, "pa_p": 40.2, "pg": 42.8, "diff": 35.8, "ra_a": 60, "ra_p": 185}, {"block": "Brand Advocacy", "attr": "When something is relevant to my friends' interests", "ia": 114, "ip": 125, "pa_a": 21.1, "pa_p": 23.2, "pg": 18.6, "diff": -11.1, "ra_a": 23, "ra_p": 105}], "tech": [{"block": "Attitudes: Artificial Intelligence (AI)", "attr": "Governments are taking the right steps to regulate AI", "ia": 260, "ip": 157, "pa_a": 28.3, "pa_p": 17.1, "pg": 10.9, "diff": 102.9, "ra_a": 3, "ra_p": 12}, {"block": "Attitudes: Artificial Intelligence (AI)", "attr": "AI enhances my daily life", "ia": 240, "ip": 153, "pa_a": 54.3, "pa_p": 34.7, "pg": 22.6, "diff": 87.0, "ra_a": 8, "ra_p": 22}, {"block": "Attitudes: Tech & Trends", "attr": "I buy new tech products as soon as they are available", "ia": 217, "ip": 218, "pa_a": 31.7, "pa_p": 31.9, "pg": 14.6, "diff": -1.7, "ra_a": 35, "ra_p": 149}, {"block": "Attitudes: Artificial Intelligence (AI)", "attr": "I am willing to pay more for products from companies that guarantee ethical AI use", "ia": 141, "ip": 208, "pa_a": 12.7, "pa_p": 18.8, "pg": 9, "diff": -67.9, "ra_a": 1, "ra_p": 12}, {"block": "Attitudes: Artificial Intelligence (AI)", "attr": "I believe AI will create more job opportunities", "ia": 103, "ip": 187, "pa_a": 16.1, "pa_p": 29.2, "pg": 15.6, "diff": -84.2, "ra_a": 2, "ra_p": 19}, {"block": "Attitudes: Artificial Intelligence (AI)", "attr": "I prefer interacting with AI in customer service", "ia": 180, "ip": 115, "pa_a": 19.1, "pa_p": 12.2, "pg": 10.6, "diff": 65.0, "ra_a": 2, "ra_p": 8}, {"block": "Attitudes: Artificial Intelligence (AI)", "attr": "I am comfortable using AI products and services", "ia": 177, "ip": 112, "pa_a": 50.5, "pa_p": 31.7, "pg": 28.4, "diff": 65.8, "ra_a": 7, "ra_p": 21}, {"block": "Attitudes: Tech & Trends", "attr": "I am confident using new technology", "ia": 165, "ip": 140, "pa_a": 61.9, "pa_p": 52.3, "pg": 37.3, "diff": 25.7, "ra_a": 67, "ra_p": 243}], "intereses": [{"block": "Personal Interests", "attr": "Gambling", "ia": 132, "ip": 174, "pa_a": 21.9, "pa_p": 28.9, "pg": 16.8, "diff": -42.3, "ra_a": 23, "ra_p": 132}, {"block": "Home & Lifestyle Interests", "attr": "Gambling", "ia": 132, "ip": 174, "pa_a": 21.9, "pa_p": 28.9, "pg": 16.8, "diff": -42.3, "ra_a": 23, "ra_p": 132}, {"block": "Personal Interests", "attr": "Cars / motoring", "ia": 130, "ip": 162, "pa_a": 43.1, "pa_p": 53.7, "pg": 30.7, "diff": -32.2, "ra_a": 45, "ra_p": 253}, {"block": "Personal Interests", "attr": "Esports", "ia": 162, "ip": 149, "pa_a": 27.6, "pa_p": 25.4, "pg": 16, "diff": 13.1, "ra_a": 28, "ra_p": 118}, {"block": "Personal Interests", "attr": "Politics / social issues", "ia": 162, "ip": 135, "pa_a": 53.8, "pa_p": 44.8, "pg": 31.6, "diff": 27.0, "ra_a": 59, "ra_p": 210}, {"block": "Current Affairs, Business & Societal Interests", "attr": "Politics / social issues", "ia": 162, "ip": 135, "pa_a": 53.8, "pa_p": 44.8, "pg": 31.6, "diff": 27.0, "ra_a": 59, "ra_p": 210}, {"block": "Personal Interests", "attr": "Charities / volunteering", "ia": 160, "ip": 110, "pa_a": 25.7, "pa_p": 17.6, "pg": 15, "diff": 50.5, "ra_a": 27, "ra_p": 84}, {"block": "Current Affairs, Business & Societal Interests", "attr": "Charities / volunteering", "ia": 160, "ip": 110, "pa_a": 25.7, "pa_p": 17.6, "pg": 15, "diff": 50.5, "ra_a": 27, "ra_p": 84}], "valores": [{"block": "Attitudes: All 'Describes me' statements", "attr": "I tend to buy the premium version of products", "ia": 243, "ip": 173, "pa_a": 30.2, "pa_p": 21.5, "pg": 12.6, "diff": 69.4, "ra_a": 33, "ra_p": 100}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I buy new tech products as soon as they are available", "ia": 217, "ip": 218, "pa_a": 31.7, "pa_p": 31.9, "pg": 14.6, "diff": -1.7, "ra_a": 35, "ra_p": 149}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I use loyalty / reward programs", "ia": 208, "ip": 133, "pa_a": 50.7, "pa_p": 32.5, "pg": 24.7, "diff": 74.4, "ra_a": 57, "ra_p": 150}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I tend to buy brands I have seen in movies or TV shows", "ia": 190, "ip": 135, "pa_a": 29.2, "pa_p": 20.7, "pg": 15.8, "diff": 55.5, "ra_a": 8, "ra_p": 21}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I think immigration is good for my country", "ia": 184, "ip": 171, "pa_a": 14.2, "pa_p": 13.2, "pg": 7.8, "diff": 12.7, "ra_a": 17, "ra_p": 60}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I consider myself an opinion leader", "ia": 172, "ip": 152, "pa_a": 36.4, "pa_p": 32.2, "pg": 20.1, "diff": 20.1, "ra_a": 38, "ra_p": 147}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I buy products / services to access the community built around them", "ia": 171, "ip": 164, "pa_a": 17, "pa_p": 16.3, "pg": 9.9, "diff": 7.7, "ra_a": 18, "ra_p": 75}, {"block": "Attitudes: All 'Describes me' statements", "attr": "I am confident using new technology", "ia": 165, "ip": 140, "pa_a": 61.9, "pa_p": 52.3, "pg": 37.3, "diff": 25.7, "ra_a": 67, "ra_p": 243}], "personas": [{"block": "All Personas", "attr": "Jet-setters", "ia": 436, "ip": 409, "pa_a": 13.9, "pa_p": 13.1, "pg": 3.1, "diff": 27.1, "ra_a": 18, "ra_p": 61}, {"block": "All Personas", "attr": "Traditional Parents", "ia": 419, "ip": 203, "pa_a": 20.2, "pa_p": 9.8, "pg": 5, "diff": 215.5, "ra_a": 23, "ra_p": 47}, {"block": "All Personas", "attr": "Parental Investors", "ia": 343, "ip": 361, "pa_a": 8.3, "pa_p": 8.7, "pg": 2.4, "diff": -17.5, "ra_a": 10, "ra_p": 41}, {"block": "All Personas", "attr": "Smart Connectors", "ia": 326, "ip": 200, "pa_a": 9.1, "pa_p": 5.6, "pg": 2.6, "diff": 126.1, "ra_a": 9, "ra_p": 27}, {"block": "All Personas", "attr": "Early Adopters", "ia": 296, "ip": 318, "pa_a": 5.3, "pa_p": 5.7, "pg": 1.8, "diff": -22.1, "ra_a": 6, "ra_p": 27}, {"block": "All Personas", "attr": "Traditionalists", "ia": 309, "ip": 231, "pa_a": 6.8, "pa_p": 5.1, "pg": 2.2, "diff": 77.7, "ra_a": 8, "ra_p": 23}, {"block": "All Personas", "attr": "Go-Getters", "ia": 307, "ip": 202, "pa_a": 13.1, "pa_p": 8.6, "pg": 4.2, "diff": 104.6, "ra_a": 15, "ra_p": 40}, {"block": "All Personas", "attr": "Online Activists", "ia": 298, "ip": 169, "pa_a": 18.2, "pa_p": 10.3, "pg": 5.9, "diff": 129.2, "ra_a": 21, "ra_p": 48}], "redes_motivos": [{"block": "Reasons for Using Social Media", "attr": "Supporting / connecting with good causes", "ia": 226, "ip": 134, "pa_a": 28.2, "pa_p": 16.7, "pg": 12.5, "diff": 92.0, "ra_a": 32, "ra_p": 77}, {"block": "Reasons for Using Social Media", "attr": "Sharing / discussing opinions with others", "ia": 202, "ip": 113, "pa_a": 30.1, "pa_p": 16.8, "pg": 14.8, "diff": 89.3, "ra_a": 31, "ra_p": 79}, {"block": "Reasons for Using Social Media", "attr": "Finding inspiration for things (places to visit, things to buy, etc)", "ia": 183, "ip": 103, "pa_a": 54.8, "pa_p": 30.9, "pg": 29.8, "diff": 80.0, "ra_a": 58, "ra_p": 143}, {"block": "Reasons for Using Social Media", "attr": "Work-related networking / research", "ia": 175, "ip": 144, "pa_a": 46.7, "pa_p": 38.5, "pg": 26.7, "diff": 30.8, "ra_a": 53, "ra_p": 180}, {"block": "Reasons for Using Social Media", "attr": "Finding products to purchase", "ia": 171, "ip": 122, "pa_a": 52.6, "pa_p": 37.5, "pg": 30.8, "diff": 49.2, "ra_a": 56, "ra_p": 172}, {"block": "Reasons for Using Social Media", "attr": "Reading news stories", "ia": 161, "ip": 119, "pa_a": 67, "pa_p": 49.7, "pg": 42.4, "diff": 41.4, "ra_a": 75, "ra_p": 232}, {"block": "Reasons for Using Social Media", "attr": "Making new contacts", "ia": 156, "ip": 145, "pa_a": 29.7, "pa_p": 27.5, "pg": 18.9, "diff": 11.7, "ra_a": 32, "ra_p": 127}, {"block": "Reasons for Using Social Media", "attr": "Watching live streams (e.g. events, shows, etc)", "ia": 152, "ip": 133, "pa_a": 33.9, "pa_p": 29.6, "pg": 22.5, "diff": 19.2, "ra_a": 37, "ra_p": 136}], "income": [{"block": "Income (by segment)", "attr": "Highest (Subset of High)", "ia": 342, "ip": 247, "pa_a": 32.8, "pa_p": 23.7, "pg": 9.6, "diff": 95.4, "ra_a": 38, "ra_p": 111}, {"block": "Income (by segment)", "attr": "High", "ia": 292, "ip": 174, "pa_a": 100, "pa_p": 59.5, "pg": 34.8, "diff": 118.5, "ra_a": 110, "ra_p": 279}], "caracter": [{"block": "Attitudes: Character", "attr": "Career-focused - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 112, "ip": 121, "pa_a": 67.1, "pa_p": 72.6, "pg": 59.4, "diff": -9.2, "ra_a": 76, "ra_p": 342}, {"block": "Attitudes: Character", "attr": "Confident - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 120, "ip": 112, "pa_a": 87.4, "pa_p": 81.6, "pg": 72.8, "diff": 7.9, "ra_a": 96, "ra_p": 382}, {"block": "Attitudes: Character", "attr": "Adventurous - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 99, "ip": 118, "pa_a": 57.4, "pa_p": 68.4, "pg": 58.2, "diff": -19.1, "ra_a": 63, "ra_p": 319}, {"block": "Attitudes: Character", "attr": "Creative - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 112, "ip": 116, "pa_a": 84.7, "pa_p": 87.7, "pg": 75.7, "diff": -3.9, "ra_a": 93, "ra_p": 407}, {"block": "Attitudes: Character", "attr": "Health-conscious - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 115, "ip": 110, "pa_a": 77.1, "pa_p": 73.7, "pg": 66.6, "diff": 5.1, "ra_a": 85, "ra_p": 346}, {"block": "Attitudes: Character", "attr": "Open-minded - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 104, "ip": 109, "pa_a": 71.1, "pa_p": 74.8, "pg": 68.7, "diff": -5.5, "ra_a": 81, "ra_p": 353}, {"block": "Attitudes: Character", "attr": "Social / outgoing - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 103, "ip": 109, "pa_a": 60.6, "pa_p": 64.1, "pg": 58.6, "diff": -5.8, "ra_a": 67, "ra_p": 303}, {"block": "Attitudes: Character", "attr": "Ambitious - Describes me - Neutral (to Q3 2024) - Does not describe me (to Q3 2024)", "ia": 91, "ip": 107, "pa_a": 47, "pa_p": 55.5, "pg": 51.7, "diff": -16.5, "ra_a": 53, "ra_p": 263}]}}</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+
+function renderCompare(containerId, rows){
+  const c = document.getElementById(containerId);
+  if(!c || !rows) return;
+  if (rows.length === 0){ c.innerHTML = '<div style="opacity:.5;text-align:center;font-size:13px;padding:30px">Sin datos para esta sección.</div>'; return; }
+  // Calcular max para escalar mirror bars
+  const allMax = Math.max(...rows.map(r => Math.max(r.pa_a||0, r.pa_p||0, 5)));
+  c.innerHTML = rows.map(r => {
+    const lab = r.attr.split(' - ')[0].replace(/\*/g,'');
+    const wA = ((r.pa_a||0)/allMax)*100;
+    const wP = ((r.pa_p||0)/allMax)*100;
+    const baselineG = r.pg||0;
+    return `
+      <div class="cmp-row">
+        <div class="cmp-side left">
+          <div>
+            <div class="n">${r.pa_a}%</div>
+            <div style="font-size:11px;margin-top:2px">idx ${r.ia} · n=${r.ra_a}</div>
+          </div>
+        </div>
+        <div class="cmp-mid">
+          <div class="cmp-label">${lab}</div>
+          <div class="meta">${r.block.replace(/\*/g,'')}</div>
+          <div class="mirror">
+            <div style="display:flex;justify-content:flex-end"><div class="barL" data-w="${wA}"></div></div>
+            <div class="axis" title="MX baseline ${baselineG}%"></div>
+            <div><div class="barR" data-w="${wP}"></div></div>
+          </div>
+          <div class="baseline">MX baseline: ${baselineG}%</div>
+        </div>
+        <div class="cmp-side right">
+          <div>
+            <div class="n">${r.pa_p}%</div>
+            <div style="font-size:11px;margin-top:2px">idx ${r.ip} · n=${r.ra_p}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderSoloList(containerId, rows, side){
+  const c = document.getElementById(containerId);
+  if(!c) return;
+  c.innerHTML = rows.map(r => {
+    const lab = r.attr.split(' - ')[0].replace(/\*/g,'');
+    const idx = side === 'aff' ? r.ia : r.ip;
+    const pa = side === 'aff' ? r.pa_a : r.pa_p;
+    return `<li>
+      <div>
+        <div class="name">${lab}</div>
+        <div class="sub">${pa}% vs ${r.pg}% MX · ${r.block.replace(/\*/g,'')}</div>
+      </div>
+      <div class="idx">idx ${idx}</div>
+    </li>`;
+  }).join('');
+}
+
+renderCompare('cmp-converge', DATA.convergences);
+renderCompare('cmp-sector', DATA.paired.trabajo_sector);
+renderCompare('cmp-seniority', DATA.paired.trabajo_seniority);
+renderCompare('cmp-decision', DATA.paired.decision);
+renderCompare('cmp-caracter', DATA.paired.caracter);
+renderCompare('cmp-personas', DATA.paired.personas);
+renderCompare('cmp-tech', DATA.paired.tech);
+renderCompare('cmp-discovery', DATA.paired.discovery);
+renderCompare('cmp-advocacy', DATA.paired.advocacy);
+renderCompare('cmp-deportes', DATA.paired.deportes);
+renderCompare('cmp-lujo', DATA.paired.lujo);
+
+renderSoloList('list-only-aff', DATA.only_affluent, 'aff');
+renderSoloList('list-only-pre', DATA.only_prescriptor, 'pre');
+
+/* Bridge entre Diego y Alejandro en el cuadrante */
+function drawBridge(){
+  const wrap = document.querySelector('.quadrant-wrap');
+  const a = document.getElementById('ptA');
+  const d = document.getElementById('ptD');
+  const bridge = document.getElementById('bridge');
+  if(!wrap || !a || !d || !bridge) return;
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  // posiciones reales (centro de cada punto, en px)
+  const ax = (74/100)*W, ay = (72/100)*H;
+  const dx = (26/100)*W, dy = (28/100)*H;
+  const len = Math.hypot(ax-dx, ay-dy);
+  const ang = Math.atan2(ay-dy, ax-dx) * 180/Math.PI;
+  bridge.style.left = dx + 'px';
+  bridge.style.top = dy + 'px';
+  bridge.style.width = len + 'px';
+  bridge.style.transform = `rotate(${ang}deg)`;
+}
+window.addEventListener('load', drawBridge);
+window.addEventListener('resize', drawBridge);
+
+/* Reveal + bar fill */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.barL, .barR').forEach(b=>{
+        b.style.width = (b.dataset.w||'0')+'%';
+      });
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll('[data-reveal], .cmp-row, .compare, .venn-wrap').forEach(el=>io.observe(el));
+
+/* Nav active */
+const navLinks = [...document.querySelectorAll('.nav a')];
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const navObs = new IntersectionObserver((ents)=>{
+  ents.forEach(e=>{
+    if(e.isIntersecting){
+      const id = '#'+e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href')===id));
+    }
+  });
+},{threshold:.3});
+sections.forEach(s=>navObs.observe(s));
+
+navLinks.forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth',block:'start'});
+}));
+</script>
+</body>
+</html>
