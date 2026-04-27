@@ -1145,17 +1145,39 @@ const io = new IntersectionObserver((entries)=>{
 document.querySelectorAll('[data-reveal], .cmp-row, .compare, .venn-wrap').forEach(el=>io.observe(el));
 
 /* Nav active */
+const navEl = document.getElementById('nav');
 const navLinks = [...document.querySelectorAll('.nav a')];
 const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+function centerNavOn(link){
+  if(!navEl || !link) return;
+  const navRect = navEl.getBoundingClientRect();
+  const linkRect = link.getBoundingClientRect();
+  const target = navEl.scrollLeft + (linkRect.left - navRect.left) - (navRect.width/2 - linkRect.width/2);
+  navEl.scrollTo({left: target, behavior: 'smooth'});
+}
 const navObs = new IntersectionObserver((ents)=>{
   ents.forEach(e=>{
     if(e.isIntersecting){
       const id = '#'+e.target.id;
-      navLinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href')===id));
+      navLinks.forEach(l=>{
+        const isActive = l.getAttribute('href')===id;
+        l.classList.toggle('active', isActive);
+        if(isActive) centerNavOn(l);
+      });
     }
   });
 },{threshold:.3});
 sections.forEach(s=>navObs.observe(s));
+
+/* Wheel = horizontal scroll en la nav */
+if(navEl){
+  navEl.addEventListener('wheel', (e)=>{
+    if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+      e.preventDefault();
+      navEl.scrollBy({left: e.deltaY, behavior: 'auto'});
+    }
+  }, {passive:false});
+}
 
 navLinks.forEach(a=>a.addEventListener('click',e=>{
   e.preventDefault();
