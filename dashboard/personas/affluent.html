@@ -1027,7 +1027,7 @@ makeBars('bars-caracter', DATA.caracter.slice(0,8));
 makeBars('bars-valores', DATA.vida.slice(0,7));
 makeBars('bars-under', DATA.under.slice(0,7));
 makeBars('bars-life', DATA.life_events.filter(r=>r.pa>=2).slice(0,10));
-makeBars('bars-edad', DATA.edad.slice(0,5));
+makeBars('bars-edad', DATA.edad.filter(r=>!/to Q2 2024|^16-64$|^16\+/.test(r.attr)).slice(0,5));
 makeBars('bars-genero', DATA.genero.slice(0,2));
 makeBars('bars-region', DATA.regiones.filter(r=>r.pa>=2).slice(0,12));
 
